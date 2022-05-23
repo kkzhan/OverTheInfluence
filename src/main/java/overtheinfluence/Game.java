@@ -1,5 +1,5 @@
 package overtheinfluence;
-//test
+
 /**
  * This class operates one game of Over the Influence.
  */

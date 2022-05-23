@@ -2,6 +2,7 @@ package overtheinfluence;
 
 import javafx.animation.*;
 import javafx.application.*;
+import javafx.event.Event;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
@@ -133,7 +134,7 @@ public class Launcher extends Application {
         gc.fillText("Over the Influence", 600, 150);
 
         //creates 4 buttons
-        Button buttonArr[] = new Button[4];
+        Button[] buttonArr = new Button[4];
         for (int i = 0; i < 4; i++) {
             buttonArr[i] = new Button();
             //height, width, and text are same for all buttons
@@ -147,46 +148,34 @@ public class Launcher extends Application {
         buttonArr[0].setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
         buttonArr[0].setText("Play");
         //create hover effect
-        buttonArr[0].setOnMouseEntered(e -> {
-            buttonArr[0].setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        buttonArr[0].setOnMouseExited(e -> {
-            buttonArr[0].setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        buttonArr[0].setOnAction(e -> {
-            playGame();
-        });
+        buttonArr[0].setOnMouseEntered(e ->
+                buttonArr[0].setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
+        buttonArr[0].setOnMouseExited(e ->
+                buttonArr[0].setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
+        buttonArr[0].setOnAction(e -> playGame());
 
         buttonArr[1].setStyle("-fx-background-color: #c09404; -fx-border-width: 3; -fx-border-color: #000000;");
         buttonArr[1].setText("Instructions");
-        buttonArr[1].setOnMouseEntered(e -> {
-            buttonArr[1].setStyle("-fx-background-color: #e3b009; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        buttonArr[1].setOnMouseExited(e -> {
-            buttonArr[1].setStyle("-fx-background-color: #c09404; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        buttonArr[1].setOnAction(e -> {
-            insControl();
-        });
+        buttonArr[1].setOnMouseEntered(e ->
+                buttonArr[1].setStyle("-fx-background-color: #e3b009; -fx-border-width: 3; -fx-border-color: #000000;"));
+        buttonArr[1].setOnMouseExited(e ->
+                buttonArr[1].setStyle("-fx-background-color: #c09404; -fx-border-width: 3; -fx-border-color: #000000;"));
+        buttonArr[1].setOnAction(e -> insControl());
 
         buttonArr[2].setStyle("-fx-background-color: #105494; -fx-border-width: 3; -fx-border-color: #000000;");
         buttonArr[2].setText("Credits");
-        buttonArr[2].setOnMouseEntered(e -> {
-            buttonArr[2].setStyle("-fx-background-color: #167dde; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        buttonArr[2].setOnMouseExited(e -> {
-            buttonArr[2].setStyle("-fx-background-color: #105494; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        buttonArr[2].setOnMouseEntered(e ->
+                buttonArr[2].setStyle("-fx-background-color: #167dde; -fx-border-width: 3; -fx-border-color: #000000;"));
+        buttonArr[2].setOnMouseExited(e ->
+                buttonArr[2].setStyle("-fx-background-color: #105494; -fx-border-width: 3; -fx-border-color: #000000;"));
         buttonArr[2].setOnAction(e -> credits());
 
         buttonArr[3].setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
         buttonArr[3].setText("Exit Game");
-        buttonArr[3].setOnMouseEntered(e -> {
-            buttonArr[3].setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        buttonArr[3].setOnMouseExited(e -> {
-            buttonArr[3].setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        buttonArr[3].setOnMouseEntered(e ->
+                buttonArr[3].setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
+        buttonArr[3].setOnMouseExited(e ->
+                buttonArr[3].setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
         //create the vbox that contains the buttons
         //this is done at this stage so that the button press can affect the vbox
         VBox vbox = new VBox(20, buttonArr[0], buttonArr[1], buttonArr[2], buttonArr[3]); //create vbox
@@ -201,7 +190,7 @@ public class Launcher extends Application {
             }
         });
         vbox.setAlignment(Pos.CENTER);
-        vbox.setMargin(buttonArr[0], new Insets(230, 100, 0, 100));
+        VBox.setMargin(buttonArr[0], new Insets(230, 100, 0, 100));
         ((Group) stage.getScene().getRoot()).getChildren().add(vbox);
     }
 
@@ -226,18 +215,16 @@ public class Launcher extends Application {
         Button level2Btn = new Button();
         Button level3Btn = new Button();
 
-        Button btnArr[] = {startBtn, level1Btn, level2Btn, level3Btn};
+        Button[] btnArr = {startBtn, level1Btn, level2Btn, level3Btn};
         for (int i = 0; i < 4; i++) {
             btnArr[i].setMinHeight(110);
             btnArr[i].setMinWidth(500);
             btnArr[i].setStyle("-fx-background-color: #a09c9c; -fx-border-width: 3; -fx-border-color: #000000;");
             int finalI = i;
-            btnArr[i].setOnMouseEntered(e -> {
-                btnArr[finalI].setStyle("-fx-background-color: #c2bebe; -fx-border-width: 3; -fx-border-color: #000000;");
-            });
-            btnArr[i].setOnMouseExited(e -> {
-                btnArr[finalI].setStyle("-fx-background-color: #a09c9c; -fx-border-width: 3; -fx-border-color: #000000;");
-            });
+            btnArr[i].setOnMouseEntered(e ->
+                    btnArr[finalI].setStyle("-fx-background-color: #c2bebe; -fx-border-width: 3; -fx-border-color: #000000;"));
+            btnArr[i].setOnMouseExited(e ->
+                    btnArr[finalI].setStyle("-fx-background-color: #a09c9c; -fx-border-width: 3; -fx-border-color: #000000;"));
             if (i > 0) {
                 btnArr[i].setDisable(true);
             }
@@ -292,12 +279,10 @@ public class Launcher extends Application {
         backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         backBtn.setTextFill(Color.WHITE);
         backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e -> {
-            backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        backBtn.setOnMouseExited(e -> {
-            backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        backBtn.setOnMouseEntered(e ->
+                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
+        backBtn.setOnMouseExited(e ->
+                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
         backBtn.setOnAction(e -> {
             cleanUp();
             mainMenu();
@@ -344,12 +329,10 @@ public class Launcher extends Application {
         continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         continueBtn.setTextFill(Color.WHITE);
         continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e -> {
-            continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        continueBtn.setOnMouseExited(e -> {
-            continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        continueBtn.setOnMouseEntered(e ->
+                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
+        continueBtn.setOnMouseExited(e ->
+                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
         continueBtn.setOnAction(e -> {
             cleanUp();
             insLvl1();
@@ -362,12 +345,10 @@ public class Launcher extends Application {
         backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         backBtn.setTextFill(Color.WHITE);
         backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e -> {
-            backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        backBtn.setOnMouseExited(e -> {
-            backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        backBtn.setOnMouseEntered(e ->
+                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
+        backBtn.setOnMouseExited(e ->
+                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
         backBtn.setOnAction(e -> {
             cleanUp();
             mainMenu();
@@ -406,12 +387,10 @@ public class Launcher extends Application {
         continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         continueBtn.setTextFill(Color.WHITE);
         continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e -> {
-            continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        continueBtn.setOnMouseExited(e -> {
-            continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        continueBtn.setOnMouseEntered(e ->
+                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
+        continueBtn.setOnMouseExited(e ->
+                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
         continueBtn.setOnAction(e -> {
             cleanUp();
             insLvl2();
@@ -424,12 +403,10 @@ public class Launcher extends Application {
         backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         backBtn.setTextFill(Color.WHITE);
         backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e -> {
-            backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        backBtn.setOnMouseExited(e -> {
-            backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        backBtn.setOnMouseEntered(e ->
+                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
+        backBtn.setOnMouseExited(e ->
+                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
         backBtn.setOnAction(e -> {
             cleanUp();
             insControl();
@@ -468,12 +445,10 @@ public class Launcher extends Application {
         continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         continueBtn.setTextFill(Color.WHITE);
         continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e -> {
-            continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        continueBtn.setOnMouseExited(e -> {
-            continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        continueBtn.setOnMouseEntered(e ->
+                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
+        continueBtn.setOnMouseExited(e ->
+                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
         continueBtn.setOnAction(e -> {
             cleanUp();
             insLvl3();
@@ -529,12 +504,10 @@ public class Launcher extends Application {
         continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         continueBtn.setTextFill(Color.WHITE);
         continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e -> {
-            continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        continueBtn.setOnMouseExited(e -> {
-            continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        continueBtn.setOnMouseEntered(e ->
+                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
+        continueBtn.setOnMouseExited(e ->
+                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
         continueBtn.setOnAction(e -> {
             cleanUp();
             mainMenu();
@@ -547,12 +520,10 @@ public class Launcher extends Application {
         backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         backBtn.setTextFill(Color.WHITE);
         backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e -> {
-            backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        backBtn.setOnMouseExited(e -> {
-            backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        backBtn.setOnMouseEntered(e ->
+                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
+        backBtn.setOnMouseExited(e ->
+                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
         backBtn.setOnAction(e -> {
             cleanUp();
             insLvl2();
@@ -602,12 +573,10 @@ public class Launcher extends Application {
         backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         backBtn.setTextFill(Color.WHITE);
         backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e -> {
-            backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        backBtn.setOnMouseExited(e -> {
-            backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        backBtn.setOnMouseEntered(e ->
+                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
+        backBtn.setOnMouseExited(e ->
+                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
         backBtn.setOnAction(e -> {
             cleanUp();
             mainMenu();
@@ -635,7 +604,7 @@ public class Launcher extends Application {
             gc.fillText("Thanks for playing!", 600, 420);
             cleanUp();
             saveGame(); //save the game
-            stage.setOnCloseRequest(e -> e.consume()); //prevents the user from closing the window
+            stage.setOnCloseRequest(Event::consume); //prevents the user from closing the window
             //pause for a second before closing
             PauseTransition delay = new PauseTransition(Duration.seconds(1));
             delay.setOnFinished(event -> System.exit(0));
@@ -670,12 +639,10 @@ public class Launcher extends Application {
         continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         continueBtn.setTextFill(Color.WHITE);
         continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e -> {
-            continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        continueBtn.setOnMouseExited(e -> {
-            continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        continueBtn.setOnMouseEntered(e ->
+                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
+        continueBtn.setOnMouseExited(e ->
+                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
         continueBtn.setOnAction(e -> {
             cleanUp();
             mainMenu();
@@ -707,12 +674,10 @@ public class Launcher extends Application {
         continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
         continueBtn.setTextFill(Color.WHITE);
         continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e -> {
-            continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
-        continueBtn.setOnMouseExited(e -> {
-            continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        });
+        continueBtn.setOnMouseEntered(e ->
+                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
+        continueBtn.setOnMouseExited(e ->
+                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
         continueBtn.setOnAction(e -> {
             cleanUp();
             mainMenu();

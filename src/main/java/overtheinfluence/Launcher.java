@@ -59,7 +59,7 @@ public class Launcher extends Application {
     public void start(Stage mainStage) {
         stage = mainStage;
         processFile();
-        stage.setTitle("Over the Influence");
+        stage.setTitle("Over the Influence Launcher");
         stage.setResizable(false);
         Canvas canvas = new Canvas(1200, 800);
         gc = canvas.getGraphicsContext2D();

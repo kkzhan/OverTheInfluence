@@ -12,7 +12,6 @@ import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 import javafx.util.*;
-
 import java.util.*;
 
 /**
@@ -40,7 +39,9 @@ import java.util.*;
 
 public class Launcher extends Application {
     //File to store game progress after program exits - to be added in the future
-    //Game class variable - to be implemented in the future
+    /**the currently running game*/
+    private Game currentGame;
+
     /**
      * checks whether or not a previous game has been started
      */
@@ -56,8 +57,21 @@ public class Launcher extends Application {
      */
     private GraphicsContext gc;
 
+    /**
+     * this ArrayList stores all buttons in the launcher
+     */
+    private ArrayList<Button> btnList;
+
+    /**
+     * this ArrayList stores whether buttons are enabled or not
+     */
+    private ArrayList<Boolean> btnEnabledList;
+
     @Override
     public void start(Stage mainStage) {
+        currentGame = new Game(this);
+        btnList = new ArrayList<>();
+        btnEnabledList = new ArrayList<>();
         stage = mainStage;
         processFile();
         stage.setTitle("Over the Influence Launcher");
@@ -142,6 +156,8 @@ public class Launcher extends Application {
             buttonArr[i].setMinWidth(1000);
             buttonArr[i].setFont(Font.font("Arial", FontWeight.THIN, 60));
             buttonArr[i].setTextFill(Color.WHITE);
+            btnList.add(buttonArr[i]);
+            btnEnabledList.add(true);
         }
 
         //sets the text for each button
@@ -179,16 +195,7 @@ public class Launcher extends Application {
         //create the vbox that contains the buttons
         //this is done at this stage so that the button press can affect the vbox
         VBox vbox = new VBox(20, buttonArr[0], buttonArr[1], buttonArr[2], buttonArr[3]); //create vbox
-        buttonArr[3].setOnAction(e -> {
-            for (int i = 0; i < 4; i++) {
-                buttonArr[i].setDisable(true); //disable all buttons
-            }
-            if (!exitProgram()) {
-                for (int i = 0; i < 4; i++) {
-                    buttonArr[i].setDisable(false); //enable all buttons
-                }
-            }
-        });
+        buttonArr[3].setOnAction(e -> exitProgram());
         vbox.setAlignment(Pos.CENTER);
         VBox.setMargin(buttonArr[0], new Insets(230, 100, 0, 100));
         ((Group) stage.getScene().getRoot()).getChildren().add(vbox);
@@ -214,6 +221,18 @@ public class Launcher extends Application {
         Button level1Btn = new Button();
         Button level2Btn = new Button();
         Button level3Btn = new Button();
+        btnList.add(startBtn);
+        btnEnabledList.add(true);
+        startBtn.setDisable(false);
+        btnList.add(level1Btn);
+        btnEnabledList.add(gameStarted);
+        level1Btn.setDisable(!gameStarted);
+        btnList.add(level2Btn);
+        btnEnabledList.add(currentGame.levelComplete(1));
+        level2Btn.setDisable(!currentGame.levelComplete(1));
+        btnList.add(level3Btn);
+        btnEnabledList.add(currentGame.levelComplete(2));
+        level3Btn.setDisable(!currentGame.levelComplete(2));
 
         Button[] btnArr = {startBtn, level1Btn, level2Btn, level3Btn};
         for (int i = 0; i < 4; i++) {
@@ -225,9 +244,6 @@ public class Launcher extends Application {
                     btnArr[finalI].setStyle("-fx-background-color: #c2bebe; -fx-border-width: 3; -fx-border-color: #000000;"));
             btnArr[i].setOnMouseExited(e ->
                     btnArr[finalI].setStyle("-fx-background-color: #a09c9c; -fx-border-width: 3; -fx-border-color: #000000;"));
-            if (i > 0) {
-                btnArr[i].setDisable(true);
-            }
             btnArr[i].setFont(Font.font("Arial", FontWeight.THIN, 40));
             btnArr[i].setTextFill(Color.WHITE);
         }
@@ -273,6 +289,8 @@ public class Launcher extends Application {
 
         //back button
         Button backBtn = new Button("Back");
+        btnList.add(backBtn);
+        btnEnabledList.add(true);
         backBtn.setLayoutX(50);
         backBtn.setLayoutY(700);
         backBtn.setMinWidth(200);
@@ -323,6 +341,8 @@ public class Launcher extends Application {
 
         //continue and back buttons
         Button continueBtn = new Button("Continue");
+        btnList.add(continueBtn);
+        btnEnabledList.add(true);
         continueBtn.setLayoutX(950);
         continueBtn.setLayoutY(700);
         continueBtn.setMinWidth(200);
@@ -339,6 +359,8 @@ public class Launcher extends Application {
         });
 
         Button backBtn = new Button("Back");
+        btnList.add(backBtn);
+        btnEnabledList.add(true);
         backBtn.setLayoutX(50);
         backBtn.setLayoutY(700);
         backBtn.setMinWidth(200);
@@ -381,6 +403,8 @@ public class Launcher extends Application {
 
         //continue and back buttons
         Button continueBtn = new Button("Continue");
+        btnList.add(continueBtn);
+        btnEnabledList.add(true);
         continueBtn.setLayoutX(950);
         continueBtn.setLayoutY(700);
         continueBtn.setMinWidth(200);
@@ -397,6 +421,8 @@ public class Launcher extends Application {
         });
 
         Button backBtn = new Button("Back");
+        btnList.add(backBtn);
+        btnEnabledList.add(true);
         backBtn.setLayoutX(50);
         backBtn.setLayoutY(700);
         backBtn.setMinWidth(200);
@@ -439,6 +465,8 @@ public class Launcher extends Application {
 
         //continue and back buttons
         Button continueBtn = new Button("Continue");
+        btnList.add(continueBtn);
+        btnEnabledList.add(true);
         continueBtn.setLayoutX(950);
         continueBtn.setLayoutY(700);
         continueBtn.setMinWidth(200);
@@ -455,6 +483,8 @@ public class Launcher extends Application {
         });
 
         Button backBtn = new Button("Back");
+        btnList.add(backBtn);
+        btnEnabledList.add(true);
         backBtn.setLayoutX(50);
         backBtn.setLayoutY(700);
         backBtn.setMinWidth(200);
@@ -498,6 +528,8 @@ public class Launcher extends Application {
 
         //continue and back buttons
         Button continueBtn = new Button("Continue");
+        btnList.add(continueBtn);
+        btnEnabledList.add(true);
         continueBtn.setLayoutX(950);
         continueBtn.setLayoutY(700);
         continueBtn.setMinWidth(200);
@@ -514,6 +546,8 @@ public class Launcher extends Application {
         });
 
         Button backBtn = new Button("Back");
+        btnList.add(backBtn);
+        btnEnabledList.add(true);
         backBtn.setLayoutX(50);
         backBtn.setLayoutY(700);
         backBtn.setMinWidth(200);
@@ -567,6 +601,8 @@ public class Launcher extends Application {
 
         //back button
         Button backBtn = new Button("Back");
+        btnList.add(backBtn);
+        btnEnabledList.add(true);
         backBtn.setLayoutX(50);
         backBtn.setLayoutY(700);
         backBtn.setMinWidth(200);
@@ -588,7 +624,11 @@ public class Launcher extends Application {
     /**
      * This method is used to confirm the user's choice to quit the game and exit the program
      */
-    private boolean exitProgram() {
+    private void exitProgram() {
+        //disables all buttons
+        for (Button btn : btnList) {
+            btn.setDisable(true);
+        }
         //confirmation message
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Exit");
@@ -609,9 +649,11 @@ public class Launcher extends Application {
             PauseTransition delay = new PauseTransition(Duration.seconds(1));
             delay.setOnFinished(event -> System.exit(0));
             delay.play();
-            return true;
         }
-        return false;
+        //re-enables all buttons
+        for(Button btn : btnList) {
+            btn.setDisable(!btnEnabledList.get(btnList.indexOf(btn)));
+        }
     }
 
     /**
@@ -633,6 +675,8 @@ public class Launcher extends Application {
 
         //continue button
         Button continueBtn = new Button("Continue");
+        btnList.add(continueBtn);
+        btnEnabledList.add(true);
         continueBtn.setLayoutX(950);
         continueBtn.setLayoutY(700);
         continueBtn.setMinWidth(200);
@@ -668,6 +712,8 @@ public class Launcher extends Application {
 
         //continue button
         Button continueBtn = new Button("Continue");
+        btnList.add(continueBtn);
+        btnEnabledList.add(true);
         continueBtn.setLayoutX(950);
         continueBtn.setLayoutY(700);
         continueBtn.setMinWidth(200);

@@ -1,4 +1,4 @@
-package overtheinfluence;
+package overtheinfluence.main;
 
 import javafx.animation.*;
 import javafx.application.*;

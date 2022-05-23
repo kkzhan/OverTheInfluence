@@ -1,13 +1,11 @@
-package overtheinfluence;
+package overtheinfluence.main;
 
 /**
  * <p>This is the third level of the OverTheInfluence game. </p>
  */
 
 public class Recovery extends Level {
-
-    @Override
-    public boolean run() {
-        return false;
+    public Recovery() {
+        super(50, 50, "map3");
     }
 }

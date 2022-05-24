@@ -6,6 +6,6 @@ package overtheinfluence.main;
 
 public class Recovery extends Level {
     public Recovery() {
-        super(50, 50, "map3");
+        super("map3");
     }
 }

@@ -35,14 +35,16 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         try {
-            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_up_1.png")));
-            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_up_2.png")));
-            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_left_1.png")));
-            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_left_2.png")));
-            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_right_1.png")));
-            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_right_2.png")));
-            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_down_1.png")));
-            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_down_2.png")));
+            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png")));
+            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
+            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
+            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
+            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
+            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
+            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
+            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
+            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
+            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,10 +70,22 @@ public class Player extends Entity {
             }
 
             spriteCnt++; //how long the sprite can be displayed for
-            if (spriteCnt > 15) {
+            if (spriteCnt > 8) {
                 if (spriteNum == 1) {
                     spriteNum = 2;
                 } else if (spriteNum == 2) {
+                    spriteNum = 3;
+                } else if (spriteNum == 3) {
+                    spriteNum = 4;
+                } else if (spriteNum == 4) {
+                    spriteNum = 5;
+                } else if (spriteNum == 5) {
+                    spriteNum = 6;
+                } else if (spriteNum == 6) {
+                    spriteNum = 7;
+                } else if (spriteNum == 7) {
+                    spriteNum = 8;
+                } else if (spriteNum == 8) {
                     spriteNum = 1;
                 }
                 spriteCnt = 0; //reset the sprite timer
@@ -83,31 +97,35 @@ public class Player extends Entity {
         BufferedImage image = null;
         switch (direction) {
             case "up":
-                if (spriteNum == 1) {
+                if (spriteNum == 1 || spriteNum == 2 || spriteNum == 5 || spriteNum == 6) {
                     image = up1;
-                } else {
+                } else if (spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
                     image = up2;
                 }
                 break;
             case "down":
-                if (spriteNum == 1) {
+                if (spriteNum == 1 || spriteNum == 2 || spriteNum == 5 || spriteNum == 6) {
                     image = down1;
-                } else {
+                } else if(spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
                     image = down2;
                 }
                 break;
             case "left":
-                if (spriteNum == 1) {
+                if (spriteNum == 1 || spriteNum == 2 || spriteNum == 3) {
                     image = left1;
-                } else {
+                } else if(spriteNum == 5 || spriteNum == 6 || spriteNum == 7) {
                     image = left2;
+                } else if(spriteNum == 4 || spriteNum == 8) {
+                    image = left3;
                 }
                 break;
             case "right":
-                if (spriteNum == 1) {
+                if (spriteNum == 1 || spriteNum == 2 || spriteNum == 3) {
                     image = right1;
-                } else {
+                } else if (spriteNum == 5 || spriteNum == 6 || spriteNum == 7) {
                     image = right2;
+                } else if (spriteNum == 4 || spriteNum == 8) {
+                    image = right3;
                 }
                 break;
         }

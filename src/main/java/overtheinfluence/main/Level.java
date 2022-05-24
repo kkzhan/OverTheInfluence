@@ -16,8 +16,8 @@ public class Level extends JPanel implements Runnable {
     public final int screenWidth = maxScreenCols * tileSize; //768
     public final int screenHeight = maxScreenRows * tileSize; //576
 
-    public final int maxWorldCols; //change later so that it is assigned through constructor
-    public final int maxWorldRows; //change later so that it is assigned through constructor
+    public int maxWorldCols; //change later so that it is assigned through constructor
+    public int maxWorldRows; //change later so that it is assigned through constructor
     public final int worldWidth;
     public final int worldHeight;
 
@@ -28,17 +28,15 @@ public class Level extends JPanel implements Runnable {
     Thread gameThread;
     public Player player = new Player(this, keyIn);
 
-    public Level(int maxWorldCols, int maxWorldRows, String mapName) {
-        this.maxWorldCols = maxWorldCols;
-        this.maxWorldRows = maxWorldRows;
-        worldWidth = maxWorldCols * tileSize;
-        worldHeight = maxWorldRows * tileSize;
+    public Level(String mapName) {
         this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyIn);
         this.setFocusable(true);
         tm = new TileManager(this, mapName);
+        worldWidth = maxWorldCols * tileSize;
+        worldHeight = maxWorldRows * tileSize;
     }
 
     public void startThread() {

@@ -4,7 +4,7 @@ import overtheinfluence.main.*;
 
 import java.awt.*;
 import java.io.*;
-import java.util.Objects;
+import java.util.*;
 
 public class TileManager {
     Level lvl;
@@ -14,9 +14,8 @@ public class TileManager {
     public TileManager(Level lvl, String mapName) {
         this.lvl = lvl;
         tile = new Tile[10];
-        tileMap = new int[lvl.maxWorldCols][lvl.maxWorldRows];
-        tileImg();
         processMap(mapName);
+        tileImg();
     }
 
     public void tileImg() {
@@ -31,6 +30,10 @@ public class TileManager {
     public void processMap(String mapName) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/map/" + mapName + ".txt"))));
+            String arr[] = br.readLine().split(" ");
+            lvl.maxWorldCols = Integer.parseInt(arr[0]);
+            lvl.maxWorldRows = Integer.parseInt(arr[1]);
+            tileMap = new int[lvl.maxWorldCols][lvl.maxWorldRows];
             int col = 0;
             int row = 0;
             while (col < lvl.maxWorldCols && row < lvl.maxWorldRows) {

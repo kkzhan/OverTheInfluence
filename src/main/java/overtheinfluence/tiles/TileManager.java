@@ -1,16 +1,49 @@
 package overtheinfluence.tiles;
 
 import overtheinfluence.main.*;
-
 import java.awt.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
+ * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
+ *
+ * <p>This class is responsible for managing tiles to create a functioning map, as well as processing map data
+ * from a text file.</p>
+ *
+ * <p>Work Allocation:<ul>
+ *     <li>Process tile images - Kevin Zhan</li>
+ *     <li>Process map - Kevin Zhan</li>
+ *     <li>Draw tiles on map - Kevin Zhan</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class TileManager {
+    /**
+     * the level that is being played
+     */
     Level lvl;
-    Tile[] tile; //types of tiles
+    /**
+     * the different types of tiles
+     */
+    Tile[] tile;
+    /**
+     * the map layout of the tiles in the level
+     */
     int[][] tileMap;
 
+    /**
+     * constructor for the tile manager
+     *
+     * @param lvl the level that is being played
+     * @param mapName the name of the map file
+     */
     public TileManager(Level lvl, String mapName) {
         this.lvl = lvl;
         tile = new Tile[10];
@@ -18,6 +51,9 @@ public class TileManager {
         tileImg();
     }
 
+    /**
+     * processes the tile images
+     */
     public void tileImg() {
         tile[0] = new Tile("/tiles/grass.png");
         tile[1] = new Tile("/tiles/wall.png", true);
@@ -27,6 +63,11 @@ public class TileManager {
         tile[5] = new Tile("/tiles/sand.png");
     }
 
+    /**
+     * processes the map file into the map layout
+     *
+     * @param mapName the name of the map file
+     */
     public void processMap(String mapName) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/map/" + mapName + ".txt"))));
@@ -54,6 +95,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * draws the tiles on the map
+     *
+     * @param g2D the graphics object that provides control over drawing to the screen
+     */
     public void draw(Graphics2D g2D) {
         int worldCol = 0;
         int worldRow = 0;

@@ -2,8 +2,27 @@ package overtheinfluence.main;
 
 import java.awt.event.*;
 
+/**
+ * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
+ * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
+ *
+ * <p></p>
+ *
+ * <p>Work Allocation:<ul>
+ *     <li>KeyInput- Alexander Peng</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class KeyInput implements KeyListener {
 
+    /**
+     * whether or not the player is moving in a specific direction
+     */
     public boolean up, down, left, right;
 
     @Override

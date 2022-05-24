@@ -6,15 +6,49 @@ import javax.imageio.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
-import java.util.Objects;
+import java.util.*;
+
+/**
+ * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
+ * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
+ *
+ * <p>This is a subclass of Entity that controls the movement and animation of the player.</p>
+ *
+ * <p>Work Allocation:<ul>
+ *     <li>Coordinate tracking - Alexander Peng</li>
+ *     <li>Image implementation - Kevin Zhan</li>
+ *     <li>Movement animatino - Kevin Zhan</li>
+ *     <li>Directional movement from keyboard input - Kevin Zhan & Alexander Peng</li>
+ *     <li>Character display - Kevin Zhan</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
 
 public class Player extends Entity {
+    /**
+     * the level the player is in
+     */
     Level lvl;
+    /**
+     * the input monitor for the player's keys
+     */
     KeyInput keyIn;
 
-    public final int screenX;
-    public final int screenY;
+    /**
+     * the player's x and y coordinates on the screen
+     */
+    public final int screenX, screenY;
 
+    /**
+     * the Player constructor
+     *
+     * @param lvl the level the player is in
+     * @param keyIn the input monitor for the player's keys
+     */
     public Player(Level lvl, KeyInput keyIn) {
         this.lvl = lvl;
         this.keyIn = keyIn;
@@ -26,6 +60,9 @@ public class Player extends Entity {
         getPlayerImage();
     }
 
+    /**
+     * sets the player's default values
+     */
     public void defaultValue() {
         worldX = lvl.tileSize * 23;
         worldY = lvl.tileSize * 21;
@@ -33,6 +70,9 @@ public class Player extends Entity {
         direction = "down";
     }
 
+    /**
+     * gets and stores the images for each direction of the player
+     */
     public void getPlayerImage() {
         try {
             up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png")));
@@ -50,6 +90,9 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * updates the player's position using the key input
+     */
     public void update() {
         if (keyIn.up || keyIn.down || keyIn.left || keyIn.right) {
             if (keyIn.up) {
@@ -93,6 +136,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * draws the player
+     *
+     * @param g2D the graphics object which provides control over coordinate system and color
+     */
     public void draw(Graphics2D g2D) {
         BufferedImage image = null;
         switch (direction) {
@@ -106,16 +154,16 @@ public class Player extends Entity {
             case "down":
                 if (spriteNum == 1 || spriteNum == 2 || spriteNum == 5 || spriteNum == 6) {
                     image = down1;
-                } else if(spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
+                } else if (spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
                     image = down2;
                 }
                 break;
             case "left":
                 if (spriteNum == 1 || spriteNum == 2 || spriteNum == 3) {
                     image = left1;
-                } else if(spriteNum == 5 || spriteNum == 6 || spriteNum == 7) {
+                } else if (spriteNum == 5 || spriteNum == 6 || spriteNum == 7) {
                     image = left2;
-                } else if(spriteNum == 4 || spriteNum == 8) {
+                } else if (spriteNum == 4 || spriteNum == 8) {
                     image = left3;
                 }
                 break;

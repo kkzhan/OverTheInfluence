@@ -95,25 +95,43 @@ public class Player extends Entity {
      */
     public void update() {
         if (keyIn.up || keyIn.down || keyIn.left || keyIn.right) {
-            if (keyIn.up) {
-                direction = "up";
-                worldY -= speed;
-            }
-            if (keyIn.down) {
-                direction = "down";
-                worldY += speed;
-            }
-            if (keyIn.left) {
+            if (keyIn.left && keyIn.up) {
                 direction = "left";
-                worldX -= speed;
-            }
-            if (keyIn.right) {
+                worldY -= (Math.sqrt(speed * speed / 2.0));
+                worldX -= (Math.sqrt(speed * speed / 2.0));
+            } else if(keyIn.right && keyIn.up) {
                 direction = "right";
-                worldX += speed;
+                worldY -= (Math.sqrt(speed * speed / 2.0));
+                worldX += (Math.sqrt(speed * speed / 2.0));
+            } else if(keyIn.left && keyIn.down) {
+                direction = "left";
+                worldY += (Math.sqrt(speed * speed / 2.0));
+                worldX -= (Math.sqrt(speed * speed / 2.0));
+            } else if(keyIn.right && keyIn.down) {
+                direction = "right";
+                worldY += (Math.sqrt(speed * speed / 2.0));
+                worldX += (Math.sqrt(speed * speed / 2.0));
+            } else {
+                if (keyIn.up) {
+                    direction = "up";
+                    worldY -= speed;
+                }
+                if (keyIn.down) {
+                    direction = "down";
+                    worldY += speed;
+                }
+                if (keyIn.left) {
+                    direction = "left";
+                    worldX -= speed;
+                }
+                if (keyIn.right) {
+                    direction = "right";
+                    worldX += speed;
+                }
             }
 
             spriteCnt++; //how long the sprite can be displayed for
-            if (spriteCnt > 8) {
+            if (spriteCnt > 4) {
                 if (spriteNum == 1) {
                     spriteNum = 2;
                 } else if (spriteNum == 2) {

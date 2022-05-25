@@ -25,6 +25,8 @@ public class Game {
      */
     private final Launcher launcher;
 
+    private Level[] levels;
+
     /**
      * constructor for Game
      *
@@ -32,21 +34,25 @@ public class Game {
      */
     public Game(Launcher launcher) {
         this.launcher = launcher;
+        levels = new Level[3];
+        levels[0] = new Exploration();
+        levels[1] = new InnerDemons();
+        levels[2] = new Recovery();
     }
 
     /**
      * is the level complete
      *
-     * @return whether or not the game has been started
+     * @return whether or not the level has been completed
      */
     public boolean levelComplete(int levelNum) {
-        return true;
+        return levels[levelNum - 1].isComplete();
     }
 
     //main method for testing purposes
     public static void main(String[] args) {
         JFrame window = new JFrame("Over the Influence");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //needs a confirmation
         window.setResizable(false);
 
         Exploration lvl1 = new Exploration();

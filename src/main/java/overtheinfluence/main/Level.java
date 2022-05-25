@@ -26,6 +26,11 @@ import java.awt.*;
 public class Level extends JPanel implements Runnable {
 
     /**
+     * whether or not the game is complete
+     */
+    private boolean complete;
+
+    /**
      * the base tile size
      */
     final int baseTileSize = 16; //16 x 16 pixels
@@ -100,7 +105,7 @@ public class Level extends JPanel implements Runnable {
      * @param mapName the name of the map file to be loaded
      */
     public Level(String mapName) {
-        this.setPreferredSize(new java.awt.Dimension(screenWidth, screenHeight));
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyIn);
@@ -108,6 +113,7 @@ public class Level extends JPanel implements Runnable {
         tm = new TileManager(this, mapName);
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
+        complete = false;
     }
 
     /**
@@ -137,6 +143,14 @@ public class Level extends JPanel implements Runnable {
                 delta--;
             }
         }
+    }
+
+    /**
+     * is the level complete?
+     * @return true if the level is complete
+     */
+    public boolean isComplete() {
+        return complete;
     }
 
     /**

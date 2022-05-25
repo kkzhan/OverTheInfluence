@@ -15,6 +15,6 @@ package overtheinfluence.main;
 public class InnerDemons extends Level{
     /** default constructor for InnerDemons */
     public InnerDemons() {
-        super("map2");
+        super("map1");
     }
 }

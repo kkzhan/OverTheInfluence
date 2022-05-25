@@ -15,6 +15,6 @@ package overtheinfluence.main;
 public class Recovery extends Level {
     /** default constructor for Recovery */
     public Recovery() {
-        super("map3");
+        super("map1");
     }
 }

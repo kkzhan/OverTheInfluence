@@ -150,6 +150,7 @@ public class Level extends JPanel implements Runnable {
      * @return true if the level is complete
      */
     public boolean isComplete() {
+        System.out.println("isComplete: " + complete);
         return complete;
     }
 

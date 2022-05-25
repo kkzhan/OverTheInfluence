@@ -1,2 +1,2 @@
 # OverTheInfluence
-ISP For ICS-4U0 with Mrs. Krasteva 2022
+ISP For ICS-4U0 2022

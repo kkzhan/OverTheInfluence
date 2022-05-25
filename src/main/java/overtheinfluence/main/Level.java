@@ -31,18 +31,9 @@ public class Level extends JPanel implements Runnable {
     private boolean complete;
 
     /**
-     * the base tile size
-     */
-    final int baseTileSize = 16; //16 x 16 pixels
-    /**
-     * the tile scale factor
-     */
-    final int scale = 3; //scale tile by 3
-
-    /**
      * the usable tile size
      */
-    public final int tileSize = baseTileSize * scale; //48 x 48 pixels displayed on game screen
+    public final int tileSize = 48; //48 x 48 pixels displayed on game screen
     /**
      * number of columns of tiles visible on screen
      */

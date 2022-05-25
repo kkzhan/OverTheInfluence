@@ -15,11 +15,11 @@ import java.util.*;
  * <p>This is a subclass of Entity that controls the movement and animation of the player.</p>
  *
  * <p>Work Allocation:<ul>
- *     <li>Coordinate tracking - Alexander Peng</li>
- *     <li>Image implementation - Kevin Zhan</li>
- *     <li>Movement animatino - Kevin Zhan</li>
- *     <li>Directional movement from keyboard input - Kevin Zhan & Alexander Peng</li>
- *     <li>Character display - Kevin Zhan</li>
+ * <li>Coordinate tracking - Alexander Peng</li>
+ * <li>Image implementation - Kevin Zhan</li>
+ * <li>Movement animatino - Kevin Zhan</li>
+ * <li>Directional movement from keyboard input - Kevin Zhan & Alexander Peng</li>
+ * <li>Character display - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -46,7 +46,7 @@ public class Player extends Entity {
     /**
      * the Player constructor
      *
-     * @param lvl the level the player is in
+     * @param lvl   the level the player is in
      * @param keyIn the input monitor for the player's keys
      */
     public Player(Level lvl, KeyInput keyIn) {
@@ -77,6 +77,7 @@ public class Player extends Entity {
         try {
             up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png")));
             up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
+            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
             left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
             left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
             left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
@@ -85,6 +86,7 @@ public class Player extends Entity {
             right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
             down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
             down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
+            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,15 +101,15 @@ public class Player extends Entity {
                 direction = "left";
                 worldY -= (Math.sqrt(speed * speed / 2.0));
                 worldX -= (Math.sqrt(speed * speed / 2.0));
-            } else if(keyIn.right && keyIn.up) {
+            } else if (keyIn.right && keyIn.up) {
                 direction = "right";
                 worldY -= (Math.sqrt(speed * speed / 2.0));
                 worldX += (Math.sqrt(speed * speed / 2.0));
-            } else if(keyIn.left && keyIn.down) {
+            } else if (keyIn.left && keyIn.down) {
                 direction = "left";
                 worldY += (Math.sqrt(speed * speed / 2.0));
                 worldX -= (Math.sqrt(speed * speed / 2.0));
-            } else if(keyIn.right && keyIn.down) {
+            } else if (keyIn.right && keyIn.down) {
                 direction = "right";
                 worldY += (Math.sqrt(speed * speed / 2.0));
                 worldX += (Math.sqrt(speed * speed / 2.0));
@@ -146,13 +148,17 @@ public class Player extends Entity {
                     spriteNum = 7;
                 } else if (spriteNum == 7) {
                     spriteNum = 8;
-                } else if (spriteNum == 8) {
+                } else if (spriteNum == 8 || spriteNum == 9) {
                     spriteNum = 1;
                 }
                 spriteCnt = 0; //reset the sprite timer
             }
+        } else {
+            spriteNum = 9;
         }
     }
+
+    public int n = 0;
 
     /**
      * draws the player
@@ -167,6 +173,8 @@ public class Player extends Entity {
                     image = up1;
                 } else if (spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
                     image = up2;
+                } else if(spriteNum == 9){
+                    image = up3;
                 }
                 break;
             case "down":
@@ -174,6 +182,8 @@ public class Player extends Entity {
                     image = down1;
                 } else if (spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
                     image = down2;
+                } else if(spriteNum == 9){
+                    image = down3;
                 }
                 break;
             case "left":
@@ -181,7 +191,7 @@ public class Player extends Entity {
                     image = left1;
                 } else if (spriteNum == 5 || spriteNum == 6 || spriteNum == 7) {
                     image = left2;
-                } else if (spriteNum == 4 || spriteNum == 8) {
+                } else if (spriteNum == 4 || spriteNum == 8 || spriteNum == 9) {
                     image = left3;
                 }
                 break;
@@ -190,7 +200,7 @@ public class Player extends Entity {
                     image = right1;
                 } else if (spriteNum == 5 || spriteNum == 6 || spriteNum == 7) {
                     image = right2;
-                } else if (spriteNum == 4 || spriteNum == 8) {
+                } else if (spriteNum == 4 || spriteNum == 8 || spriteNum == 9) {
                     image = right3;
                 }
                 break;

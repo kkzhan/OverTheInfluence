@@ -4,6 +4,8 @@ import overtheinfluence.entity.*;
 import overtheinfluence.tiles.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -85,6 +87,12 @@ public class Level extends JPanel implements Runnable {
      * the thread the game runs on
      */
     Thread gameThread;
+
+    /**
+     * the collision detector
+     */
+    public CollisionDetection collisionDetect = new CollisionDetection(this);
+
     /**
      * the player entity
      */
@@ -97,8 +105,6 @@ public class Level extends JPanel implements Runnable {
      */
     public Level(String mapName) {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
-        this.setDoubleBuffered(true);
         this.addKeyListener(keyIn);
         this.setFocusable(true);
         tm = new TileManager(this, mapName);

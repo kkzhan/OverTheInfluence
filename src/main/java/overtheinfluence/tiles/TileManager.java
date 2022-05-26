@@ -32,11 +32,11 @@ public class TileManager {
     /**
      * the different types of tiles
      */
-    Tile[] tile;
+    public Tile[] tile;
     /**
      * the map layout of the tiles in the level
      */
-    int[][] tileMap;
+    public int[][] tileMap;
 
     /**
      * constructor for the tile manager
@@ -71,7 +71,7 @@ public class TileManager {
     public void processMap(String mapName) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/map/" + mapName + ".txt"))));
-            String arr[] = br.readLine().split(" ");
+            String[] arr = br.readLine().split(" ");
             lvl.maxWorldCols = Integer.parseInt(arr[0]);
             lvl.maxWorldRows = Integer.parseInt(arr[1]);
             tileMap = new int[lvl.maxWorldCols][lvl.maxWorldRows];

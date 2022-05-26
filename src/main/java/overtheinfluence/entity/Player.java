@@ -20,6 +20,7 @@ import java.util.*;
  * <li>Movement animatino - Kevin Zhan</li>
  * <li>Directional movement from keyboard input - Kevin Zhan & Alexander Peng</li>
  * <li>Character display - Kevin Zhan</li>
+ * <li>Collision detection - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -58,6 +59,12 @@ public class Player extends Entity {
 
         defaultValue();
         getPlayerImage();
+
+        area = new Rectangle();
+        area.x = 19;
+        area.y = 30;
+        area.width = 9;
+        area.height = 13;
     }
 
     /**
@@ -97,39 +104,39 @@ public class Player extends Entity {
      */
     public void update() {
         if (keyIn.up || keyIn.down || keyIn.left || keyIn.right) {
-            if (keyIn.left && keyIn.up) {
+            if (keyIn.up) {
+                direction = "up";
+                worldY -= speed;
+            }
+            if (keyIn.down) {
+                direction = "down";
+                worldY += speed;
+            }
+            if (keyIn.left) {
                 direction = "left";
-                worldY -= (Math.sqrt(speed * speed / 2.0));
-                worldX -= (Math.sqrt(speed * speed / 2.0));
-            } else if (keyIn.right && keyIn.up) {
+                worldX -= speed;
+            }
+            if (keyIn.right) {
                 direction = "right";
-                worldY -= (Math.sqrt(speed * speed / 2.0));
-                worldX += (Math.sqrt(speed * speed / 2.0));
-            } else if (keyIn.left && keyIn.down) {
-                direction = "left";
-                worldY += (Math.sqrt(speed * speed / 2.0));
-                worldX -= (Math.sqrt(speed * speed / 2.0));
-            } else if (keyIn.right && keyIn.down) {
-                direction = "right";
-                worldY += (Math.sqrt(speed * speed / 2.0));
-                worldX += (Math.sqrt(speed * speed / 2.0));
-            } else {
-                if (keyIn.up) {
-                    direction = "up";
-                    worldY -= speed;
-                }
-                if (keyIn.down) {
-                    direction = "down";
-                    worldY += speed;
-                }
-                if (keyIn.left) {
-                    direction = "left";
-                    worldX -= speed;
-                }
-                if (keyIn.right) {
-                    direction = "right";
-                    worldX += speed;
-                }
+                worldX += speed;
+            }
+
+            collidingB = false;
+            collidingL = false;
+            collidingR = false;
+            collidingT = false;
+            lvl.collisionDetect.tileCollide(this);
+            if(collidingT) {
+                worldY += speed;
+            }
+            if(collidingB) {
+                worldY -= speed;
+            }
+            if(collidingL) {
+                worldX += speed;
+            }
+            if (collidingR) {
+                worldX -= speed;
             }
 
             spriteCnt++; //how long the sprite can be displayed for
@@ -156,6 +163,7 @@ public class Player extends Entity {
         } else {
             spriteNum = 9;
         }
+
     }
 
     public int n = 0;
@@ -173,7 +181,7 @@ public class Player extends Entity {
                     image = up1;
                 } else if (spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
                     image = up2;
-                } else if(spriteNum == 9){
+                } else if (spriteNum == 9) {
                     image = up3;
                 }
                 break;
@@ -182,7 +190,7 @@ public class Player extends Entity {
                     image = down1;
                 } else if (spriteNum == 3 || spriteNum == 4 || spriteNum == 7 || spriteNum == 8) {
                     image = down2;
-                } else if(spriteNum == 9){
+                } else if (spriteNum == 9) {
                     image = down3;
                 }
                 break;

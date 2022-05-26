@@ -1,5 +1,6 @@
 package overtheinfluence.entity;
 
+import java.awt.*;
 import java.awt.image.*;
 
 /**
@@ -30,4 +31,19 @@ public class Entity {
     public int spriteCnt = 0;
     /** the entity's current sprite number*/
     public int spriteNum = 1;
+
+    /** the solid area of the entity*/
+    public Rectangle area;
+
+    /** whether the entity is currently colliding to the left*/
+    public boolean collidingL = false;
+
+    /** whether the entity is currently colliding to the right*/
+    public boolean collidingR = false;
+
+    /** whether the entity is currently colliding to the top*/
+    public boolean collidingT = false;
+
+    /** whether the entity is currently colliding to the bottom*/
+    public boolean collidingB = false;
 }

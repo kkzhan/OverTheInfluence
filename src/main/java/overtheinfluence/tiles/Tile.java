@@ -3,6 +3,7 @@ package overtheinfluence.tiles;
 import javax.imageio.ImageIO;
 import java.awt.image.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -28,7 +29,7 @@ public class Tile {
     /**
      * whether entities will collide with this tile
      */
-    boolean collision;
+    public boolean collision;
 
     /**
      * constructor for Tile
@@ -39,7 +40,7 @@ public class Tile {
     public Tile(String path, boolean collision) {
         this.collision = collision;
         try {
-            this.image = ImageIO.read(getClass().getResourceAsStream(path));
+            this.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(path)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +48,6 @@ public class Tile {
 
     /**
      * constructor for Tile that automatically sets collision to false
-     * @return whether or not the tile has collision
      */
     public Tile(String path) {
         this(path, false);

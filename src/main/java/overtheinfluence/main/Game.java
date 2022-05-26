@@ -1,6 +1,7 @@
 package overtheinfluence.main;
 
 import javax.swing.*;
+import java.awt.event.*;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -52,11 +53,20 @@ public class Game {
     //main method for testing purposes
     public static void main(String[] args) {
         JFrame window = new JFrame("Over the Influence");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //needs a confirmation
         window.setResizable(false);
 
         Exploration lvl1 = new Exploration();
         window.add(lvl1);
+
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                JFrame frame = (JFrame) e.getSource();
+                int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) window.dispose();
+            }
+        });
 
         window.pack();
 

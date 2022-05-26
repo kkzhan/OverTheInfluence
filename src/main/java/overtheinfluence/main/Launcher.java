@@ -1,17 +1,13 @@
 package overtheinfluence.main;
 
-import javafx.animation.*;
-import javafx.application.*;
-import javafx.event.Event;
-import javafx.geometry.*;
-import javafx.scene.*;
-import javafx.scene.canvas.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
-import javafx.stage.*;
-import javafx.util.*;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -29,6 +25,7 @@ import java.util.*;
  * <li>Game Over - Alexander Peng</li>
  * <li>Game Won - Kevin Zhan</li>
  * <li>Exit Screen/Confirmation - Kevin Zhan</li>
+ * <li>JavaFX to Swing conversion - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -37,9 +34,10 @@ import java.util.*;
  * @version 1.0
  */
 
-public class Launcher extends Application {
-    //File to store game progress after program exits - to be added in the future
-    /**the currently running game*/
+public class Launcher {
+    /**
+     * the currently running game
+     */
     private Game currentGame;
 
     /**
@@ -47,92 +45,37 @@ public class Launcher extends Application {
      */
     boolean gameStarted = false;
 
-    /**
-     * this is where everything is displayed
-     */
-    private Stage stage;
+    JFrame window = new JFrame("Over the Influence");
 
-    /**
-     * this is the graphics context for the game needed to update the display
-     */
-    private GraphicsContext gc;
+    Color bgColor = new Color(89, 89, 89);
 
-    /**
-     * this ArrayList stores all buttons in the launcher
-     */
-    private ArrayList<Button> btnList;
+    JPanel mainPanel = new JPanel();
 
-    /**
-     * this ArrayList stores whether buttons are enabled or not
-     */
-    private ArrayList<Boolean> btnEnabledList;
-
-    @Override
-    public void start(Stage mainStage) {
+    public Launcher() {
         currentGame = new Game(this);
-        btnList = new ArrayList<>();
-        btnEnabledList = new ArrayList<>();
-        stage = mainStage;
-        processFile();
-        stage.setTitle("Over the Influence Launcher");
-        stage.setResizable(false);
-        Canvas canvas = new Canvas(1200, 800);
-        gc = canvas.getGraphicsContext2D();
-        stage.setScene(new Scene(new Group(canvas)));
-        stage.show();
-        stage.setOnCloseRequest(e -> {
-            exitProgram();
-            e.consume();
+        window.setResizable(false);
+        window.setVisible(true);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                JFrame frame = (JFrame) e.getSource();
+                int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    frame.remove(mainPanel);
+                    exitProgram();
+                }
+            }
         });
-        splashScreen(); //the stage and gc are passed on so that everything is on the same screen
+        processFile();
+        splashScreen();
     }
 
     /**
      * This method displays the splash screen of the game
      */
     private void splashScreen() {
-//        gc.setFill(Color.BLACK);
-//        gc.fillRect(0, 0, 1200, 800);
-//        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70));
-//        Image logo = new Image("logo.png");
-//        gc.drawImage(logo, 475, 200, 250, 250);
-//        gc.setFill(Color.WHITE);
-//        gc.fillText("Digital Athletics Inc.", 235, 500);
-//        Rectangle rect = new Rectangle(0, 0, 1200, 800);
-//        rect.setFill(Color.BLACK);
-//
-//        double op = 0;
-//        while(rect.getOpacity() < 1) {
-//            op += 0.01;
-//            rect.setOpacity(op);
-//        }
-//
-//        while(rect.getOpacity() > 0) {
-//            op -= 0.01;
-//            rect.setOpacity(op);
-//        }
-//
-//        gc.setFill(Color.rgb(89, 89, 89));
-//        gc.fillRect(0, 0, 1200, 800);
-//        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70));
-//        Image gameSplash = new Image("gameSplash.png");
-//        gc.drawImage(gameSplash, 475, 350, 250, 250);
-//        gc.setFill(Color.WHITE);
-//        gc.fillText("Over the Influence.", 250, 275);
-//        Rectangle rect2 = new Rectangle(0, 0, 1200, 800);
-//        rect2.setFill(Color.BLACK);
-//
-//        op = 0;
-//        while(rect2.getOpacity() < 1) {
-//            op += 0.01;
-//            rect2.setOpacity(op);
-//        }
-//
-//        while(rect2.getOpacity() > 0) {
-//            op -= 0.01;
-//            rect2.setOpacity(op);
-//        }
-
+        //playGame();
         mainMenu();
     }
 
@@ -140,596 +83,486 @@ public class Launcher extends Application {
      * This method displays the main menu of the game which provides access to the game, instructions, and credits
      */
     private void mainMenu() {
-        gc.setFill(Color.rgb(89, 89, 89)); //background
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70)); //title
-        gc.setFill(Color.WHITE);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Over the Influence", 600, 150);
-
-        //creates 4 buttons
-        Button[] buttonArr = new Button[4];
-        for (int i = 0; i < 4; i++) {
-            buttonArr[i] = new Button();
-            //height, width, and text are same for all buttons
-            buttonArr[i].setMinHeight(110);
-            buttonArr[i].setMinWidth(1000);
-            buttonArr[i].setFont(Font.font("Arial", FontWeight.THIN, 60));
-            buttonArr[i].setTextFill(Color.WHITE);
-            btnList.add(buttonArr[i]);
-            btnEnabledList.add(true);
+        BufferedImage mainScreenImg = null;
+        try {
+            mainScreenImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/mainScreen.png")));
+        } catch (IOException e) {
         }
-
-        //sets the text for each button
-        buttonArr[0].setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        buttonArr[0].setText("Play");
-        //create hover effect
-        buttonArr[0].setOnMouseEntered(e ->
-                buttonArr[0].setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
-        buttonArr[0].setOnMouseExited(e ->
-                buttonArr[0].setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
-        buttonArr[0].setOnAction(e -> playGame());
-
-        buttonArr[1].setStyle("-fx-background-color: #c09404; -fx-border-width: 3; -fx-border-color: #000000;");
-        buttonArr[1].setText("Instructions");
-        buttonArr[1].setOnMouseEntered(e ->
-                buttonArr[1].setStyle("-fx-background-color: #e3b009; -fx-border-width: 3; -fx-border-color: #000000;"));
-        buttonArr[1].setOnMouseExited(e ->
-                buttonArr[1].setStyle("-fx-background-color: #c09404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        buttonArr[1].setOnAction(e -> insControl());
-
-        buttonArr[2].setStyle("-fx-background-color: #105494; -fx-border-width: 3; -fx-border-color: #000000;");
-        buttonArr[2].setText("Credits");
-        buttonArr[2].setOnMouseEntered(e ->
-                buttonArr[2].setStyle("-fx-background-color: #167dde; -fx-border-width: 3; -fx-border-color: #000000;"));
-        buttonArr[2].setOnMouseExited(e ->
-                buttonArr[2].setStyle("-fx-background-color: #105494; -fx-border-width: 3; -fx-border-color: #000000;"));
-        buttonArr[2].setOnAction(e -> credits());
-
-        buttonArr[3].setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        buttonArr[3].setText("Exit Game");
-        buttonArr[3].setOnMouseEntered(e ->
-                buttonArr[3].setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
-        buttonArr[3].setOnMouseExited(e ->
-                buttonArr[3].setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        //create the vbox that contains the buttons
-        //this is done at this stage so that the button press can affect the vbox
-        VBox vbox = new VBox(20, buttonArr[0], buttonArr[1], buttonArr[2], buttonArr[3]); //create vbox
-        buttonArr[3].setOnAction(e -> exitProgram());
-        vbox.setAlignment(Pos.CENTER);
-        VBox.setMargin(buttonArr[0], new Insets(230, 100, 0, 100));
-        ((Group) stage.getScene().getRoot()).getChildren().add(vbox);
+        JLabel mainScreen = new JLabel(new ImageIcon(mainScreenImg.getScaledInstance(1200, 800, Image.SCALE_SMOOTH)));
+        JPanel panel = new JPanel();
+        panel.add(mainScreen);
+        mainPanel = panel;
+        panel.setPreferredSize(new Dimension(1200, 800));
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
+        JButton play = new JButton("Play");
+        JButton instructions = new JButton("Instructions");
+        JButton credits = new JButton("Credits");
+        JButton exit = new JButton("Exit");
+        play.setLocation(100, 270);
+        instructions.setLocation(100, 390);
+        credits.setLocation(100, 510);
+        exit.setLocation(100, 630);
+        play.setSize(new Dimension(1000, 110));
+        instructions.setSize(1000, 110);
+        credits.setSize(1000, 110);
+        exit.setSize(1000, 110);
+        play.setBackground(new Color(64, 116, 28));
+        instructions.setBackground(new Color(192, 148, 4));
+        credits.setBackground(new Color(16, 84, 148));
+        exit.setBackground(new Color(160, 4, 4));
+        play.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        instructions.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        credits.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        exit.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        play.setFont(new Font("Arial", Font.BOLD, 60));
+        instructions.setFont(new Font("Arial", Font.BOLD, 60));
+        credits.setFont(new Font("Arial", Font.BOLD, 60));
+        exit.setFont(new Font("Arial", Font.BOLD, 60));
+        play.setForeground(Color.WHITE);
+        instructions.setForeground(Color.WHITE);
+        credits.setForeground(Color.WHITE);
+        exit.setForeground(Color.WHITE);
+        panel.add(play);
+        panel.add(instructions);
+        panel.add(credits);
+        panel.add(exit);
+        play.addActionListener(e -> {
+            window.remove(mainPanel);
+            playGame();
+        });
+        instructions.addActionListener(e -> {
+            window.remove(mainPanel);
+            insControl();
+        });
+        credits.addActionListener(e -> {
+            window.remove(mainPanel);
+            credits();
+        });
+        exit.addActionListener(e -> {
+            JFrame dialog = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
+            int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                window.remove(mainPanel);
+                exitProgram();
+            }
+        });
     }
 
     /**
      * This method is used to create the game starting screen
      */
     private void playGame() {
-        //clearing screen and setting up the background
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(89, 89, 89));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70)); //title
-        gc.setFill(Color.WHITE);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Play", 600, 150);
-
-        //creating the buttons
-        Button startBtn = new Button();
-        Button level1Btn = new Button();
-        Button level2Btn = new Button();
-        Button level3Btn = new Button();
-        btnList.add(startBtn);
-        btnEnabledList.add(true);
-        startBtn.setDisable(false);
-        btnList.add(level1Btn);
-        btnEnabledList.add(gameStarted);
-        level1Btn.setDisable(!gameStarted);
-        btnList.add(level2Btn);
-        btnEnabledList.add(currentGame.levelComplete(1));
-        level2Btn.setDisable(!currentGame.levelComplete(1));
-        btnList.add(level3Btn);
-        btnEnabledList.add(currentGame.levelComplete(2));
-        level3Btn.setDisable(!currentGame.levelComplete(2));
-
-        Button[] btnArr = {startBtn, level1Btn, level2Btn, level3Btn};
-        for (int i = 0; i < 4; i++) {
-            btnArr[i].setMinHeight(110);
-            btnArr[i].setMinWidth(500);
-            btnArr[i].setStyle("-fx-background-color: #a09c9c; -fx-border-width: 3; -fx-border-color: #000000;");
-            int finalI = i;
-            btnArr[i].setOnMouseEntered(e ->
-                    btnArr[finalI].setStyle("-fx-background-color: #c2bebe; -fx-border-width: 3; -fx-border-color: #000000;"));
-            btnArr[i].setOnMouseExited(e ->
-                    btnArr[finalI].setStyle("-fx-background-color: #a09c9c; -fx-border-width: 3; -fx-border-color: #000000;"));
-            btnArr[i].setFont(Font.font("Arial", FontWeight.THIN, 40));
-            btnArr[i].setTextFill(Color.WHITE);
-        }
-
-        startBtn.setText("Start New Game");
-        startBtn.setLayoutX(650);
-        startBtn.setLayoutY(370);
-        startBtn.setOnAction(e -> {
-            closeLauncher();
-            //start a new game
+        JPanel panel = new JPanel();
+        mainPanel = panel;
+        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
+        JButton play = new JButton("Play");
+        JButton resume1 = new JButton("Resume From Level 1");
+        JButton resume2 = new JButton("Resume From Level 2");
+        JButton resume3 = new JButton("Resume From Level 3");
+        play.setLocation(650, 420);
+        resume1.setLocation(50, 285);
+        resume2.setLocation(50, 420);
+        resume3.setLocation(50, 555);
+        play.setSize(new Dimension(500, 110));
+        resume1.setSize(new Dimension(500, 110));
+        resume2.setSize(new Dimension(500, 110));
+        resume3.setSize(new Dimension(500, 110));
+        play.setBackground(new Color(160, 156, 156));
+        resume1.setBackground(new Color(160, 156, 156));
+        resume2.setBackground(new Color(160, 156, 156));
+        resume3.setBackground(new Color(160, 156, 156));
+        play.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        resume1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        resume2.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        resume3.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        play.setFont(new Font("Arial", Font.BOLD, 40));
+        resume1.setFont(new Font("Arial", Font.BOLD, 40));
+        resume2.setFont(new Font("Arial", Font.BOLD, 40));
+        resume3.setFont(new Font("Arial", Font.BOLD, 40));
+        play.setForeground(Color.WHITE);
+        resume1.setForeground(Color.WHITE);
+        resume2.setForeground(Color.WHITE);
+        resume3.setForeground(Color.WHITE);
+        panel.add(play);
+        panel.add(resume1);
+        panel.add(resume2);
+        panel.add(resume3);
+        play.addActionListener(e -> {
+            Frame dialog = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
+            int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to start a new game?", "Start Game", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                window.remove(mainPanel);
+                //start new game
+            }
         });
-        level1Btn.setText("Resume Level 1");
-        level1Btn.setOnAction(e -> {
-            closeLauncher();
-            //resume from level 1
+        resume1.addActionListener(e -> {
+            JFrame dialog = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
+            if (!gameStarted) {
+                JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from level 1?", "Resume Level 1", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    window.remove(mainPanel);
+                    //resume from level 1
+                }
+            }
         });
-        level2Btn.setText("Resume Level 2");
-        level2Btn.setOnAction(e -> {
-            closeLauncher();
-            //resume from level 2
+        resume2.addActionListener(e -> {
+            JFrame dialog = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
+            if (!gameStarted) {
+                JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (!currentGame.levelComplete(1)) {
+                JOptionPane.showMessageDialog(dialog, "You have not completed level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from level 2?", "Resume Level 2", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    window.remove(panel);
+                    //resume from level 2
+                }
+            }
         });
-        level3Btn.setText("Resume Level 3");
-        level3Btn.setOnAction(e -> {
-            closeLauncher();
-            //resume from level 3
+        resume3.addActionListener(e -> {
+            JFrame dialog = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
+            if (!gameStarted) {
+                JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (!currentGame.levelComplete(1)) {
+                JOptionPane.showMessageDialog(dialog, "You have not completed level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (!currentGame.levelComplete(2)) {
+                JOptionPane.showMessageDialog(dialog, "You have not completed level 2!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from level 3?", "Resume Level 3", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    window.remove(panel);
+                    //resume from level 3
+                }
+            }
         });
 
-        VBox vbox = new VBox(20, level1Btn, level2Btn, level3Btn);
-        vbox.setLayoutX(50);
-        vbox.setLayoutY(240);
-        ((Group) stage.getScene().getRoot()).getChildren().addAll(startBtn, vbox);
-
-        //check if there is a saved game
-        if (gameStarted) {
-            level1Btn.setDisable(false);
-//            if(level 1 is complete) {
-//                level2Btn.setDisable(false);
-//                if(level 2 is complete) {
-//                    level3Btn.setDisable(false);
-//                }
-//            }
-        }
-
-        //back button
-        Button backBtn = new Button("Back");
-        btnList.add(backBtn);
-        btnEnabledList.add(true);
-        backBtn.setLayoutX(50);
-        backBtn.setLayoutY(700);
-        backBtn.setMinWidth(200);
-        backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        backBtn.setTextFill(Color.WHITE);
-        backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e ->
-                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnMouseExited(e ->
-                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnAction(e -> {
-            cleanUp();
+        JButton back = new JButton("Back");
+        back.setSize(new Dimension(200, 60));
+        back.setLocation(50, 700);
+        back.setBackground(new Color(183, 23, 23));
+        back.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        back.setFont(new Font("Arial", Font.BOLD, 30));
+        back.setForeground(Color.WHITE);
+        panel.add(back);
+        back.addActionListener(e -> {
+            window.remove(panel);
             mainMenu();
         });
 
-        ((Group) stage.getScene().getRoot()).getChildren().add(backBtn);
+        BufferedImage playTitle = null;
+        try {
+            playTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/playTitle.png")));
+        } catch (IOException e) {
+        }
+        JLabel creditTitle = new JLabel(new ImageIcon(playTitle.getScaledInstance(276, 204, Image.SCALE_SMOOTH)));
+        creditTitle.setSize(new Dimension(276, 204));
+        creditTitle.setLocation(462, 70);
+        panel.add(creditTitle);
     }
 
     /**
      * This method is used to create and display the control instructions
      */
     private void insControl() {
-        //clearing screen and setting up the background
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(89, 89, 89));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70)); //title
-        gc.setFill(Color.WHITE);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Instructions: Controls", 600, 150);
-        gc.setTextAlign(TextAlignment.RIGHT);
-        gc.setFont(Font.font("Arial", FontWeight.THIN, 40)); //instructions
-        gc.fillText("Move Up:", 500, 250);
-        gc.fillText("Move Left:", 500, 330);
-        gc.fillText("Move Down:", 500, 410);
-        gc.fillText("Move Right:", 500, 490);
-        gc.fillText("Interact:", 500, 570);
-        gc.fillText("Click Button:", 500, 650);
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("W", 700, 250);
-        gc.fillText("A", 700, 330);
-        gc.fillText("S", 700, 410);
-        gc.fillText("D", 700, 490);
-        gc.fillText("Space Bar", 700, 570);
-        gc.fillText("Left Mouse Button", 700, 650);
+        JPanel panel = new JPanel();
+        mainPanel = panel;
+        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
 
-        //continue and back buttons
-        Button continueBtn = new Button("Continue");
-        btnList.add(continueBtn);
-        btnEnabledList.add(true);
-        continueBtn.setLayoutX(950);
-        continueBtn.setLayoutY(700);
-        continueBtn.setMinWidth(200);
-        continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        continueBtn.setTextFill(Color.WHITE);
-        continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e ->
-                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnMouseExited(e ->
-                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnAction(e -> {
-            cleanUp();
-            insLvl1();
-        });
-
-        Button backBtn = new Button("Back");
-        btnList.add(backBtn);
-        btnEnabledList.add(true);
-        backBtn.setLayoutX(50);
-        backBtn.setLayoutY(700);
-        backBtn.setMinWidth(200);
-        backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        backBtn.setTextFill(Color.WHITE);
-        backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e ->
-                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnMouseExited(e ->
-                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnAction(e -> {
-            cleanUp();
+        JButton back = new JButton("Back");
+        back.setSize(new Dimension(200, 60));
+        back.setLocation(50, 700);
+        back.setBackground(new Color(183, 23, 23));
+        back.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        back.setFont(new Font("Arial", Font.BOLD, 30));
+        back.setForeground(Color.WHITE);
+        panel.add(back);
+        back.addActionListener(e -> {
+            window.remove(panel);
             mainMenu();
         });
 
-        ((Group) stage.getScene().getRoot()).getChildren().addAll(continueBtn, backBtn);
+        JButton continueBtn = new JButton("Continue");
+        continueBtn.setSize(new Dimension(200, 60));
+        continueBtn.setLocation(950, 700);
+        continueBtn.setBackground(new Color(19, 150, 23));
+        continueBtn.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        continueBtn.setFont(new Font("Arial", Font.BOLD, 30));
+        continueBtn.setForeground(Color.WHITE);
+        panel.add(continueBtn);
+        continueBtn.addActionListener(e -> {
+            window.remove(panel);
+            insLvl1();
+        });
+        BufferedImage insTitle = null;
+        BufferedImage controlsTitle = null;
+        try {
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
+            controlsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insControls.png")));
+        } catch (IOException e) {
+        }
+
+        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
+        JLabel controls = new JLabel(new ImageIcon(controlsTitle.getScaledInstance(306, 78, Image.SCALE_SMOOTH)));
+        title.setSize(new Dimension(456, 78));
+        controls.setSize(new Dimension(306, 78));
+        title.setLocation(194, 70);
+        controls.setLocation(700, 70);
+        panel.add(title);
+        panel.add(controls);
     }
 
     /**
      * This method is used to create and display the Level 1 instructions
      */
     private void insLvl1() {
-        //clearing screen and setting up the background
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(89, 89, 89));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70)); //title
-        gc.setFill(Color.WHITE);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Instructions: Level 1", 600, 150);
-        gc.setFont(Font.font("Arial", FontWeight.THIN, 30)); //instructions
-        gc.fillText("During level 1, the player will learn about drug addiction, ", 600, 250);
-        gc.fillText("and its effects. They are to interact with a certain number of ", 600, 310);
-        gc.fillText("people and objects, who will teach them about addiction. ", 600, 370);
-        gc.fillText("Downward facing arrows will appear above objects and people", 600, 430);
-        gc.fillText("that can be interacted with. To pass level one, the player must ", 600, 490);
-        gc.fillText("interact with all the entities and head to their room.", 600, 550);
+        JPanel panel = new JPanel();
+        mainPanel = panel;
+        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
 
-        //continue and back buttons
-        Button continueBtn = new Button("Continue");
-        btnList.add(continueBtn);
-        btnEnabledList.add(true);
-        continueBtn.setLayoutX(950);
-        continueBtn.setLayoutY(700);
-        continueBtn.setMinWidth(200);
-        continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        continueBtn.setTextFill(Color.WHITE);
-        continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e ->
-                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnMouseExited(e ->
-                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnAction(e -> {
-            cleanUp();
-            insLvl2();
-        });
-
-        Button backBtn = new Button("Back");
-        btnList.add(backBtn);
-        btnEnabledList.add(true);
-        backBtn.setLayoutX(50);
-        backBtn.setLayoutY(700);
-        backBtn.setMinWidth(200);
-        backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        backBtn.setTextFill(Color.WHITE);
-        backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e ->
-                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnMouseExited(e ->
-                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnAction(e -> {
-            cleanUp();
+        JButton back = new JButton("Back");
+        back.setSize(new Dimension(200, 60));
+        back.setLocation(50, 700);
+        back.setBackground(new Color(183, 23, 23));
+        back.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        back.setFont(new Font("Arial", Font.BOLD, 30));
+        back.setForeground(Color.WHITE);
+        panel.add(back);
+        back.addActionListener(e -> {
+            window.remove(panel);
             insControl();
         });
 
-        ((Group) stage.getScene().getRoot()).getChildren().addAll(continueBtn, backBtn);
+        JButton continueBtn = new JButton("Continue");
+        continueBtn.setSize(new Dimension(200, 60));
+        continueBtn.setLocation(950, 700);
+        continueBtn.setBackground(new Color(19, 150, 23));
+        continueBtn.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        continueBtn.setFont(new Font("Arial", Font.BOLD, 30));
+        continueBtn.setForeground(Color.WHITE);
+        panel.add(continueBtn);
+        continueBtn.addActionListener(e -> {
+            window.remove(panel);
+            insLvl2();
+        });
+
+        BufferedImage insTitle = null;
+        BufferedImage lvl1Title = null;
+        try {
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
+            lvl1Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insLevel1.png")));
+        } catch (IOException e) {
+        }
+
+        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
+        JLabel level1Title = new JLabel(new ImageIcon(lvl1Title.getScaledInstance(234, 78, Image.SCALE_SMOOTH)));
+        title.setSize(new Dimension(456, 78));
+        level1Title.setSize(new Dimension(234, 78));
+        title.setLocation(194, 70);
+        level1Title.setLocation(700, 70);
+        panel.add(title);
+        panel.add(level1Title);
     }
 
     /**
      * This method is used to create and display the Level 2 instructions
      */
     private void insLvl2() {
-        //clearing screen and setting up the background
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(89, 89, 89));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70)); //title
-        gc.setFill(Color.WHITE);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Instructions: Level 2", 600, 150);
-        gc.setFont(Font.font("Arial", FontWeight.THIN, 30)); //instructions
-        gc.fillText("During level 2, the player will have to dodge various", 600, 250);
-        gc.fillText("attacks while trying to reach the end within a given time limit.", 600, 310);
-        gc.fillText("If hit by an attack, or for every set interval, the player will ", 600, 370);
-        gc.fillText("receive a debuff. The player will have 2 tries to answer a", 600, 430);
-        gc.fillText("question testing their knowledge. Depending on their success", 600, 490);
-        gc.fillText("in answering the question, they may be able to cure the debuff", 600, 550);
+        JPanel panel = new JPanel();
+        mainPanel = panel;
+        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
 
-        //continue and back buttons
-        Button continueBtn = new Button("Continue");
-        btnList.add(continueBtn);
-        btnEnabledList.add(true);
-        continueBtn.setLayoutX(950);
-        continueBtn.setLayoutY(700);
-        continueBtn.setMinWidth(200);
-        continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        continueBtn.setTextFill(Color.WHITE);
-        continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e ->
-                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnMouseExited(e ->
-                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnAction(e -> {
-            cleanUp();
-            insLvl3();
-        });
-
-        Button backBtn = new Button("Back");
-        btnList.add(backBtn);
-        btnEnabledList.add(true);
-        backBtn.setLayoutX(50);
-        backBtn.setLayoutY(700);
-        backBtn.setMinWidth(200);
-        backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        backBtn.setTextFill(Color.WHITE);
-        backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e -> backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnMouseExited(e ->
-                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnAction(e -> {
-            cleanUp();
+        JButton back = new JButton("Back");
+        back.setSize(new Dimension(200, 60));
+        back.setLocation(50, 700);
+        back.setBackground(new Color(183, 23, 23));
+        back.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        back.setFont(new Font("Arial", Font.BOLD, 30));
+        back.setForeground(Color.WHITE);
+        panel.add(back);
+        back.addActionListener(e -> {
+            window.remove(panel);
             insLvl1();
         });
 
-        ((Group) stage.getScene().getRoot()).getChildren().addAll(continueBtn, backBtn);
+        JButton continueBtn = new JButton("Continue");
+        continueBtn.setSize(new Dimension(200, 60));
+        continueBtn.setLocation(950, 700);
+        continueBtn.setBackground(new Color(19, 150, 23));
+        continueBtn.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        continueBtn.setFont(new Font("Arial", Font.BOLD, 30));
+        continueBtn.setForeground(Color.WHITE);
+        panel.add(continueBtn);
+        continueBtn.addActionListener(e -> {
+            window.remove(panel);
+            insLvl3();
+        });
+
+        BufferedImage insTitle = null;
+        BufferedImage lvl2Title = null;
+        try {
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
+            lvl2Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insLevel2.png")));
+        } catch (IOException e) {
+        }
+
+        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
+        JLabel level2Title = new JLabel(new ImageIcon(lvl2Title.getScaledInstance(240, 78, Image.SCALE_SMOOTH)));
+        title.setSize(new Dimension(456, 78));
+        level2Title.setSize(new Dimension(240, 78));
+        title.setLocation(194, 70);
+        level2Title.setLocation(700, 70);
+        panel.add(title);
+        panel.add(level2Title);
     }
 
     /**
      * This method is used to create and display the Level 3 instructions
      */
     private void insLvl3() {
-        //clearing screen and setting up the background
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(89, 89, 89));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70)); //title
-        gc.setFill(Color.WHITE);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Instructions: Level 3", 600, 150);
-        gc.setFont(Font.font("Arial", FontWeight.THIN, 30)); //instructions
-        gc.fillText("During level 3, the player must try to treat their addiction", 600, 250);
-        gc.fillText("through rehabilitation. They must try to pass through a series of", 600, 310);
-        gc.fillText("challenges in the rehabilitation process. Then, they completing", 600, 370);
-        gc.fillText("their rehabilitation, they must complete some tasks while trying to", 600, 430);
-        gc.fillText("avoid relapsing. If they complete all of the tasks successfully, they", 600, 490);
-        gc.fillText("will win the game. However, if they relapse, they must restart the", 600, 550);
-        gc.fillText("level. Relapses may also cause overdoses which leads to hospitalization.", 600, 610);
-        gc.fillText("The player must avoid hospitalization because it is GAME OVER.", 600, 670);
+        JPanel panel = new JPanel();
+        mainPanel = panel;
+        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
 
-        //continue and back buttons
-        Button continueBtn = new Button("Continue");
-        btnList.add(continueBtn);
-        btnEnabledList.add(true);
-        continueBtn.setLayoutX(950);
-        continueBtn.setLayoutY(700);
-        continueBtn.setMinWidth(200);
-        continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        continueBtn.setTextFill(Color.WHITE);
-        continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e ->
-                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnMouseExited(e ->
-                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnAction(e -> {
-            cleanUp();
-            mainMenu();
-        });
-
-        Button backBtn = new Button("Back");
-        btnList.add(backBtn);
-        btnEnabledList.add(true);
-        backBtn.setLayoutX(50);
-        backBtn.setLayoutY(700);
-        backBtn.setMinWidth(200);
-        backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        backBtn.setTextFill(Color.WHITE);
-        backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e ->
-                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnMouseExited(e ->
-                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnAction(e -> {
-            cleanUp();
+        JButton back = new JButton("Back");
+        back.setSize(new Dimension(200, 60));
+        back.setLocation(50, 700);
+        back.setBackground(new Color(183, 23, 23));
+        back.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        back.setFont(new Font("Arial", Font.BOLD, 30));
+        back.setForeground(Color.WHITE);
+        panel.add(back);
+        back.addActionListener(e -> {
+            window.remove(panel);
             insLvl2();
         });
 
-        ((Group) stage.getScene().getRoot()).getChildren().addAll(continueBtn, backBtn);
+        JButton continueBtn = new JButton("Continue");
+        continueBtn.setSize(new Dimension(200, 60));
+        continueBtn.setLocation(950, 700);
+        continueBtn.setBackground(new Color(19, 150, 23));
+        continueBtn.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        continueBtn.setFont(new Font("Arial", Font.BOLD, 30));
+        continueBtn.setForeground(Color.WHITE);
+        panel.add(continueBtn);
+        continueBtn.addActionListener(e -> {
+            window.remove(panel);
+            mainMenu();
+        });
+
+        BufferedImage insTitle = null;
+        BufferedImage lvl3Title = null;
+        try {
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
+            lvl3Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insLevel3.png")));
+        } catch (IOException e) {
+        }
+
+        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
+        JLabel level3Title = new JLabel(new ImageIcon(lvl3Title.getScaledInstance(234, 78, Image.SCALE_SMOOTH)));
+        title.setSize(new Dimension(456, 78));
+        level3Title.setSize(new Dimension(234, 78));
+        title.setLocation(194, 70);
+        level3Title.setLocation(700, 70);
+        panel.add(title);
+        panel.add(level3Title);
     }
 
     /**
      * This method is used to create the credits screen
      */
     private void credits() {
-        //clearing screen and setting up the background
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(89, 89, 89));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 70)); //title
-        gc.setFill(Color.WHITE);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Credits", 600, 100);
+        JPanel panel = new JPanel();
+        mainPanel = panel;
+        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
 
-        gc.setTextAlign(TextAlignment.RIGHT);
-        gc.setFont(Font.font("Arial", FontWeight.THIN, 30)); //instructions
-        gc.fillText("Project Lead:", 550, 250);
-        gc.fillText("Project Member:", 550, 300);
-        gc.fillText("Game Designers:", 550, 350);
-        gc.fillText("Story Director:", 550, 400);
-        gc.fillText("Art Director:", 550, 450);
-        gc.fillText("Production Director:", 550, 500);
-        gc.fillText("Level Design Director:", 550, 550);
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("Kevin Zhan", 650, 250);
-        gc.fillText("Alexander Peng", 650, 300);
-        gc.fillText("Kevin Zhan & Alexander Peng", 650, 350);
-        gc.fillText("Kevin Zhan", 650, 400);
-        gc.fillText("Alexander Peng", 650, 450);
-        gc.fillText("Kevin Zhan", 650, 500);
-        gc.fillText("Alexander Peng", 650, 550);
-
-        //back button
-        Button backBtn = new Button("Back");
-        btnList.add(backBtn);
-        btnEnabledList.add(true);
-        backBtn.setLayoutX(50);
-        backBtn.setLayoutY(700);
-        backBtn.setMinWidth(200);
-        backBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        backBtn.setTextFill(Color.WHITE);
-        backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;");
-        backBtn.setOnMouseEntered(e ->
-                backBtn.setStyle("-fx-background-color: #c20202; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnMouseExited(e ->
-                backBtn.setStyle("-fx-background-color: #a00404; -fx-border-width: 3; -fx-border-color: #000000;"));
-        backBtn.setOnAction(e -> {
-            cleanUp();
+        JButton back = new JButton("Back");
+        back.setSize(new Dimension(200, 60));
+        back.setLocation(50, 700);
+        back.setBackground(new Color(183, 23, 23));
+        back.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        back.setFont(new Font("Arial", Font.BOLD, 30));
+        back.setForeground(Color.WHITE);
+        panel.add(back);
+        back.addActionListener(e -> {
+            window.remove(panel);
             mainMenu();
         });
 
-        ((Group) stage.getScene().getRoot()).getChildren().add(backBtn);
+        BufferedImage creditsTitle = null;
+        try {
+            creditsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/creditsTitle.png")));
+        } catch (IOException e) {
+        }
+        JLabel creditTitle = new JLabel(new ImageIcon(creditsTitle.getScaledInstance(344, 104, Image.SCALE_SMOOTH)));
+        creditTitle.setSize(new Dimension(344, 104));
+        creditTitle.setLocation(428, 70);
+        panel.add(creditTitle);
     }
 
     /**
      * This method is used to confirm the user's choice to quit the game and exit the program
      */
     private void exitProgram() {
-        //disables all buttons
-        for (Button btn : btnList) {
-            btn.setDisable(true);
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
+
+        BufferedImage endPageImg = null;
+        try {
+            endPageImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/endScreen.png")));
+        } catch (IOException e) {
         }
-        //confirmation message
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Exit");
-        alert.setHeaderText("Are you sure you want to exit?");
-        alert.setContentText("Click OK to exit, or Cancel to stay.");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            //erases the title and replaces with the exit message
-            gc.setFill(Color.rgb(89, 89, 89));
-            gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-            gc.setFill(Color.WHITE);
-            gc.setFont(Font.font("Arial Black", FontWeight.BOLD, 100));
-            gc.fillText("Thanks for playing!", 600, 420);
-            cleanUp();
-            saveGame(); //save the game
-            stage.setOnCloseRequest(Event::consume); //prevents the user from closing the window
-            //pause for a second before closing
-            PauseTransition delay = new PauseTransition(Duration.seconds(1));
-            delay.setOnFinished(event -> System.exit(0));
-            delay.play();
-        }
-        //re-enables all buttons
-        for(Button btn : btnList) {
-            btn.setDisable(!btnEnabledList.get(btnList.indexOf(btn)));
-        }
+        JLabel endPage = new JLabel(new ImageIcon(endPageImg.getScaledInstance(1200, 800, Image.SCALE_SMOOTH)));
+        endPage.setSize(new Dimension(1200, 800));
+        endPage.setLocation(0, 0);
+        panel.add(endPage);
+
+        Timer timer = new Timer(1500, e -> System.exit(0));
+        timer.setRepeats(false);
+        timer.start();
     }
 
     /**
      * This method displays the screen when the player wins
      */
     private void gameSuccess() {
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(89, 89, 89));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("Arial", FontWeight.BOLD, 100));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Congratulations!", 600, 200);
-        gc.setFont(Font.font("Arial", FontWeight.THIN, 50));
-        gc.fillText("You successfully overcome your", 600, 400);
-        gc.fillText("addiction and are now living a happy life!", 600, 500);
-
-        //continue button
-        Button continueBtn = new Button("Continue");
-        btnList.add(continueBtn);
-        btnEnabledList.add(true);
-        continueBtn.setLayoutX(950);
-        continueBtn.setLayoutY(700);
-        continueBtn.setMinWidth(200);
-        continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        continueBtn.setTextFill(Color.WHITE);
-        continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e ->
-                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnMouseExited(e ->
-                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnAction(e -> {
-            cleanUp();
-            mainMenu();
-        });
     }
 
     /**
      * This method displays the screen when the player loses
      */
     private void gameOver() {
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1);
-        }
-        gc.setFill(Color.rgb(0, 0, 0));
-        gc.fillRect(0, 0, stage.getWidth(), stage.getHeight());
-        gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("Arial", FontWeight.BOLD, 100));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Game Over", 600, 200);
-        gc.setFont(Font.font("Arial", FontWeight.THIN, 50));
-        gc.fillText("Oh no! You relapsed and overdosed.", 600, 400);
-        gc.fillText("You have been hospitalized.", 600, 500);
-
-        //continue button
-        Button continueBtn = new Button("Continue");
-        btnList.add(continueBtn);
-        btnEnabledList.add(true);
-        continueBtn.setLayoutX(950);
-        continueBtn.setLayoutY(700);
-        continueBtn.setMinWidth(200);
-        continueBtn.setFont(Font.font("Arial", FontWeight.THIN, 30));
-        continueBtn.setTextFill(Color.WHITE);
-        continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;");
-        continueBtn.setOnMouseEntered(e ->
-                continueBtn.setStyle("-fx-background-color: #509123; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnMouseExited(e ->
-                continueBtn.setStyle("-fx-background-color: #40741c; -fx-border-width: 3; -fx-border-color: #000000;"));
-        continueBtn.setOnAction(e -> {
-            cleanUp();
-            mainMenu();
-        });
-
-        ((Group) stage.getScene().getRoot()).getChildren().add(continueBtn);
     }
 
     /**
@@ -757,7 +590,7 @@ public class Launcher extends Application {
      * This method closes the launcher when the player starts a game
      */
     private void closeLauncher() {
-        stage.hide();
+
     }
 
     /**
@@ -766,20 +599,15 @@ public class Launcher extends Application {
     public void openLauncher() {
         cleanUp();
         mainMenu();
-        stage.show();
     }
 
     /**
      * This method will be used to clean up the launcher screen in between pages
      */
     private void cleanUp() {
-        //when there are components other than the background
-        while (((Group) stage.getScene().getRoot()).getChildren().size() > 1) {
-            ((Group) stage.getScene().getRoot()).getChildren().remove(1); //removes components
-        }
     }
 
     public static void main(String[] args) {
-        launch(args);
+        Launcher launcher = new Launcher();
     }
 }

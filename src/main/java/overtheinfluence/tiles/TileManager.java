@@ -55,12 +55,12 @@ public class TileManager {
      * processes the tile images
      */
     public void tileImg() {
-        tile[0] = new Tile("/tiles/grass.png");
-        tile[1] = new Tile("/tiles/wall.png", true);
-        tile[2] = new Tile("/tiles/water.png");
-        tile[3] = new Tile("/tiles/earth.png");
-        tile[4] = new Tile("/tiles/tree.png", true);
-        tile[5] = new Tile("/tiles/sand.png");
+        tile[0] = new Tile("/tiles/streetHor.png");
+        tile[1] = new Tile("/tiles/streetVer.png");
+        tile[2] = new Tile("/tiles/streetInt.png");
+        tile[3] = new Tile("/tiles/sidewalk.png");
+        tile[4] = new Tile("/tiles/grass1.png");
+        tile[5] = new Tile("/tiles/grass2.png");
     }
 
     /**

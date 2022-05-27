@@ -71,8 +71,8 @@ public class Player extends Entity {
      * sets the player's default values
      */
     public void defaultValue() {
-        worldX = lvl.tileSize * 23;
-        worldY = lvl.tileSize * 21;
+        worldX = lvl.tileSize * lvl.maxWorldCols / 2;
+        worldY = lvl.tileSize * lvl.maxWorldRows / 2;
         speed = 4;
         direction = "down";
     }

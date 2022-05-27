@@ -2,6 +2,22 @@ package overtheinfluence.main;
 
 import overtheinfluence.entity.*;
 
+/**
+ * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
+ * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
+ *
+ * <p>This class is used for detection collision between entities, namely the player, and the tiles being moved over.</p>
+ *
+ * <p>Work Allocation:<ul>
+ * <li>Collision Detection - Kevin Zhan</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class CollisionDetection {
 
     /** the level using the collision detection */

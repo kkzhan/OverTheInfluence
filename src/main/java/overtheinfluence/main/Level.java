@@ -96,7 +96,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * the player entity
      */
-    public Player player = new Player(this, keyIn);
+    public Player player;
 
     /**
      * the constructor for the level class
@@ -111,6 +111,7 @@ public class Level extends JPanel implements Runnable {
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
         complete = false;
+        player = new Player(this, keyIn);
     }
 
     /**

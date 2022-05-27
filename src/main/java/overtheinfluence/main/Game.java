@@ -28,6 +28,8 @@ public class Game {
 
     private Level[] levels;
 
+    private JFrame window = new JFrame("Over the Influence");
+
     /**
      * constructor for Game
      *
@@ -50,29 +52,30 @@ public class Game {
         return levels[levelNum - 1].isComplete();
     }
 
-    //main method for testing purposes
-    public static void main(String[] args) {
-        JFrame window = new JFrame("Over the Influence");
+    public void playLevel(int level){
         window.setResizable(false);
-
-        Exploration lvl1 = new Exploration();
-        window.add(lvl1);
-
+        window.add(levels[level - 1]);
         window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        window.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                JFrame frame = (JFrame) e.getSource();
-                int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
-                if (result == JOptionPane.YES_OPTION) window.dispose();
-            }
-        });
-
+        //check if there is already a window listener
+        if(window.getWindowListeners().length == 0) {
+            window.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    JFrame frame = (JFrame) e.getSource();
+                    int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        levels[level - 1].gameThread = null;
+                        window.dispose();
+                        launcher.window.remove(launcher.mainPanel);
+                        launcher.window.setVisible(true);
+                        launcher.mainMenu();
+                    }
+                }
+            });
+        }
         window.pack();
-
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-
-        lvl1.startThread();
+        levels[level - 1].startThread();
     }
 }

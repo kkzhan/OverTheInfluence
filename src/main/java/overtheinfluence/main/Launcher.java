@@ -45,10 +45,19 @@ public class Launcher {
      */
     boolean gameStarted = false;
 
+    /**
+     * the window the game is displayed in
+     */
     JFrame window = new JFrame("Over the Influence");
 
+    /**
+     * the background colour of the launcher
+     */
     Color bgColor = new Color(89, 89, 89);
 
+    /**
+     * the main panel displayed in the launcher
+     */
     JPanel mainPanel = new JPanel();
 
     public Launcher() {
@@ -82,7 +91,7 @@ public class Launcher {
     /**
      * This method displays the main menu of the game which provides access to the game, instructions, and credits
      */
-    private void mainMenu() {
+    public void mainMenu() {
         BufferedImage mainScreenImg = null;
         try {
             mainScreenImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/mainScreen.png")));
@@ -93,6 +102,7 @@ public class Launcher {
         panel.add(mainScreen);
         mainPanel = panel;
         panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setBackground(bgColor);
         window.add(panel);
         window.pack();
         panel.setLayout(null);
@@ -198,7 +208,11 @@ public class Launcher {
             int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to start a new game?", "Start Game", JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
                 window.remove(mainPanel);
+                window.setVisible(false);
                 //start new game
+                gameStarted = true;
+                currentGame = new Game(this);
+                currentGame.playLevel(1);
             }
         });
         resume1.addActionListener(e -> {
@@ -206,10 +220,11 @@ public class Launcher {
             if (!gameStarted) {
                 JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
-                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from level 1?", "Resume Level 1", JOptionPane.YES_NO_OPTION);
+                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from Level 1?", "Resume Level 1", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
                     window.remove(mainPanel);
-                    //resume from level 1
+                    window.setVisible(false);
+                    currentGame.playLevel(1);
                 }
             }
         });
@@ -218,12 +233,13 @@ public class Launcher {
             if (!gameStarted) {
                 JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!currentGame.levelComplete(1)) {
-                JOptionPane.showMessageDialog(dialog, "You have not completed level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "You have not completed Level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
-                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from level 2?", "Resume Level 2", JOptionPane.YES_NO_OPTION);
+                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from Level 2?", "Resume Level 2", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
-                    window.remove(panel);
-                    //resume from level 2
+                    window.remove(mainPanel);
+                    window.setVisible(false);
+                    currentGame.playLevel(2);
                 }
             }
         });
@@ -232,14 +248,15 @@ public class Launcher {
             if (!gameStarted) {
                 JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!currentGame.levelComplete(1)) {
-                JOptionPane.showMessageDialog(dialog, "You have not completed level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "You have not completed Level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!currentGame.levelComplete(2)) {
-                JOptionPane.showMessageDialog(dialog, "You have not completed level 2!", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "You have not completed Level 2!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
-                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from level 3?", "Resume Level 3", JOptionPane.YES_NO_OPTION);
+                int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from Level 3?", "Resume Level 3", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
-                    window.remove(panel);
-                    //resume from level 3
+                    window.remove(mainPanel);
+                    window.setVisible(false);
+                    currentGame.playLevel(3);
                 }
             }
         });
@@ -253,7 +270,7 @@ public class Launcher {
         back.setForeground(Color.WHITE);
         panel.add(back);
         back.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             mainMenu();
         });
 
@@ -289,7 +306,7 @@ public class Launcher {
         back.setForeground(Color.WHITE);
         panel.add(back);
         back.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             mainMenu();
         });
 
@@ -302,7 +319,7 @@ public class Launcher {
         continueBtn.setForeground(Color.WHITE);
         panel.add(continueBtn);
         continueBtn.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             insLvl1();
         });
         BufferedImage insTitle = null;
@@ -344,7 +361,7 @@ public class Launcher {
         back.setForeground(Color.WHITE);
         panel.add(back);
         back.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             insControl();
         });
 
@@ -357,7 +374,7 @@ public class Launcher {
         continueBtn.setForeground(Color.WHITE);
         panel.add(continueBtn);
         continueBtn.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             insLvl2();
         });
 
@@ -456,7 +473,7 @@ public class Launcher {
         back.setForeground(Color.WHITE);
         panel.add(back);
         back.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             insLvl2();
         });
 
@@ -469,7 +486,7 @@ public class Launcher {
         continueBtn.setForeground(Color.WHITE);
         panel.add(continueBtn);
         continueBtn.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             mainMenu();
         });
 
@@ -512,7 +529,7 @@ public class Launcher {
         back.setForeground(Color.WHITE);
         panel.add(back);
         back.addActionListener(e -> {
-            window.remove(panel);
+            window.remove(mainPanel);
             mainMenu();
         });
 
@@ -537,6 +554,8 @@ public class Launcher {
         window.add(panel);
         window.pack();
         panel.setLayout(null);
+
+        window.removeWindowListener(window.getWindowListeners()[0]);
 
         BufferedImage endPageImg = null;
         try {

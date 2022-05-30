@@ -1,4 +1,4 @@
-package overtheinfluence.tiles;
+package tiles;
 
 import javax.imageio.ImageIO;
 import java.awt.image.*;

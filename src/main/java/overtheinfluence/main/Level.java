@@ -1,11 +1,11 @@
-package overtheinfluence.main;
+package main;
 
-import overtheinfluence.entity.*;
-import overtheinfluence.tiles.*;
+import entity.*;
+import objects.GameObject;
+import tiles.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.util.*;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -94,9 +94,20 @@ public class Level extends JPanel implements Runnable {
     public CollisionDetection collisionDetect = new CollisionDetection(this);
 
     /**
+     * sets assets for the level
+     */
+    public AssetSetter assetSetter = new AssetSetter(this);
+
+    /**
      * the player entity
      */
     public Player player;
+
+    /**
+     * stores all objects in the game
+     */
+    public ArrayList<GameObject> objects = new ArrayList<GameObject>();
+
 
     /**
      * the constructor for the level class
@@ -112,6 +123,13 @@ public class Level extends JPanel implements Runnable {
         worldHeight = maxWorldRows * tileSize;
         complete = false;
         player = new Player(this, keyIn);
+    }
+
+    /**
+     * sets up the level
+     */
+    public void setupLevel() {
+        assetSetter.setObject();
     }
 
     /**
@@ -166,6 +184,10 @@ public class Level extends JPanel implements Runnable {
         Graphics2D g2D = (Graphics2D) g;
 
         tm.draw(g2D); //draw tiles before player so that player can walk on top of tiles
+        //object in between tile and player
+        for(GameObject obj : objects) {
+            obj.draw(g2D, this);
+        }
         player.draw(g2D);
 
         g2D.dispose();

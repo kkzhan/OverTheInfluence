@@ -1,4 +1,4 @@
-package overtheinfluence.main;
+package main;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of

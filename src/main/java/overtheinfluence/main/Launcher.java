@@ -1,5 +1,4 @@
-package overtheinfluence.main;
-
+package main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -84,7 +83,6 @@ public class Launcher {
      * This method displays the splash screen of the game
      */
     private void splashScreen() {
-        //playGame();
         mainMenu();
     }
 
@@ -94,7 +92,7 @@ public class Launcher {
     public void mainMenu() {
         BufferedImage mainScreenImg = null;
         try {
-            mainScreenImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/mainScreen.png")));
+            mainScreenImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/mainScreen.png")));
         } catch (IOException e) {
         }
         JLabel mainScreen = new JLabel(new ImageIcon(mainScreenImg.getScaledInstance(1200, 800, Image.SCALE_SMOOTH)));
@@ -276,7 +274,7 @@ public class Launcher {
 
         BufferedImage playTitle = null;
         try {
-            playTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/playTitle.png")));
+            playTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/playTitle.png")));
         } catch (IOException e) {
         }
         JLabel creditTitle = new JLabel(new ImageIcon(playTitle.getScaledInstance(276, 204, Image.SCALE_SMOOTH)));
@@ -325,8 +323,8 @@ public class Launcher {
         BufferedImage insTitle = null;
         BufferedImage controlsTitle = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
-            controlsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insControls.png")));
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
+            controlsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insControls.png")));
         } catch (IOException e) {
         }
 
@@ -381,8 +379,8 @@ public class Launcher {
         BufferedImage insTitle = null;
         BufferedImage lvl1Title = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
-            lvl1Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insLevel1.png")));
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
+            lvl1Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel1.png")));
         } catch (IOException e) {
         }
 
@@ -437,8 +435,8 @@ public class Launcher {
         BufferedImage insTitle = null;
         BufferedImage lvl2Title = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
-            lvl2Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insLevel2.png")));
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
+            lvl2Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel2.png")));
         } catch (IOException e) {
         }
 
@@ -493,8 +491,8 @@ public class Launcher {
         BufferedImage insTitle = null;
         BufferedImage lvl3Title = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/instructionsTitle.png")));
-            lvl3Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/insLevel3.png")));
+            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
+            lvl3Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel3.png")));
         } catch (IOException e) {
         }
 
@@ -535,7 +533,7 @@ public class Launcher {
 
         BufferedImage creditsTitle = null;
         try {
-            creditsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/creditsTitle.png")));
+            creditsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/creditsTitle.png")));
         } catch (IOException e) {
         }
         JLabel creditTitle = new JLabel(new ImageIcon(creditsTitle.getScaledInstance(344, 104, Image.SCALE_SMOOTH)));
@@ -559,7 +557,7 @@ public class Launcher {
 
         BufferedImage endPageImg = null;
         try {
-            endPageImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/launcherFiles/endScreen.png")));
+            endPageImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/endScreen.png")));
         } catch (IOException e) {
         }
         JLabel endPage = new JLabel(new ImageIcon(endPageImg.getScaledInstance(1200, 800, Image.SCALE_SMOOTH)));

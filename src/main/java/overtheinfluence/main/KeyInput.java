@@ -1,4 +1,4 @@
-package overtheinfluence.main;
+package main;
 
 import java.awt.event.*;
 

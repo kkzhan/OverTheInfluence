@@ -1,6 +1,6 @@
-package overtheinfluence.entity;
+package entity;
 
-import overtheinfluence.main.*;
+import main.*;
 
 import javax.imageio.*;
 import java.awt.*;
@@ -82,18 +82,18 @@ public class Player extends Entity {
      */
     public void getPlayerImage() {
         try {
-            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png")));
-            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
-            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
-            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
-            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
-            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
-            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
-            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
-            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
-            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
-            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
-            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
+            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_up_1.png")));
+            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_up_2.png")));
+            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_up_3.png")));
+            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_left_1.png")));
+            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_left_2.png")));
+            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_left_3.png")));
+            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_right_1.png")));
+            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_right_2.png")));
+            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_right_3.png")));
+            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_down_1.png")));
+            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_down_2.png")));
+            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_down_3.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,6 +139,13 @@ public class Player extends Entity {
                 worldX -= speed;
             }
 
+
+            //testing purposes
+            System.out.println(worldX + " " + worldY);
+
+
+
+
             spriteCnt++; //how long the sprite can be displayed for
             if (spriteCnt > 4) {
                 if (spriteNum == 1) {
@@ -163,7 +170,6 @@ public class Player extends Entity {
         } else {
             spriteNum = 9;
         }
-
     }
 
     public int n = 0;

@@ -1,0 +1,4 @@
+AssetSetter comments
+Player remove testing purposes in update method
+Door comments
+GameObject comments

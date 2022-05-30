@@ -1,4 +1,4 @@
-package overtheinfluence.main;
+package main;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -76,6 +76,7 @@ public class Game {
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        levels[level - 1].setupLevel();
         levels[level - 1].startThread();
     }
 }

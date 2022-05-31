@@ -10,6 +10,6 @@ public class Door extends GameObject {
             image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/door.png"));
         } catch (IOException e) {
         }
+        collision = true;
     }
-
 }

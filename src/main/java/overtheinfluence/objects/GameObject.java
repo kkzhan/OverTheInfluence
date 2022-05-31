@@ -9,8 +9,11 @@ public class GameObject {
 
     public BufferedImage image;
     public String name;
-    public boolean collision;
+    public boolean collision = false;
     public int worldX, worldY;
+    public Rectangle area = new Rectangle(0, 0, 48, 48);
+    public int areaDefaultX = 0;
+    public int areaDefaultY = 0;
 
     public void draw(Graphics2D g2D, Level lvl) {
         int screenX = worldX - lvl.player.worldX + lvl.player.screenX;

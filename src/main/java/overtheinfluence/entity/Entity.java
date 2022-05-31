@@ -35,6 +35,9 @@ public class Entity {
     /** the solid area of the entity*/
     public Rectangle area;
 
+    /** the default values for the solid area of the entity*/
+    public int areaDefaultX, areaDefaultY;
+
     /** whether the entity is currently colliding to the left*/
     public boolean collidingL = false;
 

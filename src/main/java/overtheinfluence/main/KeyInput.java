@@ -25,6 +25,23 @@ public class KeyInput implements KeyListener {
      */
     public boolean up, down, left, right;
 
+    /**
+     * whether or not the player is interacting with an object
+     */
+    public boolean interact;
+
+    /**
+     * the level the game is on
+     */
+    Level lvl;
+
+    /**
+     * constructor for the KeyInput class
+     */
+    public KeyInput(Level lvl) {
+        this.lvl = lvl;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -58,6 +75,18 @@ public class KeyInput implements KeyListener {
         if (key == KeyEvent.VK_D) {
             right = true;
         }
+        if (key == KeyEvent.VK_E) {
+            interact = true;
+        }
+        if(key == KeyEvent.VK_P) {
+            if(lvl.gameState == 1) {
+                lvl.gameState = 2;
+                lvl.stopMusic();
+            } else if(lvl.gameState == 2) {
+                lvl.gameState = 1;
+                lvl.playMusic(-1);
+            }
+        }
     }
 
     @Override
@@ -74,6 +103,9 @@ public class KeyInput implements KeyListener {
         }
         if (key == KeyEvent.VK_D) {
             right = false;
+        }
+        if (key == KeyEvent.VK_E) {
+            interact = false;
         }
     }
 }

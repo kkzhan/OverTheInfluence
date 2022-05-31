@@ -1,4 +1,14 @@
 AssetSetter comments
-Player remove testing purposes in update method
+[Player] remove testing purposes in update method
 Door comments
 GameObject comments
+UI comments (in-game user interface)
+Sound class comments
+
+Track Work Done:
+- pausing
+- objects
+- object collision
+- object interaction
+- ui
+- sound

@@ -18,5 +18,6 @@ public class Exploration extends Level {
      */
     public Exploration() {
         super("map1");
+        this.levelNum = 1;
     }
 }

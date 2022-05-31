@@ -65,6 +65,7 @@ public class Game {
                     int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
                     if (result == JOptionPane.YES_OPTION) {
                         levels[level - 1].gameThread = null;
+                        levels[level - 1].stopMusic();
                         window.dispose();
                         launcher.window.remove(launcher.mainPanel);
                         launcher.window.setVisible(true);

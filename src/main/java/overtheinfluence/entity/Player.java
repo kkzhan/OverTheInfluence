@@ -37,7 +37,7 @@ public class Player extends Entity {
     /**
      * the input monitor for the player's keys
      */
-    KeyInput keyIn;
+    public KeyInput keyIn;
 
     /**
      * the player's x and y coordinates on the screen
@@ -63,6 +63,8 @@ public class Player extends Entity {
         area = new Rectangle();
         area.x = 19;
         area.y = 30;
+        areaDefaultX = area.x;
+        areaDefaultY = area.y;
         area.width = 9;
         area.height = 13;
     }
@@ -126,6 +128,11 @@ public class Player extends Entity {
             collidingR = false;
             collidingT = false;
             lvl.collisionDetect.tileCollide(this);
+
+            //check object collision
+            int objectIndex = lvl.collisionDetect.objectCollide(this, true);
+            interactObject(objectIndex);
+
             if(collidingT) {
                 worldY += speed;
             }
@@ -138,12 +145,6 @@ public class Player extends Entity {
             if (collidingR) {
                 worldX -= speed;
             }
-
-
-            //testing purposes
-            System.out.println(worldX + " " + worldY);
-
-
 
 
             spriteCnt++; //how long the sprite can be displayed for
@@ -172,7 +173,18 @@ public class Player extends Entity {
         }
     }
 
-    public int n = 0;
+    public void interactObject(int index) {
+        if(index != -1) {
+            String name = lvl.objects.get(index).name;
+            switch (name) {
+                case "Door":
+                    if(keyIn.interact) {
+                        lvl.objects.remove(index);
+                        lvl.playSFX(2);
+                    }
+            }
+        }
+    }
 
     /**
      * draws the player

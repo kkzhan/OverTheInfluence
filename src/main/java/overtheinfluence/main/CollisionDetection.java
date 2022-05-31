@@ -20,7 +20,9 @@ import entity.*;
 
 public class CollisionDetection {
 
-    /** the level using the collision detection */
+    /**
+     * the level using the collision detection
+     */
     Level lvl;
 
     /**
@@ -77,5 +79,91 @@ public class CollisionDetection {
         if (lvl.tm.tile[tileRight1].collision || lvl.tm.tile[tileRight2].collision) {
             e.collidingR = true;
         }
+    }
+
+    /**
+     * checks if an entity is colliding with any object
+     *
+     * @param e        the entity to check
+     * @param isPlayer whether the entity is the player
+     * @return whether the entity is colliding with an object
+     */
+    public int objectCollide(Entity e, boolean isPlayer) {
+        int index = -1;
+        for (int i = 0; i < lvl.objects.size(); i++) {
+            e.area.x = e.worldX + e.area.x;
+            e.area.y = e.worldY + e.area.y;
+            lvl.objects.get(i).area.x = lvl.objects.get(i).worldX + lvl.objects.get(i).area.x;
+            lvl.objects.get(i).area.y = lvl.objects.get(i).worldY + lvl.objects.get(i).area.y;
+
+            if (isPlayer) {
+                if (((Player) e).keyIn.left) {
+                    e.area.x -= e.speed;
+                    if (e.area.intersects(lvl.objects.get(i).area)) {
+                        e.collidingL = true;
+                        index = i;
+                    }
+                    e.area.x = e.areaDefaultX + e.worldX;
+                    e.area.y = e.areaDefaultY + e.worldY;
+                }
+                if (((Player) e).keyIn.right) {
+                    e.area.x += e.speed;
+                    if (e.area.intersects(lvl.objects.get(i).area)) {
+                        e.collidingR = true;
+                        index = i;
+                    }
+                    e.area.x = e.areaDefaultX + e.worldX;
+                    e.area.y = e.areaDefaultY + e.worldY;
+                }
+                if (((Player) e).keyIn.up) {
+                    e.area.y -= e.speed;
+                    if (e.area.intersects(lvl.objects.get(i).area)) {
+                        e.collidingT = true;
+                        index = i;
+                    }
+                    e.area.x = e.areaDefaultX + e.worldX;
+                    e.area.y = e.areaDefaultY + e.worldY;
+                }
+                if (((Player) e).keyIn.down) {
+                    e.area.y += e.speed;
+                    if (e.area.intersects(lvl.objects.get(i).area)) {
+                        e.collidingB = true;
+                        index = i;
+                    }
+                }
+            } else {
+                switch (e.direction) {
+                    case "up":
+                        e.area.y -= e.speed;
+                        if (e.area.intersects(lvl.objects.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                    case "down":
+                        e.area.y += e.speed;
+                        if (e.area.intersects(lvl.objects.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                    case "left":
+                        e.area.x -= e.speed;
+                        if (e.area.intersects(lvl.objects.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                    case "right":
+                        e.area.x += e.speed;
+                        if (e.area.intersects(lvl.objects.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                }
+            }
+            e.area.x = e.areaDefaultX;
+            e.area.y = e.areaDefaultY;
+            lvl.objects.get(i).area.x = lvl.objects.get(i).areaDefaultX;
+            lvl.objects.get(i).area.y = lvl.objects.get(i).areaDefaultY;
+        }
+        return index;
     }
 }

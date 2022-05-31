@@ -16,5 +16,6 @@ public class Recovery extends Level {
     /** default constructor for Recovery */
     public Recovery() {
         super("map1");
+        this.levelNum = 3;
     }
 }

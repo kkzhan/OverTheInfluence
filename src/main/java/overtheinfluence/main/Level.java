@@ -3,6 +3,7 @@ package main;
 import entity.*;
 import objects.GameObject;
 import tiles.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -82,7 +83,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * handles keyboard input for movement
      */
-    KeyInput keyIn = new KeyInput();
+    KeyInput keyIn = new KeyInput(this);
     /**
      * the thread the game runs on
      */
@@ -92,6 +93,11 @@ public class Level extends JPanel implements Runnable {
      * the collision detector
      */
     public CollisionDetection collisionDetect = new CollisionDetection(this);
+
+    /**
+     * the user interface for the game
+     */
+    public UI ui = new UI(this);
 
     /**
      * sets assets for the level
@@ -107,6 +113,21 @@ public class Level extends JPanel implements Runnable {
      * stores all objects in the game
      */
     public ArrayList<GameObject> objects = new ArrayList<GameObject>();
+
+    /**
+     * the game state (1 = playing, 2 = paused)
+     */
+    public int gameState;
+
+    /**
+     * manages sound effects
+     */
+    Sound sound = new Sound();
+
+    /**
+     * the level number
+     */
+    public int levelNum;
 
 
     /**
@@ -130,6 +151,12 @@ public class Level extends JPanel implements Runnable {
      */
     public void setupLevel() {
         assetSetter.setObject();
+        gameState = 1;
+        if (levelNum == 1 || levelNum == 4) {
+            playMusic(0);
+        } else if (levelNum == 2 || levelNum == 3) {
+            playMusic(1);
+        }
     }
 
     /**
@@ -163,6 +190,7 @@ public class Level extends JPanel implements Runnable {
 
     /**
      * is the level complete?
+     *
      * @return true if the level is complete
      */
     public boolean isComplete() {
@@ -174,7 +202,9 @@ public class Level extends JPanel implements Runnable {
      * updates the game information from the player's movement
      */
     public void update() {
-        player.update();
+        if (gameState == 1) {
+            player.update();
+        }
     }
 
     @Override
@@ -185,11 +215,47 @@ public class Level extends JPanel implements Runnable {
 
         tm.draw(g2D); //draw tiles before player so that player can walk on top of tiles
         //object in between tile and player
-        for(GameObject obj : objects) {
+        for (GameObject obj : objects) {
             obj.draw(g2D, this);
         }
         player.draw(g2D);
+        ui.draw(g2D);
 
         g2D.dispose();
+    }
+
+
+    /**
+     * plays background music
+     *
+     * @param i the index of the music to play
+     */
+    public void playMusic(int i) {
+        if (i == -1) {
+            if (levelNum == 1 || levelNum == 4) {
+                playMusic(0);
+            } else if (levelNum == 2 || levelNum == 3) {
+                playMusic(1);
+            }
+        } else {
+            sound.setFile(i);
+            sound.play();
+            sound.loop();
+        }
+    }
+
+    /**
+     * stops background music
+     */
+    public void stopMusic() {
+        sound.stop();
+    }
+
+    /**
+     * pauses background music
+     */
+    public void playSFX(int i) {
+        sound.setFile(i);
+        sound.play();
     }
 }

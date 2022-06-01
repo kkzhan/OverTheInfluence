@@ -2,6 +2,8 @@ package main;
 
 import entity.*;
 
+import java.awt.*;
+
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
  * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
@@ -97,6 +99,10 @@ public class CollisionDetection {
             lvl.objects.get(i).area.y = lvl.objects.get(i).worldY + lvl.objects.get(i).area.y;
 
             if (isPlayer) {
+                Rectangle nonsolid = new Rectangle(e.area.x - 7, e.area.y - 30, e.area.width + 14, e.area.height + 5);
+                if (nonsolid.intersects(lvl.objects.get(i).area)) {
+                    index = i;
+                }
                 if (((Player) e).keyIn.left) {
                     e.area.x -= e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {

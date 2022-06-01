@@ -48,20 +48,6 @@ public class KeyInput implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //important key codes
-        //backspace = 8
-        //tab = 9
-        //enter = 10
-        //clear = 12
-        //shift = 16
-        //ctrl = 17
-        //alt = 18
-        //space = 32
-        //A = 65
-        //D = 68
-        //S = 83
-        //W = 87
-
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_W) {
             up = true;

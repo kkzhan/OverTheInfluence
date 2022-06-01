@@ -55,23 +55,22 @@ public class TileManager {
      * processes the tile images
      */
     public void tileImg() {
-        tile[0] = new Tile("/resources/tiles/streetHor.png");
-        tile[1] = new Tile("/resources/tiles/streetVer.png");
-        tile[2] = new Tile("/resources/tiles/streetInt.png");
-        tile[3] = new Tile("/resources/tiles/sidewalk.png");
-        tile[4] = new Tile("/resources/tiles/grass1.png");
-        tile[5] = new Tile("/resources/tiles/grass2.png");
-        tile[6] = new Tile("/resources/tiles/houseWall.png", true);
-        tile[7] = new Tile("/resources/tiles/lvl1CouchLeft.png", true);
-        tile[8] = new Tile("/resources/tiles/lvl1CouchMid.png", true);
-        tile[9] = new Tile("/resources/tiles/lvl1CouchRight.png", true);
-        tile[10] = new Tile("/resources/tiles/lvl1Floor.png");
-        tile[11] = new Tile("/resources/tiles/lvl1KitchenTable.png", true);
-        tile[12] = new Tile("/resources/tiles/lvl3CouchLeft.png", true);
-        tile[13] = new Tile("/resources/tiles/lvl3CouchMid.png", true);
-        tile[14] = new Tile("/resources/tiles/lvl3CouchRight.png", true);
-        tile[15] = new Tile("/resources/tiles/lvl3Floor.png");
-        tile[16] = new Tile("/resources/tiles/lvl3KitchenTable.png", true);
+        tile[0] = new Tile("/resources/tiles/divider.png", true);
+        tile[1] = new Tile("/resources/tiles/streetHor.png");
+        tile[2] = new Tile("/resources/tiles/streetVer.png");
+        tile[3] = new Tile("/resources/tiles/streetInt.png");
+        tile[4] = new Tile("/resources/tiles/sidewalk.png");
+        tile[5] = new Tile("/resources/tiles/grass1.png");
+        tile[6] = new Tile("/resources/tiles/grass2.png");
+        tile[7] = new Tile("/resources/tiles/houseWall.png", true);
+        tile[8] = new Tile("/resources/tiles/lvl1Floor.png");
+        tile[9] = new Tile("/resources/tiles/lvl1Asphalt.png");
+        tile[10] = new Tile("/resources/tiles/lvl1Pavement.png");
+
+
+
+
+        tile[10] = new Tile("/resources/tiles/lvl3Floor.png");
     }
 
     /**

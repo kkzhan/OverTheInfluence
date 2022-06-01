@@ -4,6 +4,10 @@ Door comments
 GameObject comments
 UI comments (in-game user interface)
 Sound class comments
+Object for all classes in object folder
+Create Desk, Bed
+Add AlleyFence to tiles
+Create car
 
 Track Work Done:
 - pausing

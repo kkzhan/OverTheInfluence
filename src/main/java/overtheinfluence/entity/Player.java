@@ -44,6 +44,7 @@ public class Player extends Entity {
      */
     public final int screenX, screenY;
 
+
     /**
      * the Player constructor
      *
@@ -105,6 +106,8 @@ public class Player extends Entity {
      * updates the player's position using the key input
      */
     public void update() {
+        //collision detection for interaction purposes
+        interactObject(lvl.collisionDetect.objectCollide(this, true));
         if (keyIn.up || keyIn.down || keyIn.left || keyIn.right) {
             if (keyIn.up) {
                 direction = "up";
@@ -129,9 +132,8 @@ public class Player extends Entity {
             collidingT = false;
             lvl.collisionDetect.tileCollide(this);
 
-            //check object collision
-            int objectIndex = lvl.collisionDetect.objectCollide(this, true);
-            interactObject(objectIndex);
+            //check object collision and interact with objects
+            interactObject(lvl.collisionDetect.objectCollide(this, true));
 
             if(collidingT) {
                 worldY += speed;

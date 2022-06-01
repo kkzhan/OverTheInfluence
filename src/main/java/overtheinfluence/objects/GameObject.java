@@ -14,6 +14,8 @@ public class GameObject {
     public Rectangle area = new Rectangle(0, 0, 48, 48);
     public int areaDefaultX = 0;
     public int areaDefaultY = 0;
+    public int drawWidth = 48;
+    public int drawHeight = 48;
 
     public void draw(Graphics2D g2D, Level lvl) {
         int screenX = worldX - lvl.player.worldX + lvl.player.screenX;
@@ -40,12 +42,12 @@ public class GameObject {
                 worldX - lvl.tileSize < lvl.player.worldX + lvl.player.screenX &&
                 worldY + lvl.tileSize > lvl.player.worldY - lvl.player.screenY &&
                 worldY - lvl.tileSize < lvl.player.worldY + lvl.player.screenY) {
-            g2D.drawImage(image, screenX, screenY, lvl.tileSize, lvl.tileSize, null);
+            g2D.drawImage(image, screenX, screenY, drawWidth, drawHeight, null);
         } else if(lvl.player.screenX > lvl.player.worldX ||
                 lvl.player.screenY > lvl.player.worldY ||
                 rightOffset > lvl.worldWidth - lvl.player.worldX ||
                 bottomOffset > lvl.worldHeight - lvl.player.worldY) {
-            g2D.drawImage(image, screenX, screenY, lvl.tileSize, lvl.tileSize, null);
+            g2D.drawImage(image, screenX, screenY, drawWidth, drawHeight, null);
         }
         }
     }

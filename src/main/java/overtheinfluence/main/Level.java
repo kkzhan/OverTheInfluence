@@ -143,7 +143,13 @@ public class Level extends JPanel implements Runnable {
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
         complete = false;
-        player = new Player(this, keyIn);
+        int speed = 0;
+        if(this instanceof Exploration || this instanceof Recovery || this instanceof RecoveryPart2) {
+            speed = 5;
+        } else if(this instanceof InnerDemons) {
+            speed = 2;
+        }
+        player = new Player(this, keyIn, speed);
     }
 
     /**

@@ -44,21 +44,24 @@ public class Player extends Entity {
      */
     public final int screenX, screenY;
 
-
     /**
      * the Player constructor
      *
      * @param lvl   the level the player is in
      * @param keyIn the input monitor for the player's keys
      */
-    public Player(Level lvl, KeyInput keyIn) {
+    public Player(Level lvl, KeyInput keyIn, int speed) {
         this.lvl = lvl;
         this.keyIn = keyIn;
 
         screenX = lvl.screenWidth / 2 - lvl.tileSize / 2;
         screenY = lvl.screenHeight / 2 - lvl.tileSize / 2;
 
-        defaultValue();
+
+        worldX = lvl.tileSize * lvl.maxWorldCols / 2;
+        worldY = lvl.tileSize * lvl.maxWorldRows / 2;
+        this.speed = speed;
+        direction = "down";
         getPlayerImage();
 
         area = new Rectangle();
@@ -68,16 +71,6 @@ public class Player extends Entity {
         areaDefaultY = area.y;
         area.width = 9;
         area.height = 13;
-    }
-
-    /**
-     * sets the player's default values
-     */
-    public void defaultValue() {
-        worldX = lvl.tileSize * lvl.maxWorldCols / 2;
-        worldY = lvl.tileSize * lvl.maxWorldRows / 2;
-        speed = 4;
-        direction = "down";
     }
 
     /**

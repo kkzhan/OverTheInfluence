@@ -8,6 +8,7 @@ Object for all classes in object folder
 Create Desk, Bed
 Add AlleyFence to tiles
 Create car
+Replace door sound
 
 Track Work Done:
 - pausing

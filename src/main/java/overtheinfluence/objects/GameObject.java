@@ -17,6 +17,11 @@ public class GameObject {
     public int drawWidth = 48;
     public int drawHeight = 48;
 
+    public void setPosition(int x, int y) {
+        worldX = x;
+        worldY = y;
+    }
+
     public void draw(Graphics2D g2D, Level lvl) {
         int screenX = worldX - lvl.player.worldX + lvl.player.screenX;
         int screenY = worldY - lvl.player.worldY + lvl.player.screenY;

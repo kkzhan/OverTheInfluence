@@ -2,7 +2,7 @@ package objects;
 
 import main.AssetSetter;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 import java.awt.*;
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ public class Couch extends GameObject {
         }
         collision = true;
         drawWidth = 32;
-        drawHeight = 96;
+        drawHeight = 64;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
     }
 }

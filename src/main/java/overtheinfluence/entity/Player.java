@@ -1,6 +1,7 @@
 package entity;
 
 import main.*;
+import objects.TeleportationBlock;
 
 import javax.imageio.*;
 import java.awt.*;
@@ -176,6 +177,16 @@ public class Player extends Entity {
                     if(keyIn.interact) {
                         lvl.objects.remove(index);
                         lvl.playSFX(2);
+                    }
+                    break;
+                case "TeleportationBlock":
+                    if(keyIn.interact && ((TeleportationBlock)(lvl.objects.get(index))).requireInteract) {
+                        worldX = ((TeleportationBlock)(lvl.objects.get(index))).targetX;
+                        worldY = ((TeleportationBlock)(lvl.objects.get(index))).targetY;
+                    } else if(!((TeleportationBlock)(lvl.objects.get(index))).requireInteract) {
+                        System.out.println("You can't use this block yet");
+                        worldX = ((TeleportationBlock)(lvl.objects.get(index))).targetX;
+                        worldY = ((TeleportationBlock)(lvl.objects.get(index))).targetY;
                     }
             }
         }

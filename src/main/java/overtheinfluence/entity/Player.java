@@ -58,9 +58,16 @@ public class Player extends Entity {
         screenX = lvl.screenWidth / 2 - lvl.tileSize / 2;
         screenY = lvl.screenHeight / 2 - lvl.tileSize / 2;
 
+        if(lvl.levelNum == 1) {
+            worldX = lvl.tileSize * 3;
+            worldY = (int)(lvl.tileSize * 5.25);
+        } else if(lvl.levelNum == 2) {
 
-        worldX = lvl.tileSize * lvl.maxWorldCols / 2;
-        worldY = lvl.tileSize * lvl.maxWorldRows / 2;
+        } else if(lvl.levelNum == 3) {
+
+        } else if(lvl.levelNum == 4) {
+
+        }
         this.speed = speed;
         direction = "down";
         getPlayerImage();

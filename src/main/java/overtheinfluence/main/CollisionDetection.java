@@ -11,7 +11,8 @@ import java.awt.*;
  * <p>This class is used for detection collision between entities, namely the player, and the tiles being moved over.</p>
  *
  * <p>Work Allocation:<ul>
- * <li>Collision Detection - Kevin Zhan</li>
+ * <li>Tile Collision Detection - Kevin Zhan</li>
+ * <li>Object Collision Detection - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -99,14 +100,14 @@ public class CollisionDetection {
             lvl.objects.get(i).area.y = lvl.objects.get(i).worldY + lvl.objects.get(i).area.y;
 
             if (isPlayer) {
-                Rectangle nonsolid = new Rectangle(e.area.x - 7, e.area.y - 30, e.area.width + 14, e.area.height + 5);
+                Rectangle nonsolid = new Rectangle(e.area.x - 7, e.area.y - 30, e.area.width + 14, e.area.height + 48);
                 if (nonsolid.intersects(lvl.objects.get(i).area)) {
                     index = i;
                 }
                 if (((Player) e).keyIn.left) {
                     e.area.x -= e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        e.collidingL = true;
+                        if(lvl.objects.get(i).collision) e.collidingL = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -115,7 +116,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.right) {
                     e.area.x += e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        e.collidingR = true;
+                        if(lvl.objects.get(i).collision) e.collidingR = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -124,7 +125,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.up) {
                     e.area.y -= e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        e.collidingT = true;
+                        if(lvl.objects.get(i).collision) e.collidingT = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -133,7 +134,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.down) {
                     e.area.y += e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        e.collidingB = true;
+                        if(lvl.objects.get(i).collision) e.collidingB = true;
                         index = i;
                     }
                 }

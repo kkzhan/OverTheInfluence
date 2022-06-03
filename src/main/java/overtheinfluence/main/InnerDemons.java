@@ -12,10 +12,11 @@ package main;
  * @version 1.0
  */
 
-public class InnerDemons extends Level{
-    /** default constructor for InnerDemons */
+public class InnerDemons extends Level {
+    /**
+     * default constructor for InnerDemons
+     */
     public InnerDemons() {
-        super("map1");
-        this.levelNum = 2;
+        super("map1", 2);
     }
 }

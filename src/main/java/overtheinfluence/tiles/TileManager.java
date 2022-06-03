@@ -1,6 +1,7 @@
 package tiles;
 
 import main.*;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -13,9 +14,9 @@ import java.util.*;
  * from a text file.</p>
  *
  * <p>Work Allocation:<ul>
- *     <li>Process tile images - Kevin Zhan</li>
- *     <li>Process map - Kevin Zhan</li>
- *     <li>Draw tiles on map - Kevin Zhan</li>
+ * <li>Process tile images - Kevin Zhan</li>
+ * <li>Process map - Kevin Zhan</li>
+ * <li>Draw tiles on map - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -41,7 +42,7 @@ public class TileManager {
     /**
      * constructor for the tile manager
      *
-     * @param lvl the level that is being played
+     * @param lvl     the level that is being played
      * @param mapName the name of the map file
      */
     public TileManager(Level lvl, String mapName) {
@@ -55,22 +56,20 @@ public class TileManager {
      * processes the tile images
      */
     public void tileImg() {
-        tile[0] = new Tile("/resources/tiles/divider.png", true);
-        tile[1] = new Tile("/resources/tiles/streetHor.png");
-        tile[2] = new Tile("/resources/tiles/streetVer.png");
-        tile[3] = new Tile("/resources/tiles/streetInt.png");
-        tile[4] = new Tile("/resources/tiles/sidewalk.png");
-        tile[5] = new Tile("/resources/tiles/grass1.png");
-        tile[6] = new Tile("/resources/tiles/grass2.png");
-        tile[7] = new Tile("/resources/tiles/houseWall.png", true);
-        tile[8] = new Tile("/resources/tiles/lvl1Floor.png");
-        tile[9] = new Tile("/resources/tiles/lvl1Asphalt.png");
-        tile[10] = new Tile("/resources/tiles/lvl1Pavement.png");
-
-
-
-
-        tile[10] = new Tile("/resources/tiles/lvl3Floor.png");
+        if (lvl.levelNum == 1) {
+            tile[0] = new Tile("/resources/tiles/divider.png", true);
+            tile[1] = new Tile("/resources/tiles/streetHor.png");
+            tile[2] = new Tile("/resources/tiles/streetVer.png");
+            tile[3] = new Tile("/resources/tiles/streetInt.png");
+            tile[4] = new Tile("/resources/tiles/sidewalk.png");
+            tile[5] = new Tile("/resources/tiles/lvl1Grass1.png");
+            tile[6] = new Tile("/resources/tiles/lvl1Grass2.png");
+            tile[7] = new Tile("/resources/tiles/lvl1Pavement.png");
+            tile[8] = new Tile("/resources/tiles/lvl1Floor.png");
+            tile[9] = new Tile("/resources/tiles/lvl1Asphalt.png");
+            tile[10] = new Tile("/resources/tiles/houseWall.png", true);
+            tile[11] = new Tile("/resources/tiles/lvl1Fence.png", true);
+        }
     }
 
     /**
@@ -90,8 +89,35 @@ public class TileManager {
             while (col < lvl.maxWorldCols && row < lvl.maxWorldRows) {
                 String line = br.readLine();
                 while (col < lvl.maxWorldCols) {
-                    String[] nums = line.split(" ");
-                    int num = Integer.parseInt(nums[col]);
+                    String[] nums = line.split("");
+                    int num = 0;
+                    try {
+                        num = Integer.parseInt(nums[col]);
+                    } catch (Exception e) {
+                        switch (nums[col]) {
+                            case "a":
+                                num = 10;
+                                break;
+                            case "b":
+                                num = 11;
+                                break;
+                            case "c":
+                                num = 12;
+                                break;
+                            case "d":
+                                num = 13;
+                                break;
+                            case "e":
+                                num = 14;
+                                break;
+                            case "f":
+                                num = 15;
+                                break;
+                            case "g":
+                                num = 16;
+                                break;
+                        }
+                    }
                     tileMap[col][row] = num;
                     col++;
                 }
@@ -101,7 +127,6 @@ public class TileManager {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -120,18 +145,18 @@ public class TileManager {
             int screenY = worldY - lvl.player.worldY + lvl.player.screenY;
 
             //stop moving camera at edge
-            if(lvl.player.screenX > lvl.player.worldX) {
+            if (lvl.player.screenX > lvl.player.worldX) {
                 screenX = worldX;
             }
-            if(lvl.player.screenY > lvl.player.worldY) {
+            if (lvl.player.screenY > lvl.player.worldY) {
                 screenY = worldY;
             }
             int rightOffset = lvl.screenWidth - lvl.player.screenX;
             int bottomOffset = lvl.screenHeight - lvl.player.screenY;
-            if(rightOffset > lvl.worldWidth - lvl.player.worldX) {
+            if (rightOffset > lvl.worldWidth - lvl.player.worldX) {
                 screenX = lvl.screenWidth - lvl.worldWidth + worldX;
             }
-            if(bottomOffset > lvl.worldHeight - lvl.player.worldY) {
+            if (bottomOffset > lvl.worldHeight - lvl.player.worldY) {
                 screenY = lvl.screenHeight - lvl.worldHeight + worldY;
             }
 
@@ -141,7 +166,7 @@ public class TileManager {
                     worldY + lvl.tileSize > lvl.player.worldY - lvl.player.screenY &&
                     worldY - lvl.tileSize < lvl.player.worldY + lvl.player.screenY) {
                 g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY, lvl.tileSize, lvl.tileSize, null);
-            } else if(lvl.player.screenX > lvl.player.worldX ||
+            } else if (lvl.player.screenX > lvl.player.worldX ||
                     lvl.player.screenY > lvl.player.worldY ||
                     rightOffset > lvl.worldWidth - lvl.player.worldX ||
                     bottomOffset > lvl.worldHeight - lvl.player.worldY) {

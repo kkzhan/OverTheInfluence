@@ -2,21 +2,19 @@ package objects;
 
 import main.*;
 
+import javax.imageio.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.image.*;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
  * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
  *
- * <p>This is the superclass for all objects in the game.</p>
+ * <p>This class arrows that will hover above important object or NPCs in the game.</p>
  *
  * <p>Work Allocation:<ul>
- *     <li>GameObject class - Kevin Zhan</li>
- *     <li>Drawing of objects - Kevin Zhan</li>
- *     <li>Image reflection - Kevin Zhan</li>
- *     <li>Object artwork design - Alexander Peng</li>
+ *     <li>IndicateArrow class - Kevin Zhan</li>
+ *     <li>Arrow animation - Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -25,54 +23,62 @@ import java.awt.image.*;
  * @version 1.0
  */
 
-public class GameObject {
+public class IndicateArrow extends GameObject {
     /**
-     * the image of the object in the game
+     * the counter for the frames of the arrows display animation
      */
-    public BufferedImage image;
+    public int frameCount;
     /**
-     * the name of the object
+     * the frame of the arrows display animation
      */
-    public String name;
+    public int frame;
     /**
-     * whether the object can be collided with and blocks the player and other objects
+     * the first image of the arrows display animation
      */
-    public boolean collision;
+    BufferedImage arrow1;
     /**
-     * the x and y coordinates of the object in the world
+     * the second image of the arrows display animation
      */
-    public int worldX, worldY;
-    /**
-     * the rectangular area that represents the hitbox of the object
-     */
-    public Rectangle area = new Rectangle(0, 0, 48, 48);
-    /**
-     * the default x and y coordinates of the object in the world
-     */
-    public int areaDefaultX = 0, areaDefaultY = 0;
-    /**
-     * determines the dimensions of the displayed image of the object
-     */
-    public int drawWidth = 48, drawHeight = 48;
+    BufferedImage arrow2;
 
     /**
-     * updates the position of the object in the world
+     * Constructor for the IndicateArrow class
      *
-     * @param x the new x position of the object
-     * @param y the new y position of the object
+     * @param x the x coordinate of the arrow
+     * @param y the y coordinate of the arrow
      */
-    public void setPosition(int x, int y) {
-        worldX = x;
-        worldY = y;
+    public IndicateArrow(int x, int y) {
+        name = "IndicateArrow";
+        collision = false;
+        drawWidth = 28;
+        drawHeight = 40;
+        area = new Rectangle(x, y, drawWidth, drawHeight);
+        frameCount = 0;
+        try {
+            arrow1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/arrow1.png"));
+            arrow2 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/arrow2.png"));
+        } catch (Exception e) {
+        }
     }
 
     /**
-     * draws the object
+     * Draws the arrow
      *
-     * @param g2D the graphics object used to draw the object
-     * @param lvl the level the object is being drawn for
+     * @param g2D the graphics object
+     * @param lvl the level the arrow is in
      */
     public void draw(Graphics2D g2D, Level lvl) {
+        frameCount++;
+        if (frameCount > 20 && frame == 0) {
+            image = arrow1;
+            frame = 1;
+            frameCount = 0;
+        } else if (frameCount > 10 && frame == 1) {
+            image = arrow2;
+            frame = 0;
+            frameCount = 0;
+        }
+
         int screenX = worldX - lvl.player.worldX + lvl.player.screenX;
         int screenY = worldY - lvl.player.worldY + lvl.player.screenY;
 
@@ -83,6 +89,7 @@ public class GameObject {
         if (lvl.player.screenY > lvl.player.worldY) {
             screenY = worldY;
         }
+
         int rightOffset = lvl.screenWidth - lvl.player.screenX;
         int bottomOffset = lvl.screenHeight - lvl.player.screenY;
         if (rightOffset > lvl.worldWidth - lvl.player.worldX) {
@@ -104,19 +111,5 @@ public class GameObject {
                 bottomOffset > lvl.worldHeight - lvl.player.worldY) {
             g2D.drawImage(image, screenX, screenY, drawWidth, drawHeight, null);
         }
-    }
-
-    /**
-     * reflects the image of the object
-     *
-     * @param image the image of the object
-     * @return the reflected image
-     */
-    public BufferedImage reflectImage(BufferedImage image) {
-        AffineTransform trans = AffineTransform.getScaleInstance(-1, 1);
-        trans.translate(-image.getWidth(null), 0);
-        AffineTransformOp op = new AffineTransformOp(trans, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        image = op.filter(image, null);
-        return image;
     }
 }

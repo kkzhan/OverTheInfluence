@@ -17,7 +17,6 @@ public class Exploration extends Level {
      * default constructor for Exploration
      */
     public Exploration() {
-        super("map1");
-        this.levelNum = 1;
+        super("map1", 1);
     }
 }

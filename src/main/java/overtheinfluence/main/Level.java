@@ -74,7 +74,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * frame rate for game animation
      */
-    int FPS = 60;
+    int FPS = 30;
 
     /**
      * the tile manager that draws tiles for the world map
@@ -112,7 +112,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * stores all objects in the game
      */
-    public ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    public ArrayList<GameObject> objects = new ArrayList<>();
 
     /**
      * the game state (1 = playing, 2 = paused)
@@ -134,8 +134,10 @@ public class Level extends JPanel implements Runnable {
      * the constructor for the level class
      *
      * @param mapName the name of the map file to be loaded
+     * @param levelNum the level number
      */
-    public Level(String mapName) {
+    public Level(String mapName, int levelNum) {
+        this.levelNum = levelNum;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.addKeyListener(keyIn);
         this.setFocusable(true);
@@ -145,9 +147,9 @@ public class Level extends JPanel implements Runnable {
         complete = false;
         int speed = 0;
         if(this instanceof Exploration || this instanceof Recovery || this instanceof RecoveryPart2) {
-            speed = 5;
+            speed = 8;
         } else if(this instanceof InnerDemons) {
-            speed = 2;
+            speed = 4;
         }
         player = new Player(this, keyIn, speed);
     }
@@ -200,7 +202,6 @@ public class Level extends JPanel implements Runnable {
      * @return true if the level is complete
      */
     public boolean isComplete() {
-        System.out.println("isComplete: " + complete);
         return complete;
     }
 
@@ -221,8 +222,11 @@ public class Level extends JPanel implements Runnable {
 
         tm.draw(g2D); //draw tiles before player so that player can walk on top of tiles
         //object in between tile and player
-        for (GameObject obj : objects) {
-            obj.draw(g2D, this);
+        try {
+            for (GameObject obj : objects) {
+                obj.draw(g2D, this);
+            }
+        } catch (ConcurrentModificationException e) {
         }
         player.draw(g2D);
         ui.draw(g2D);

@@ -10,11 +10,7 @@ import java.io.IOException;
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
  * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
  *
- * <p>This class represents Couch objects in the world.</p>
- *
- * <p>Work Allocation:<ul>
- *     <li>Couch class - Kevin Zhan</li>
- * </ul></p>
+ * <p>This class represents Bed objects in the world.</p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
  *
@@ -22,24 +18,24 @@ import java.io.IOException;
  * @version 1.0
  */
 
-public class Couch extends GameObject {
+public class Bed extends GameObject {
     /**
-     * the constructor for Couch objects
+     * the constructor for the Bed class
      *
-     * @param assetSetter the asset setter used to set the couch in the world
+     * @param assetSetter the asset setter used to add the bed to the world
      */
-    public Couch(AssetSetter assetSetter) {
-        name = "Couch";
+    public Bed(AssetSetter assetSetter) {
+        name = "Bed";
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Couch.png"));
+                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Bed.png"));
             } else if (assetSetter.lvl.levelNum == 4) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Couch.png"));
+                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Bed.png"));
             }
         } catch (IOException e) {
         }
         collision = true;
-        drawWidth = 32;
+        drawWidth = 84;
         drawHeight = 96;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
     }

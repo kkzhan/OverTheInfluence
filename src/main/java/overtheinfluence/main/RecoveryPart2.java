@@ -13,9 +13,10 @@ package main;
  */
 
 public class RecoveryPart2 extends Level {
-    /** default constructor for RecoveryPart2 */
+    /**
+     * default constructor for RecoveryPart2
+     */
     public RecoveryPart2() {
-        super("map1");
-        this.levelNum = 4;
+        super("map1", 4);
     }
 }

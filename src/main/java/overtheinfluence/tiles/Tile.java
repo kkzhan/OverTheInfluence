@@ -13,6 +13,7 @@ import java.util.Objects;
  *
  * <p>Work Allocation:<ul>
  *     <li>create Tile - Kevin Zhan</li>
+ *     <li>tile artwork design - Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>

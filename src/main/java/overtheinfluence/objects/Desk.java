@@ -39,7 +39,7 @@ public class Desk extends GameObject {
         } catch (IOException e) {
         }
         collision = true;
-        drawWidth = 32;
+        drawWidth = 30;
         drawHeight = 64;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
     }

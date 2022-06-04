@@ -41,7 +41,11 @@ public class Door extends GameObject {
         setPosition(x, y);
         name = "Door";
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/door.png"));
+            if(assetSetter.lvl.levelNum == 1) {
+                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl1Door.png"));
+            } else if(assetSetter.lvl.levelNum == 4) {
+                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl3Door.png"));
+            }
         } catch (IOException e) {
         }
         collision = true;

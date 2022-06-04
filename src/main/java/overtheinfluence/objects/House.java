@@ -40,7 +40,7 @@ public class House extends GameObject {
      * @param targetX the x coordinate of the house's teleportation block's target position
      * @param targetY the y coordinate of the house's teleportation block's target position
      */
-    public House(AssetSetter assetSetter, int targetX, int targetY) {
+    public House(AssetSetter assetSetter, int targetX, int targetY, boolean trigger, boolean teleport) {
         name = "House";
         try {
             if (assetSetter.lvl.levelNum == 1) {
@@ -61,23 +61,23 @@ public class House extends GameObject {
                 assetSetter.lvl.player.worldY = targetY;
             }
         };
-        triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150, false) {
-            @Override
-            public void trigger() {
-                String message = "This is not your house so you can't enter";
-                //make message on UI that says "This is not your house so you can't enter"
-            }
-        };
-    }
-
-    /**
-     * sets the message to be displayed when door is interacted with
-     *
-     * @param message the message to be displayed
-     */
-    public void setMessage(String message) {
-        teleportDoor.message = message;
-        triggerDoor.message = message;
+        if(teleport) {
+            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150, false) {
+                @Override
+                public void trigger() {
+                    String message = "Press E to enter";
+                    assetSetter.lvl.ui.showMessage(message);
+                }
+            };
+        } else {
+            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150, false) {
+                @Override
+                public void trigger() {
+                    String message = "This is not your house so you can't enter";
+                    assetSetter.lvl.ui.showMessage(message);
+                }
+            };
+        }
     }
 
     @Override

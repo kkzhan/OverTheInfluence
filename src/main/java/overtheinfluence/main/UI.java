@@ -65,9 +65,18 @@ public class UI {
      */
     public void draw(Graphics2D g2D) {
         this.g2D = g2D;
-        g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 5));
-        g2D.setColor(Color.WHITE);
+
+        if(msgOn) {
+            g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+            g2D.setColor(Color.GRAY);
+            g2D.fillRect(centerText(msg) - 5, lvl.player.screenY - 20, (int) g2D.getFontMetrics().getStringBounds(msg, g2D).getWidth() + 10, 20);
+            g2D.setColor(Color.WHITE);
+            g2D.drawString(msg, centerText(msg), lvl.player.screenY - 5);
+        }
+
         if (lvl.gameState == 2) {
+            g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 5));
+            g2D.setColor(Color.WHITE);
             screenPaused();
         }
     }

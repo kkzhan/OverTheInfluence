@@ -1,7 +1,7 @@
 package entity;
 
 import main.*;
-import objects.TeleportationBlock;
+import objects.*;
 
 import javax.imageio.*;
 import java.awt.*;
@@ -73,12 +73,12 @@ public class Player extends Entity {
         getPlayerImage();
 
         area = new Rectangle();
-        area.x = 19;
+        area.x = 21;
         area.y = 30;
         areaDefaultX = area.x;
         areaDefaultY = area.y;
-        area.width = 9;
-        area.height = 13;
+        area.width = 5;
+        area.height = 6;
     }
 
     /**
@@ -181,19 +181,35 @@ public class Player extends Entity {
             String name = lvl.objects.get(index).name;
             switch (name) {
                 case "Door":
+                    lvl.ui.showMessage("Press E to open door");
                     if(keyIn.interact) {
-                        lvl.objects.remove(index);
+                        Door temp = (Door) lvl.objects.get(index);
+                        GameObject nullObj = new GameObject();
+                        lvl.objects.set(index, nullObj);
                         lvl.playSFX(2);
+                        Thread tempThread = new Thread(() -> {
+                            try {
+                                Thread.sleep(1000);
+                                lvl.objects.set(index, temp);
+                            } catch (InterruptedException e) {
+                            }
+                        });
+                        tempThread.start();
                     }
                     break;
                 case "TeleportationBlock":
                     if(keyIn.interact && ((TeleportationBlock)(lvl.objects.get(index))).requireInteract) {
-                        worldX = ((TeleportationBlock)(lvl.objects.get(index))).targetX;
-                        worldY = ((TeleportationBlock)(lvl.objects.get(index))).targetY;
+                        ((TeleportationBlock)(lvl.objects.get(index))).teleport();
                     } else if(!((TeleportationBlock)(lvl.objects.get(index))).requireInteract) {
-                        System.out.println("You can't use this block yet");
-                        worldX = ((TeleportationBlock)(lvl.objects.get(index))).targetX;
-                        worldY = ((TeleportationBlock)(lvl.objects.get(index))).targetY;
+                        ((TeleportationBlock)(lvl.objects.get(index))).teleport();
+                    }
+                    break;
+                case "TriggerBlock":
+                    lvl.ui.showMessage(((TriggerBlock)(lvl.objects.get(index))).message);
+                    if(keyIn.interact && ((TriggerBlock)(lvl.objects.get(index))).requireInteract) {
+                        ((TriggerBlock)(lvl.objects.get(index))).trigger();
+                    } else {
+                        ((TriggerBlock)(lvl.objects.get(index))).trigger();
                     }
             }
         }

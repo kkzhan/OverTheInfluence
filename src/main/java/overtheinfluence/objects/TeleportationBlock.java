@@ -23,10 +23,7 @@ public abstract class TeleportationBlock extends GameObject {
      * whether the block requires the player to press a button to interact with it
      */
     public boolean requireInteract;
-    /**
-     * the message to display when the player interacts with the block
-     */
-    public String message;
+
     /**
      * the x and y coordinates of the target teleport destination
      */

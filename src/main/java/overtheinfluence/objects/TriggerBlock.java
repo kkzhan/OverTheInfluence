@@ -20,10 +20,6 @@ import java.awt.*;
 
 public abstract class TriggerBlock extends GameObject {
     /**
-     * whether the block requires the player to press a button to interact with it
-     */
-    public boolean requireInteract;
-    /**
      * the message to display when the player interacts with the block
      */
     public String message;
@@ -35,13 +31,12 @@ public abstract class TriggerBlock extends GameObject {
      * @param height the height of the block
      * @param x the x-coordinate of the block
      * @param y the y-coordinate of the block
-     * @param requireInteract whether the block requires the player to press a button to interact with it
      */
-    public TriggerBlock(int width, int height, int x, int y, boolean requireInteract) {
+    public TriggerBlock(int width, int height, int x, int y) {
         name = "TriggerBlock";
         area = new Rectangle(x, y, width, height);
-        this.requireInteract = requireInteract;
         collision = false;
+        this.setPosition(x, y);
     }
 
     /**

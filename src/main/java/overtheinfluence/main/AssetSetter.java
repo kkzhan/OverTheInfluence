@@ -51,17 +51,17 @@ public class AssetSetter {
         lvl.objects.get(3).setPosition(3 * lvl.tileSize, 3 * lvl.tileSize);
         lvl.objects.add(new Bed(this));
         lvl.objects.get(4).setPosition((int) (8.25 * lvl.tileSize), 3 * lvl.tileSize);
-        lvl.objects.add(new House(this, -1, -1, true, false));
+        lvl.objects.add(new House(this, -1, -1, false));
         lvl.objects.get(5).setPosition((int) (11.85 * lvl.tileSize), (int) (31.5 * lvl.tileSize));
-        lvl.objects.add(new House(this, -1, -1, true, false));
+        lvl.objects.add(new House(this, -1, -1, false));
         lvl.objects.get(6).setPosition((int) (6.85 * lvl.tileSize), (int) (31.5 * lvl.tileSize));
-        lvl.objects.add(new House(this, 8 * lvl.tileSize, 21 * lvl.tileSize, false, true));
+        lvl.objects.add(new House(this, 8 * lvl.tileSize, 21 * lvl.tileSize, true));
         lvl.objects.get(7).setPosition((int) (1.85 * lvl.tileSize), (int) (31.5 * lvl.tileSize));
+        lvl.objects.add(new Door(this, 8 * lvl.tileSize, 23 * lvl.tileSize, true, (int) (1.8 * lvl.tileSize) + 85, (int) (36.25 * lvl.tileSize)));
+        lvl.objects.add(((Door) (lvl.objects.get(8))).teleport);
         lvl.objects.add(((House) lvl.objects.get(5)).triggerDoor);
         lvl.objects.add(((House) lvl.objects.get(6)).triggerDoor);
-        lvl.objects.add(((House) lvl.objects.get(7)).teleportDoor);
-        lvl.objects.add(new Door(this, 8 * lvl.tileSize, 23 * lvl.tileSize, true, (int) (1.8 * lvl.tileSize) + 85, (int) (36.25 * lvl.tileSize)));
-        lvl.objects.add(((Door) (lvl.objects.get(11))).teleport);
+        lvl.objects.add(((House) lvl.objects.get(7)).triggerDoor);
         if (lvl instanceof Exploration) {
             lvl.objects.add(new Desk(this));
             lvl.objects.get(13).setPosition((int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);

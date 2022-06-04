@@ -33,10 +33,20 @@ public class UI {
      * the fonts used to draw text
      */
     Font font1, font2;
+    /**
+     * whether or not a message is currently being displayed
+     */
     public boolean msgOn;
+    /**
+     * the message to be displayed
+     */
     public String msg;
-    public int msgCnt;
-    public boolean gameFin;
+    /**
+     * how long the message has been displayed for
+     */
+    public int msgTime;
+
+    public int msgTimeLimit = 10;
 
     /**
      * constructor for the UI class
@@ -46,17 +56,31 @@ public class UI {
 
         try {
             font1 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf"));
+            font2 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf"));
         } catch (Exception e) {
         }
     }
 
     /**
-     * displays a message on the screen
+     * displays a message on the screen for 10 frames
      *
      * @param msg the message to display
      */
     public void showMessage(String msg) {
         this.msg = msg;
+        msgOn = true;
+        msgTimeLimit = 10;
+    }
+
+    /**
+     * displays a message on the screen for a certain amount of time
+     *
+     * @param msg the message to display
+     * @param time the time to display the message for
+     */
+    public void showMessage(String msg, int time) {
+        this.msg = msg;
+        this.msgTimeLimit = time;
         msgOn = true;
     }
 
@@ -66,12 +90,16 @@ public class UI {
     public void draw(Graphics2D g2D) {
         this.g2D = g2D;
 
-        if(msgOn) {
-            g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+        if(msgOn && msgTime <= msgTimeLimit) {
+            g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
             g2D.setColor(Color.GRAY);
             g2D.fillRect(centerText(msg) - 5, lvl.player.screenY - 20, (int) g2D.getFontMetrics().getStringBounds(msg, g2D).getWidth() + 10, 20);
             g2D.setColor(Color.WHITE);
             g2D.drawString(msg, centerText(msg), lvl.player.screenY - 5);
+            msgTime++;
+        } else if(msgOn) {
+            msgOn = false;
+            msgTime = 0;
         }
 
         if (lvl.gameState == 2) {

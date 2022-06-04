@@ -24,11 +24,6 @@ import java.io.*;
 
 public class House extends GameObject {
     /**
-     * a teleportation block within the door
-     */
-    public TeleportationBlock teleportDoor;
-
-    /**
      * a trigger block within the door
      */
     public TriggerBlock triggerDoor;
@@ -40,7 +35,7 @@ public class House extends GameObject {
      * @param targetX the x coordinate of the house's teleportation block's target position
      * @param targetY the y coordinate of the house's teleportation block's target position
      */
-    public House(AssetSetter assetSetter, int targetX, int targetY, boolean trigger, boolean teleport) {
+    public House(AssetSetter assetSetter, int targetX, int targetY, boolean teleport) {
         name = "House";
         try {
             if (assetSetter.lvl.levelNum == 1) {
@@ -54,26 +49,23 @@ public class House extends GameObject {
         drawWidth = 160;
         drawHeight = 215;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
-        teleportDoor = new TeleportationBlock(40, 75, area.x + 85, area.y + 150, targetX, targetY, true) {
-            @Override
-            public void teleport() {
-                assetSetter.lvl.player.worldX = targetX;
-                assetSetter.lvl.player.worldY = targetY;
-            }
-        };
         if(teleport) {
-            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150, false) {
+            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150) {
                 @Override
                 public void trigger() {
                     String message = "Press E to enter";
                     assetSetter.lvl.ui.showMessage(message);
+                    if(assetSetter.lvl.player.keyIn.interact) {
+                        assetSetter.lvl.player.worldX = targetX;
+                        assetSetter.lvl.player.worldY = targetY;
+                    }
                 }
             };
         } else {
-            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150, false) {
+            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150) {
                 @Override
                 public void trigger() {
-                    String message = "This is not your house so you can't enter";
+                    String message = "This is not your house you cannot enter";
                     assetSetter.lvl.ui.showMessage(message);
                 }
             };
@@ -83,7 +75,6 @@ public class House extends GameObject {
     @Override
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
-        teleportDoor.setPosition(x + 85, y + 150);
         triggerDoor.setPosition(x + 85, y + 150);
     }
 }

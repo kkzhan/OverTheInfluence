@@ -58,14 +58,14 @@ public class Player extends Entity {
         screenX = lvl.screenWidth / 2 - lvl.tileSize / 2;
         screenY = lvl.screenHeight / 2 - lvl.tileSize / 2;
 
-        if(lvl.levelNum == 1) {
+        if (lvl.levelNum == 1) {
             worldX = lvl.tileSize * 3;
-            worldY = (int)(lvl.tileSize * 5.25);
-        } else if(lvl.levelNum == 2) {
+            worldY = (int) (lvl.tileSize * 5.25);
+        } else if (lvl.levelNum == 2) {
 
-        } else if(lvl.levelNum == 3) {
+        } else if (lvl.levelNum == 3) {
 
-        } else if(lvl.levelNum == 4) {
+        } else if (lvl.levelNum == 4) {
 
         }
         this.speed = speed;
@@ -78,7 +78,7 @@ public class Player extends Entity {
         areaDefaultX = area.x;
         areaDefaultY = area.y;
         area.width = 5;
-        area.height = 6;
+        area.height = 7;
     }
 
     /**
@@ -113,16 +113,13 @@ public class Player extends Entity {
             if (keyIn.up) {
                 direction = "up";
                 worldY -= speed;
-            }
-            if (keyIn.down) {
+            } else if (keyIn.down) {
                 direction = "down";
                 worldY += speed;
-            }
-            if (keyIn.left) {
+            } else if (keyIn.left) {
                 direction = "left";
                 worldX -= speed;
-            }
-            if (keyIn.right) {
+            } else if (keyIn.right) {
                 direction = "right";
                 worldX += speed;
             }
@@ -136,13 +133,13 @@ public class Player extends Entity {
             //check object collision and interact with objects
             interactObject(lvl.collisionDetect.objectCollide(this, true));
 
-            if(collidingT) {
+            if (collidingT) {
                 worldY += speed;
             }
-            if(collidingB) {
+            if (collidingB) {
                 worldY -= speed;
             }
-            if(collidingL) {
+            if (collidingL) {
                 worldX += speed;
             }
             if (collidingR) {
@@ -177,40 +174,28 @@ public class Player extends Entity {
     }
 
     public void interactObject(int index) {
-        if(index != -1) {
+        if (index != -1) {
             String name = lvl.objects.get(index).name;
             switch (name) {
                 case "Door":
                     lvl.ui.showMessage("Press E to open door");
-                    if(keyIn.interact) {
+                    if (keyIn.interact) {
                         Door temp = (Door) lvl.objects.get(index);
-                        GameObject nullObj = new GameObject();
-                        lvl.objects.set(index, nullObj);
+                        lvl.objects.remove(index);
                         lvl.playSFX(2);
                         Thread tempThread = new Thread(() -> {
                             try {
                                 Thread.sleep(1000);
-                                lvl.objects.set(index, temp);
+                                lvl.objects.add(index, temp);
                             } catch (InterruptedException e) {
                             }
                         });
                         tempThread.start();
                     }
                     break;
-                case "TeleportationBlock":
-                    if(keyIn.interact && ((TeleportationBlock)(lvl.objects.get(index))).requireInteract) {
-                        ((TeleportationBlock)(lvl.objects.get(index))).teleport();
-                    } else if(!((TeleportationBlock)(lvl.objects.get(index))).requireInteract) {
-                        ((TeleportationBlock)(lvl.objects.get(index))).teleport();
-                    }
-                    break;
                 case "TriggerBlock":
-                    lvl.ui.showMessage(((TriggerBlock)(lvl.objects.get(index))).message);
-                    if(keyIn.interact && ((TriggerBlock)(lvl.objects.get(index))).requireInteract) {
-                        ((TriggerBlock)(lvl.objects.get(index))).trigger();
-                    } else {
-                        ((TriggerBlock)(lvl.objects.get(index))).trigger();
-                    }
+                    ((TriggerBlock) (lvl.objects.get(index))).trigger();
+                    break;
             }
         }
     }

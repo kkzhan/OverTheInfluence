@@ -1,9 +1,13 @@
 package objects;
 
+import entity.Entity;
 import main.*;
 
 import javax.imageio.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -22,7 +26,7 @@ import java.io.IOException;
  * @version 1.0
  */
 
-public class Car extends GameObject {
+public class Car extends Entity {
     /**
      * the constructor for car objects
      *
@@ -30,33 +34,49 @@ public class Car extends GameObject {
      * @param carNum the number used to identify the car to add to the world
      */
     public Car(AssetSetter assetSetter, int carNum) {
+        super(assetSetter.lvl);
+        int drawWidth = 96;
+        int drawHeight = 48;
         name = "Car";
         try {
             if(assetSetter.lvl.levelNum == 1) {
                 if (carNum == 0) {
-                    image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/redCar.png"));
+                    down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/redCar.png"));
                 } else if (carNum == 1) {
-                    image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/redCar.png"));
-                    image = reflectImage(image);
+                    down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/redCar.png"));
+                    down1 = reflectImage(down1);
                 } else if (carNum == 2) {
-                    image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/blueCar.png"));
+                    down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/blueCar.png"));
                 } else if (carNum == 3) {
-                    image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/blueCar.png"));
-                    image = reflectImage(image);
+                    down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/blueCar.png"));
+                    down1 = reflectImage(down1);
                 }
             } else if(assetSetter.lvl.levelNum == 4) {
                 if (carNum == 0 || carNum == 2) {
-                    image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/greyCar.png"));
+                    down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/greyCar.png"));
                 } else if (carNum == 1 || carNum == 3) {
-                    image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/greyCar.png"));
-                    image = reflectImage(image);
+                    down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/greyCar.png"));
+                    down1 = reflectImage(down1);
                 }
             }
         } catch (IOException e) {
         }
+        down1 = util.scaleImage(down1, drawWidth, drawHeight);
         collision = true;
-        drawWidth = 96;
-        drawHeight = 48;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
+    }
+
+    /**
+     * reflects the image of the object
+     *
+     * @param image the image of the object
+     * @return the reflected image
+     */
+    public BufferedImage reflectImage(BufferedImage image) {
+        AffineTransform trans = AffineTransform.getScaleInstance(-1, 1);
+        trans.translate(-image.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(trans, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        image = op.filter(image, null);
+        return image;
     }
 }

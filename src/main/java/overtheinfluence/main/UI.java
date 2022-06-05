@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.*;
+import java.io.*;
+import java.util.*;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -102,10 +104,82 @@ public class UI {
             msgTime = 0;
         }
 
-        if (lvl.gameState == 2) {
+        if (lvl.gameState == lvl.PAUSE_STATE) {
             g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 5));
             g2D.setColor(Color.WHITE);
             screenPaused();
+        }
+
+        if(lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
+            question();
+        }
+    }
+
+    /**
+     * displays dialogue with NPC or objects
+     */
+    public void dialogue() {
+        int x = lvl.tileSize * 2;
+        int y = lvl.tileSize/2 + lvl.tileSize * 5;
+        int width = lvl.screenWidth - (lvl.tileSize * 4);
+        int height = lvl.tileSize * 5;
+        drawWindow(x, y, width, height);
+
+        g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
+    }
+
+    /**
+     * draws a window
+     */
+    public void drawWindow(int x, int y, int width, int height) {
+        g2D.setColor(new Color(0,0,0,200));
+        g2D.fillRoundRect(x, y, width, height, 35, 35);
+        g2D.setColor(Color.WHITE);
+        int borderSize = 5;
+        g2D.setStroke(new BasicStroke(borderSize));
+        g2D.drawRoundRect(x + borderSize, y + borderSize, width - 2 * borderSize, height - 2 * borderSize, 35, 35);
+    }
+
+    /**
+     * allows the player to answer questions
+     */
+    public void question() {
+        int x = lvl.tileSize * 2;
+        int y = lvl.tileSize/2 + lvl.tileSize * 5;
+        int width = lvl.screenWidth - (lvl.tileSize * 4);
+        int height = lvl.tileSize * 5;
+        drawWindow(x, y, width, height);
+
+        g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+        int questionNum;
+        int numberOfQuestions = 1;
+        questionNum = (int) (Math.random() * numberOfQuestions) + 1;
+        BufferedReader br = null;
+        if(lvl.levelNum == 2) {
+            br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/questions/lvl2/question" + questionNum + ".txt")));
+        } else if(lvl.levelNum == 3 || lvl.levelNum == 4) {
+            br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/questions/lvl2/question" + questionNum + ".txt")));
+        }
+        ArrayList<String> lines = new ArrayList<>();
+        try {
+            String line = br.readLine();
+            while (line != null) {
+                lines.add(line);
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+        }
+        g2D.setColor(Color.WHITE);
+        x += lvl.tileSize;
+        for(int i = 0; i < lines.size() - 1; i++) {
+            y += lvl.tileSize/2;
+            g2D.drawString(lines.get(i), x, y);
+        }
+
+        boolean answerRight = false;
+        if(answerRight) {
+            lvl.gameState = lvl.PLAY_STATE;
+            lvl.updateOn = true;
         }
     }
 

@@ -1,8 +1,10 @@
 package objects;
 
+import entity.Entity;
 import main.*;
 
 import javax.imageio.*;
+import java.awt.*;
 import java.io.*;
 
 /**
@@ -20,7 +22,7 @@ import java.io.*;
  * @version 1.0
  */
 
-public class Door extends GameObject {
+public class Door extends Entity {
 
     /**
      * a teleportation block that will transport the player when in contact with it
@@ -38,19 +40,24 @@ public class Door extends GameObject {
      * @param targetY     the y coordinate of the teleportation block's target destination
      */
     public Door(AssetSetter assetSetter, int x, int y, boolean teleport, int targetX, int targetY) {
-        setPosition(x, y);
+        super(assetSetter.lvl);
+        int drawWidth = 48;
+        int drawHeight = 48;
+        worldX = x;
+        worldY = y;
         name = "Door";
         try {
             if(assetSetter.lvl.levelNum == 1) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl1Door.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl1Door.png"));
             } else if(assetSetter.lvl.levelNum == 4) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl3Door.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl3Door.png"));
             }
         } catch (IOException e) {
         }
+        down1 = util.scaleImage(down1, drawWidth, drawHeight);
         collision = true;
         if(teleport) {
-            this.teleport = new TriggerBlock(48, 18, x, y + 30) {
+            this.teleport = new TriggerBlock(assetSetter,48, 18, x, y + 30) {
                 @Override
                 public void trigger() {
                     assetSetter.lvl.player.worldX = targetX;
@@ -58,5 +65,6 @@ public class Door extends GameObject {
                 }
             };
         }
+        area = new Rectangle(x, y, drawWidth, drawHeight);
     }
 }

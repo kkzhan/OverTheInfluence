@@ -3,6 +3,7 @@ package main;
 import entity.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -172,5 +173,125 @@ public class CollisionDetection {
             lvl.objects.get(i).area.y = lvl.objects.get(i).areaDefaultY;
         }
         return index;
+    }
+
+    public int entityCollide(Entity e, ArrayList<Entity> entities, boolean isPlayer) {
+        int index = -1;
+        for (int i = 0; i < entities.size(); i++) {
+            e.area.x = e.worldX + e.area.x;
+            e.area.y = e.worldY + e.area.y;
+            entities.get(i).area.x = entities.get(i).worldX + entities.get(i).area.x;
+            entities.get(i).area.y = entities.get(i).worldY + entities.get(i).area.y;
+
+            if (isPlayer) {
+                Rectangle nonsolid = new Rectangle(e.area.x - 7, e.area.y - 30, e.area.width + 14, e.area.height + 48);
+                if (nonsolid.intersects(entities.get(i).area)) {
+                    index = i;
+                }
+                if (((Player) e).keyIn.left) {
+                    e.area.x -= e.speed;
+                    if (e.area.intersects(entities.get(i).area)) {
+                        if(entities.get(i).collision) e.collidingL = true;
+                        index = i;
+                    }
+                    e.area.x = e.areaDefaultX + e.worldX;
+                    e.area.y = e.areaDefaultY + e.worldY;
+                }
+                if (((Player) e).keyIn.right) {
+                    e.area.x += e.speed;
+                    if (e.area.intersects(entities.get(i).area)) {
+                        if(entities.get(i).collision) e.collidingR = true;
+                        index = i;
+                    }
+                    e.area.x = e.areaDefaultX + e.worldX;
+                    e.area.y = e.areaDefaultY + e.worldY;
+                }
+                if (((Player) e).keyIn.up) {
+                    e.area.y -= e.speed;
+                    if (e.area.intersects(entities.get(i).area)) {
+                        if(entities.get(i).collision) e.collidingT = true;
+                        index = i;
+                    }
+                    e.area.x = e.areaDefaultX + e.worldX;
+                    e.area.y = e.areaDefaultY + e.worldY;
+                }
+                if (((Player) e).keyIn.down) {
+                    e.area.y += e.speed;
+                    if (e.area.intersects(entities.get(i).area)) {
+                        if(entities.get(i).collision) e.collidingB = true;
+                        index = i;
+                    }
+                }
+            } else {
+                switch (e.direction) {
+                    case "up":
+                        e.area.y -= e.speed;
+                        if (e.area.intersects(entities.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                    case "down":
+                        e.area.y += e.speed;
+                        if (e.area.intersects(entities.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                    case "left":
+                        e.area.x -= e.speed;
+                        if (e.area.intersects(entities.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                    case "right":
+                        e.area.x += e.speed;
+                        if (e.area.intersects(entities.get(i).area)) {
+                            e.collidingL = true;
+                        }
+                        break;
+                }
+            }
+            e.area.x = e.areaDefaultX;
+            e.area.y = e.areaDefaultY;
+            entities.get(i).area.x = entities.get(i).areaDefaultX;
+            entities.get(i).area.y = entities.get(i).areaDefaultY;
+        }
+        return index;
+    }
+
+    public boolean checkPlayer(Entity e) {
+        e.area.x = e.worldX + e.area.x;
+        e.area.y = e.worldY + e.area.y;
+        Rectangle hitbox = new Rectangle(lvl.player.worldX, lvl.player.worldY, lvl.tileSize, lvl.tileSize);
+        switch(e.direction) {
+            case "up":
+                e.worldY -= e.speed;
+                if (e.area.intersects(hitbox)) {
+                    return true;
+                }
+                break;
+            case "down":
+                e.worldY += e.speed;
+                if (e.area.intersects(hitbox)) {
+                    return true;
+                }
+                break;
+            case "left":
+                e.worldX -= e.speed;
+                if (e.area.intersects(hitbox)) {
+                    return true;
+                }
+                break;
+            case "right":
+                e.worldX += e.speed;
+                if (e.area.intersects(hitbox)) {
+                    return true;
+                }
+                break;
+        }
+        e.area.x = e.areaDefaultX;
+        e.area.y = e.areaDefaultY;
+        lvl.player.area.x = lvl.player.areaDefaultX;
+        lvl.player.area.y = lvl.player.areaDefaultY;
+        return false;
     }
 }

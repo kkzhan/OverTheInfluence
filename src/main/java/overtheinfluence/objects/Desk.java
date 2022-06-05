@@ -1,5 +1,6 @@
 package objects;
 
+import entity.Entity;
 import main.*;
 
 import javax.imageio.*;
@@ -22,25 +23,27 @@ import java.io.*;
  * @version 1.0
  */
 
-public class Desk extends GameObject {
+public class Desk extends Entity {
     /**
      * the constructor for Desk objects
      *
      * @param assetSetter the asset setter used to set Desk objects in the world
      */
     public Desk(AssetSetter assetSetter) {
+        super(assetSetter.lvl);
+        int drawWidth = 30;
+        int drawHeight = 64;
         name = "Desk";
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Desk.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Desk.png"));
             } else if (assetSetter.lvl.levelNum == 4) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Desk.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Desk.png"));
             }
+            down1 = util.scaleImage(down1, drawWidth, drawHeight);
         } catch (IOException e) {
         }
         collision = true;
-        drawWidth = 30;
-        drawHeight = 64;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
     }
 }

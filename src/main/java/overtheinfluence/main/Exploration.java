@@ -16,7 +16,7 @@ public class Exploration extends Level {
     /**
      * default constructor for Exploration
      */
-    public Exploration() {
-        super("map1", 1);
+    public Exploration(Game game) {
+        super(1, game);
     }
 }

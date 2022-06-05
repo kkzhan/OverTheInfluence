@@ -1,5 +1,6 @@
 package objects;
 
+import entity.Entity;
 import main.*;
 
 import javax.imageio.*;
@@ -23,25 +24,27 @@ import java.io.*;
  * @version 1.0
  */
 
-public class KitchenTable extends GameObject {
+public class KitchenTable extends Entity {
     /**
      * the constructor for KitchenTable objects
      *
      * @param assetSetter the asset setter used to set the kitchen table in the world
      */
     public KitchenTable(AssetSetter assetSetter) {
+        super(assetSetter.lvl);
+        int drawWidth = 64;
+        int drawHeight = 64;
         name = "KitchenTable";
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1KitchenTable.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1KitchenTable.png"));
             } else if (assetSetter.lvl.levelNum == 4) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3KitchenTable.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3KitchenTable.png"));
             }
         } catch (IOException e) {
         }
+        down1 = util.scaleImage(down1, drawWidth, drawHeight);
         collision = true;
-        drawWidth = 64;
-        drawHeight = 64;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
     }
 }

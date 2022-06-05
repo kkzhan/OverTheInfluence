@@ -2,6 +2,7 @@ package tiles;
 
 import main.*;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -56,19 +57,41 @@ public class TileManager {
      * processes the tile images
      */
     public void tileImg() {
+        UtilTool util = new UtilTool();
         if (lvl.levelNum == 1) {
-            tile[0] = new Tile("/resources/tiles/divider.png", true);
-            tile[1] = new Tile("/resources/tiles/streetHor.png");
-            tile[2] = new Tile("/resources/tiles/streetVer.png");
-            tile[3] = new Tile("/resources/tiles/streetInt.png");
-            tile[4] = new Tile("/resources/tiles/sidewalk.png");
-            tile[5] = new Tile("/resources/tiles/lvl1Grass1.png");
-            tile[6] = new Tile("/resources/tiles/lvl1Grass2.png");
-            tile[7] = new Tile("/resources/tiles/lvl1Pavement.png");
-            tile[8] = new Tile("/resources/tiles/lvl1Floor.png");
-            tile[9] = new Tile("/resources/tiles/lvl1Asphalt.png");
-            tile[10] = new Tile("/resources/tiles/houseWall.png", true);
-            tile[11] = new Tile("/resources/tiles/lvl1Fence.png", true);
+            setup(0, "divider", true);
+            setup(1, "streetHor", false);
+            setup(2, "streetVer", false);
+            setup(3, "streetInt", false);
+            setup(4, "sidewalk", false);
+            setup(5, "lvl1Grass1", false);
+            setup(6, "lvl1Grass2", false);
+            setup(7, "lvl1Pavement", false);
+            setup(8, "lvl1Floor", false);
+            setup(9, "lvl1Asphalt", false);
+            setup(10, "houseWall", true);
+            setup(11, "lvl1Fence", true);
+        } else if (lvl.levelNum == 2) {
+            setup(0, "lvl3Floor", false);
+            setup(1, "streetHor", true);
+        }
+    }
+
+    /**
+     * helps setup the tiles
+     *
+     * @param index     the index of the tile
+     * @param path      the path to the image
+     * @param collision whether or not the tile is collidable
+     */
+    public void setup(int index, String path, boolean collision) {
+        UtilTool util = new UtilTool();
+        try {
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/tiles/" + path + ".png")));
+            tile[index].image = util.scaleImage(tile[index].image, lvl.tileSize, lvl.tileSize);
+            tile[index].collision = collision;
+        } catch (IOException e) {
         }
     }
 
@@ -165,12 +188,12 @@ public class TileManager {
                     worldX - lvl.tileSize < lvl.player.worldX + lvl.player.screenX &&
                     worldY + lvl.tileSize > lvl.player.worldY - lvl.player.screenY &&
                     worldY - lvl.tileSize < lvl.player.worldY + lvl.player.screenY) {
-                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY, lvl.tileSize, lvl.tileSize, null);
+                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY,null);
             } else if (lvl.player.screenX > lvl.player.worldX ||
                     lvl.player.screenY > lvl.player.worldY ||
                     rightOffset > lvl.worldWidth - lvl.player.worldX ||
                     bottomOffset > lvl.worldHeight - lvl.player.worldY) {
-                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY, lvl.tileSize, lvl.tileSize, null);
+                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY,null);
             }
             worldCol++;
             if (worldCol == lvl.maxWorldCols) {

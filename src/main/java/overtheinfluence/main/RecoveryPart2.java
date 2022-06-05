@@ -16,7 +16,7 @@ public class RecoveryPart2 extends Level {
     /**
      * default constructor for RecoveryPart2
      */
-    public RecoveryPart2() {
-        super("map1", 4);
+    public RecoveryPart2(Game game) {
+        super(2, game);
     }
 }

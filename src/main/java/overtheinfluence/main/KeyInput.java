@@ -9,7 +9,7 @@ import java.awt.event.*;
  * <p></p>
  *
  * <p>Work Allocation:<ul>
- *     <li>KeyInput- Alexander Peng</li>
+ * <li>KeyInput- Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -64,14 +64,18 @@ public class KeyInput implements KeyListener {
         if (key == KeyEvent.VK_E) {
             interact = true;
         }
-        if(key == KeyEvent.VK_P) {
-            if(lvl.gameState == 1) {
-                lvl.gameState = 2;
+        if (key == KeyEvent.VK_P) {
+            if (lvl.gameState == lvl.PLAY_STATE) {
+                lvl.gameState = lvl.PAUSE_STATE;
                 lvl.stopMusic();
-            } else if(lvl.gameState == 2) {
-                lvl.gameState = 1;
+            } else if (lvl.gameState == lvl.PAUSE_STATE) {
+                lvl.gameState = lvl.PLAY_STATE;
                 lvl.playMusic(-1);
             }
+        }
+        //key pressed is 1
+        if (key == KeyEvent.VK_1) {
+            System.out.println("1");
         }
     }
 

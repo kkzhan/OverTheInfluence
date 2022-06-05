@@ -1,5 +1,8 @@
 package objects;
 
+import entity.*;
+import main.AssetSetter;
+
 import java.awt.*;
 
 /**
@@ -18,25 +21,24 @@ import java.awt.*;
  * @version 1.0
  */
 
-public abstract class TriggerBlock extends GameObject {
-    /**
-     * the message to display when the player interacts with the block
-     */
-    public String message;
+public abstract class TriggerBlock extends Entity {
 
     /**
      * the constructor for the TriggerBlock class
      *
+     * @param assetSetter the asset setter
      * @param width the width of the block
      * @param height the height of the block
      * @param x the x-coordinate of the block
      * @param y the y-coordinate of the block
      */
-    public TriggerBlock(int width, int height, int x, int y) {
+    public TriggerBlock(AssetSetter assetSetter, int width, int height, int x, int y) {
+        super(assetSetter.lvl);
         name = "TriggerBlock";
         area = new Rectangle(x, y, width, height);
         collision = false;
-        this.setPosition(x, y);
+        worldX = x;
+        worldY = y;
     }
 
     /**

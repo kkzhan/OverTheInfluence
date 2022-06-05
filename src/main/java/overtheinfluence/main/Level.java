@@ -1,10 +1,11 @@
 package main;
 
 import entity.*;
-import objects.GameObject;
+import objects.*;
 import tiles.*;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.util.*;
 
@@ -27,6 +28,11 @@ import java.util.*;
  */
 
 public class Level extends JPanel implements Runnable {
+
+    /**
+     * the game that this level is a part of
+     */
+    public Game thisGame;
 
     /**
      * whether or not the game is complete
@@ -110,14 +116,31 @@ public class Level extends JPanel implements Runnable {
     public Player player;
 
     /**
-     * stores all objects in the game
+     * stores all entities in the game
      */
-    public ArrayList<GameObject> objects = new ArrayList<>();
+    public ArrayList<Entity> entities = new ArrayList<>();
 
     /**
-     * the game state (1 = playing, 2 = paused)
+     * stores all objects in the game
+     */
+    public ArrayList<Entity> objects = new ArrayList<>();
+
+    /**
+     * stores all NPCs in the game
+     */
+    public ArrayList<Entity> npcs = new ArrayList<>();
+
+    /**
+     * stores all projectiles in the game
+     */
+    public ArrayList<Projectile> projectiles = new ArrayList<>();
+
+    /**
+     * the game state (1 = playing, 2 = paused, 3 = question state)
      */
     public int gameState;
+
+    public final int PLAY_STATE = 1, PAUSE_STATE = 2, BARRIER_QUESTION_STATE = 3, SPEED_QUESTION_STATE = 4, QUESTION_STATE = 5;
 
     /**
      * manages sound effects
@@ -133,23 +156,23 @@ public class Level extends JPanel implements Runnable {
     /**
      * the constructor for the level class
      *
-     * @param mapName the name of the map file to be loaded
      * @param levelNum the level number
      */
-    public Level(String mapName, int levelNum) {
+    public Level(int levelNum, Game game) {
+        thisGame = game;
         this.levelNum = levelNum;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.addKeyListener(keyIn);
         this.setFocusable(true);
-        tm = new TileManager(this, mapName);
+        tm = new TileManager(this, "map" + levelNum);
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
         complete = false;
         int speed = 0;
-        if(this instanceof Exploration || this instanceof Recovery || this instanceof RecoveryPart2) {
+        if (this instanceof Exploration || this instanceof Recovery || this instanceof RecoveryPart2) {
             speed = 8;
-        } else if(this instanceof InnerDemons) {
-            speed = 4;
+        } else if (this instanceof InnerDemons) {
+            speed = 5;
         }
         player = new Player(this, keyIn, speed);
     }
@@ -159,7 +182,7 @@ public class Level extends JPanel implements Runnable {
      */
     public void setupLevel() {
         assetSetter.setObject();
-        gameState = 1;
+        gameState = PLAY_STATE;
         if (levelNum == 1 || levelNum == 4) {
             playMusic(0);
         } else if (levelNum == 2 || levelNum == 3) {
@@ -181,7 +204,7 @@ public class Level extends JPanel implements Runnable {
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-
+        ((InnerDemons) this).dumbShitLol();
         while (gameThread != null) {
             currentTime = System.nanoTime();
 
@@ -196,6 +219,7 @@ public class Level extends JPanel implements Runnable {
         }
     }
 
+
     /**
      * is the level complete?
      *
@@ -206,29 +230,79 @@ public class Level extends JPanel implements Runnable {
     }
 
     /**
+     * determines whether or not to update certain information
+     */
+    public boolean updateOn = true;
+
+    /**
      * updates the game information from the player's movement
      */
     public void update() {
-        if (gameState == 1) {
+        if (gameState == PLAY_STATE) {
             player.update();
+            for (int i = 0; i < projectiles.size(); i++) {
+                projectiles.get(i).update();
+            }
+        } else if (gameState == BARRIER_QUESTION_STATE || gameState == SPEED_QUESTION_STATE) {
+            if (updateOn) {
+                try {
+                    ui.showMessage("Answer this question on the first try to cure all debuffs", 30);
+                    Timer timer = new Timer(2000, e -> {
+                        ui.showMessage("Answer this question on the second try to cure the latest debuff", 30);
+                        Timer timer1 = new Timer(2000, e2 -> ui.showMessage("If you fail to answer the question you must endure the debuff", 30));
+                        timer1.setRepeats(false);
+                        timer1.start();
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
+                    updateOn = false;
+                } catch (Exception e) {
+                }
+            }
+            ui.question();
         }
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2D = (Graphics2D) g;
 
         tm.draw(g2D); //draw tiles before player so that player can walk on top of tiles
-        //object in between tile and player
-        try {
-            for (GameObject obj : objects) {
-                obj.draw(g2D, this);
-            }
-        } catch (ConcurrentModificationException e) {
+
+        //add entities to list
+        entities.add(player);
+
+        for (int i = 0; i < objects.size(); i++) {
+            entities.add(objects.get(i));
         }
-        player.draw(g2D);
+
+        for (int i = 0; i < npcs.size(); i++) {
+            entities.add(npcs.get(i));
+        }
+
+        for (int i = 0; i < projectiles.size(); i++) {
+            entities.add(projectiles.get(i));
+        }
+
+        //sort entities by y position
+        Collections.sort(entities, new Comparator<Entity>() {
+            @Override
+            public int compare(Entity e1, Entity e2) {
+                int result = Integer.compare(e1.worldY, e2.worldY);
+                return result;
+            }
+        });
+
+        //draw entities
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).draw(g2D);
+        }
+        //remove entities from list
+        for (int i = 0; i < entities.size(); i++) {
+            entities.remove(i);
+        }
+
         ui.draw(g2D);
 
         g2D.dispose();

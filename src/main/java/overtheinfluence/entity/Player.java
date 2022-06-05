@@ -3,11 +3,8 @@ package entity;
 import main.*;
 import objects.*;
 
-import javax.imageio.*;
 import java.awt.*;
 import java.awt.image.*;
-import java.io.*;
-import java.util.*;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -32,10 +29,6 @@ import java.util.*;
 
 public class Player extends Entity {
     /**
-     * the level the player is in
-     */
-    Level lvl;
-    /**
      * the input monitor for the player's keys
      */
     public KeyInput keyIn;
@@ -46,14 +39,35 @@ public class Player extends Entity {
     public final int screenX, screenY;
 
     /**
+     * additional images only used for the player
+     */
+    public BufferedImage up3, down3, left3, right3;
+
+    /**
+     * default speed
+     */
+    public final int defaultSpeed;
+
+    /**
+     * whether the player is currently debuffed
+     */
+    public boolean barrierDebuff;
+
+    /**
+     * timers for the player's speed debuff and barrier debuff
+     */
+    public int speedDebuffTimer, barrierDebuffTimer;
+
+    /**
      * the Player constructor
      *
      * @param lvl   the level the player is in
      * @param keyIn the input monitor for the player's keys
      */
     public Player(Level lvl, KeyInput keyIn, int speed) {
-        this.lvl = lvl;
+        super(lvl);
         this.keyIn = keyIn;
+        defaultSpeed = speed;
 
         screenX = lvl.screenWidth / 2 - lvl.tileSize / 2;
         screenY = lvl.screenHeight / 2 - lvl.tileSize / 2;
@@ -62,13 +76,14 @@ public class Player extends Entity {
             worldX = lvl.tileSize * 3;
             worldY = (int) (lvl.tileSize * 5.25);
         } else if (lvl.levelNum == 2) {
-
+            worldX = (int) (lvl.tileSize * 1.5);
+            worldY = lvl.worldHeight / 2 - lvl.tileSize / 2;
         } else if (lvl.levelNum == 3) {
 
         } else if (lvl.levelNum == 4) {
 
         }
-        this.speed = speed;
+        this.speed = defaultSpeed;
         direction = "down";
         getPlayerImage();
 
@@ -85,28 +100,44 @@ public class Player extends Entity {
      * gets and stores the images for each direction of the player
      */
     public void getPlayerImage() {
-        try {
-            up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_up_1.png")));
-            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_up_2.png")));
-            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_up_3.png")));
-            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_left_1.png")));
-            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_left_2.png")));
-            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_left_3.png")));
-            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_right_1.png")));
-            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_right_2.png")));
-            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_right_3.png")));
-            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_down_1.png")));
-            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_down_2.png")));
-            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/player/player_down_3.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        up1 = setup("player/player_up_1");
+        up2 = setup("player/player_up_2");
+        up3 = setup("player/player_up_3");
+        down1 = setup("player/player_down_1");
+        down2 = setup("player/player_down_2");
+        down3 = setup("player/player_down_3");
+        left1 = setup("player/player_left_1");
+        left2 = setup("player/player_left_2");
+        left3 = setup("player/player_left_3");
+        right1 = setup("player/player_right_1");
+        right2 = setup("player/player_right_2");
+        right3 = setup("player/player_right_3");
     }
 
     /**
      * updates the player's position using the key input
      */
     public void update() {
+        if (speedDebuffTimer > 0 && lvl.gameState == lvl.PLAY_STATE) {
+            speed = defaultSpeed - 2;
+            speedDebuffTimer--;
+            if (speedDebuffTimer == 0) {
+                speed = defaultSpeed;
+                lvl.ui.showMessage("Speed restored");
+            }
+        }
+        if (barrierDebuffTimer > 0 && lvl.gameState == lvl.PLAY_STATE) {
+            if (!barrierDebuff) {
+                barrierDebuff = true;
+                lvl.assetSetter.barrierDebuff();
+            }
+            barrierDebuffTimer--;
+            if (barrierDebuffTimer == 0) {
+                barrierDebuff = false;
+                lvl.assetSetter.barrierClear();
+                lvl.ui.showMessage("Barriers cleared");
+            }
+        }
         //collision detection for interaction purposes
         interactObject(lvl.collisionDetect.objectCollide(this, true));
         if (keyIn.up || keyIn.down || keyIn.left || keyIn.right) {
@@ -129,6 +160,7 @@ public class Player extends Entity {
             collidingR = false;
             collidingT = false;
             lvl.collisionDetect.tileCollide(this);
+            lvl.collisionDetect.entityCollide(this, lvl.npcs, true);
 
             //check object collision and interact with objects
             interactObject(lvl.collisionDetect.objectCollide(this, true));
@@ -262,6 +294,6 @@ public class Player extends Entity {
             y = lvl.screenHeight - (lvl.worldHeight - worldY);
         }
 
-        g2D.drawImage(image, x, y, lvl.tileSize, lvl.tileSize, null);
+        g2D.drawImage(image, x, y, null);
     }
 }

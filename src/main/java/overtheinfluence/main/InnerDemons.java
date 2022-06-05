@@ -1,5 +1,9 @@
 package main;
 
+import objects.NeedleProjectile;
+
+import javax.swing.*;
+
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
  * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
@@ -16,7 +20,29 @@ public class InnerDemons extends Level {
     /**
      * default constructor for InnerDemons
      */
-    public InnerDemons() {
-        super("map1", 2);
+    public InnerDemons(Game game) {
+        super(2, game);
+    }
+
+
+    public void dumbShitLol() {
+        Level lvl = this;
+        Thread newThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    NeedleProjectile needle = new NeedleProjectile(lvl);
+                    needle.set(player.worldX + 200, player.worldY, "left", true, player);
+                    projectiles.add(needle);
+                    break;
+                }
+            }
+        });
+        newThread.start();
     }
 }

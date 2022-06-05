@@ -1,5 +1,9 @@
 package objects;
 
+import entity.*;
+import main.AssetSetter;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 
 /**
@@ -18,24 +22,35 @@ import java.awt.*;
  * @version 1.0
  */
 
-public class BarrierBlock extends GameObject {
+public class BarrierBlock extends Entity {
     /**
      * the constructor for the BarrierBlock class
      *
+     * @param assetSetter the asset setter
      * @param x      the x coordinate of the BarrierBlock
      * @param y      the y coordinate of the BarrierBlock
      * @param onTile whether the BarrierBlock is fully on a tile
      */
-    public BarrierBlock(int x, int y, boolean onTile) {
+    public BarrierBlock(AssetSetter assetSetter, int x, int y, boolean onTile, boolean visible) {
+        super(assetSetter.lvl);
         name = "Barrier";
         collision = true;
-        drawWidth = 48;
-        drawHeight = 48;
+        int drawWidth = 48;
+        int drawHeight = 48;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
         if (onTile) {
-            this.setPosition(x * 48, y * 48);
+            worldX = x * drawWidth;
+            worldY = y * drawHeight;
         } else {
-            this.setPosition(x, y);
+            worldX = x;
+            worldY = y;
+        }
+        if(visible) {
+            try {
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/divider.png"));
+                down1 = util.scaleImage(down1, drawWidth, drawHeight);
+            } catch (Exception e) {
+            }
         }
     }
 }

@@ -31,26 +31,4 @@ public class Tile {
      * whether entities will collide with this tile
      */
     public boolean collision;
-
-    /**
-     * constructor for Tile
-     *
-     * @param path path to image file
-     * @param collision whether or not the tile has collision
-     */
-    public Tile(String path, boolean collision) {
-        this.collision = collision;
-        try {
-            this.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * constructor for Tile that automatically sets collision to false
-     */
-    public Tile(String path) {
-        this(path, false);
-    }
 }

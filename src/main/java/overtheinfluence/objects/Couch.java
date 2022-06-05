@@ -1,5 +1,6 @@
 package objects;
 
+import entity.Entity;
 import main.*;
 
 import javax.imageio.*;
@@ -22,25 +23,27 @@ import java.io.IOException;
  * @version 1.0
  */
 
-public class Couch extends GameObject {
+public class Couch extends Entity {
     /**
      * the constructor for Couch objects
      *
      * @param assetSetter the asset setter used to set the couch in the world
      */
     public Couch(AssetSetter assetSetter) {
+        super(assetSetter.lvl);
+        int drawWidth = 32;
+        int drawHeight = 96;
         name = "Couch";
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Couch.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Couch.png"));
             } else if (assetSetter.lvl.levelNum == 4) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Couch.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Couch.png"));
             }
+            down1 = util.scaleImage(down1, drawWidth, drawHeight);
         } catch (IOException e) {
         }
         collision = true;
-        drawWidth = 32;
-        drawHeight = 96;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
     }
 }

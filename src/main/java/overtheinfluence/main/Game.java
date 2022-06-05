@@ -37,10 +37,11 @@ public class Game {
      */
     public Game(Launcher launcher) {
         this.launcher = launcher;
-        levels = new Level[3];
-        levels[0] = new Exploration();
-        levels[1] = new InnerDemons();
-        levels[2] = new Recovery();
+        levels = new Level[4];
+        levels[0] = new Exploration(this);
+        levels[1] = new InnerDemons(this);
+        levels[2] = new Recovery(this);
+        levels[3] = new RecoveryPart2(this);
     }
 
     /**
@@ -79,5 +80,9 @@ public class Game {
         window.setVisible(true);
         levels[level - 1].setupLevel();
         levels[level - 1].startThread();
+    }
+
+    public void menuFrame() {
+
     }
 }

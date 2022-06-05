@@ -1,5 +1,6 @@
 package objects;
 
+import entity.Entity;
 import main.*;
 
 import javax.imageio.*;
@@ -13,7 +14,7 @@ import java.io.*;
  * <p>This class represents House objects in the world.</p>
  *
  * <p>Work Allocation:<ul>
- *     <li>House class - Kevin Zhan</li>
+ * <li>House class - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -22,7 +23,7 @@ import java.io.*;
  * @version 1.0
  */
 
-public class House extends GameObject {
+public class House extends Entity {
     /**
      * a trigger block within the door
      */
@@ -32,37 +33,39 @@ public class House extends GameObject {
      * Constructor for House objects
      *
      * @param assetSetter the asset setter that sets the house into the game
-     * @param targetX the x coordinate of the house's teleportation block's target position
-     * @param targetY the y coordinate of the house's teleportation block's target position
+     * @param targetX     the x coordinate of the house's teleportation block's target position
+     * @param targetY     the y coordinate of the house's teleportation block's target position
      */
     public House(AssetSetter assetSetter, int targetX, int targetY, boolean teleport) {
+        super(assetSetter.lvl);
+        int drawWidth = 160;
+        int drawHeight = 215;
         name = "House";
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl1House.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl1House.png"));
             } else if (assetSetter.lvl.levelNum == 4) {
-                image = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl3House.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl3House.png"));
             }
         } catch (IOException e) {
         }
+        down1 = util.scaleImage(down1, drawWidth, drawHeight);
         collision = true;
-        drawWidth = 160;
-        drawHeight = 215;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
-        if(teleport) {
-            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150) {
+        if (teleport) {
+            triggerDoor = new TriggerBlock(assetSetter, 40, 45, area.x + 85, area.y + 150) {
                 @Override
                 public void trigger() {
                     String message = "Press E to enter";
                     assetSetter.lvl.ui.showMessage(message);
-                    if(assetSetter.lvl.player.keyIn.interact) {
+                    if (assetSetter.lvl.player.keyIn.interact) {
                         assetSetter.lvl.player.worldX = targetX;
                         assetSetter.lvl.player.worldY = targetY;
                     }
                 }
             };
         } else {
-            triggerDoor = new TriggerBlock(40, 45, area.x + 85, area.y + 150) {
+            triggerDoor = new TriggerBlock(assetSetter, 40, 45, area.x + 85, area.y + 150) {
                 @Override
                 public void trigger() {
                     String message = "This is not your house you cannot enter";
@@ -72,9 +75,10 @@ public class House extends GameObject {
         }
     }
 
-    @Override
     public void setPosition(int x, int y) {
-        super.setPosition(x, y);
-        triggerDoor.setPosition(x + 85, y + 150);
+        worldX = x;
+        worldY = y;
+        triggerDoor.worldX = x + 85;
+        triggerDoor.worldY = y + 150;
     }
 }

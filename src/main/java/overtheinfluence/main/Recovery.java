@@ -14,7 +14,7 @@ package main;
 
 public class Recovery extends Level {
     /** default constructor for Recovery */
-    public Recovery() {
-        super("map1", 3);
+    public Recovery(Game game) {
+        super(2, game);
     }
 }

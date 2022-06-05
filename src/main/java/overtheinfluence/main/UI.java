@@ -114,15 +114,20 @@ public class UI {
             question();
         }
 
-        if(lvl.player.barrierDebuffTimer > 0) {
-            drawTimer("Barrier Debuff", lvl.player.barrierDebuffTimer, 80, 100);
-            if(lvl.player.speedDebuffTimer > 0) {
-                drawTimer("Speed Debuff", lvl.player.speedDebuffTimer, 80, 140);
+        if(lvl.gameState == lvl.PLAY_STATE) {
+            if(lvl.player.barrierDebuffTimer > 0) {
+                drawTimer("Barrier Debuff", lvl.player.barrierDebuffTimer, 80, 100);
+                if(lvl.player.speedDebuffTimer > 0) {
+                    drawTimer("Speed Debuff", lvl.player.speedDebuffTimer, 80, 140);
+                }
+            } else if(lvl.player.speedDebuffTimer > 0) {
+                drawTimer("Speed Debuff", lvl.player.speedDebuffTimer, 80, 100);
             }
-        } else if(lvl.player.speedDebuffTimer > 0) {
-            drawTimer("Speed Debuff", lvl.player.speedDebuffTimer, 80, 100);
-        }
 
+            if(lvl.levelNum == 2) {
+                drawTimer(lvl.time, centerText("00:00"), 72);
+            }
+        }
     }
 
     /**
@@ -253,12 +258,16 @@ public class UI {
         int minutes = seconds / 60;
         seconds = seconds % 60;
         String strSec = seconds + "";
+        String strMin = minutes + "";
         if(seconds < 10) {
             strSec = "0" + seconds;
         }
+        if(minutes < 10) {
+            strMin = "0" + minutes;
+        }
         g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
         g2D.setColor(Color.WHITE);
-        g2D.drawString(text + "   " + minutes + ":" + strSec, x, y);
+        g2D.drawString(text + "   " + strMin + ":" + strSec, x, y);
     }
 
     /**
@@ -273,11 +282,15 @@ public class UI {
         int minutes = seconds / 60;
         seconds = seconds % 60;
         String strSec = seconds + "";
+        String strMin = minutes + "";
         if(seconds < 10) {
             strSec = "0" + seconds;
         }
-        g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+        if(minutes < 10) {
+            strMin = "0" + minutes;
+        }
+        g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
         g2D.setColor(Color.WHITE);
-        g2D.drawString(minutes + ":" + strSec, x, y);
+        g2D.drawString(strMin + ":" + strSec, x, y);
     }
 }

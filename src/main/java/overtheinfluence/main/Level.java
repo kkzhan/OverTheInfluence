@@ -157,6 +157,11 @@ public class Level extends JPanel implements Runnable {
      */
     public boolean updateOn = true;
 
+    /**
+     * the time for the level (represented by the number of frames)
+     */
+    public int time;
+
 
     /**
      * the constructor for the level class
@@ -179,6 +184,7 @@ public class Level extends JPanel implements Runnable {
             speed = 8;
         } else if (levelNum == 2) {
             speed = 5;
+            time = 600;
         }
         player = new Player(this, keyIn, speed);
     }
@@ -239,6 +245,12 @@ public class Level extends JPanel implements Runnable {
      */
     public void update() {
         if (gameState == PLAY_STATE) {
+            if (levelNum == 2) {
+                if(time > 0) time--;
+                else {
+                    gameState = PAUSE_STATE;
+                }
+            }
             player.update();
             for (int i = 0; i < projectiles.size(); i++) {
                 projectiles.get(i).update();

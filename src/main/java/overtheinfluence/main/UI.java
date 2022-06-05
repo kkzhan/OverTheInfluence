@@ -1,8 +1,7 @@
 package main;
 
 import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -50,12 +49,13 @@ public class UI {
 
     public int msgTimeLimit = 10;
 
+    public Question question = null;
+
     /**
      * constructor for the UI class
      */
     public UI(Level lvl) {
         this.lvl = lvl;
-
         try {
             font1 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf"));
             font2 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf"));
@@ -77,7 +77,7 @@ public class UI {
     /**
      * displays a message on the screen for a certain amount of time
      *
-     * @param msg the message to display
+     * @param msg  the message to display
      * @param time the time to display the message for
      */
     public void showMessage(String msg, int time) {
@@ -92,14 +92,14 @@ public class UI {
     public void draw(Graphics2D g2D) {
         this.g2D = g2D;
 
-        if(msgOn && msgTime <= msgTimeLimit) {
+        if (msgOn && msgTime <= msgTimeLimit) {
             g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
             g2D.setColor(Color.GRAY);
             g2D.fillRect(centerText(msg) - 5, lvl.player.screenY - 20, (int) g2D.getFontMetrics().getStringBounds(msg, g2D).getWidth() + 10, 20);
             g2D.setColor(Color.WHITE);
             g2D.drawString(msg, centerText(msg), lvl.player.screenY - 5);
             msgTime++;
-        } else if(msgOn) {
+        } else if (msgOn) {
             msgOn = false;
             msgTime = 0;
         }
@@ -110,9 +110,19 @@ public class UI {
             screenPaused();
         }
 
-        if(lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
+        if (lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
             question();
         }
+
+        if(lvl.player.barrierDebuffTimer > 0) {
+            drawTimer("Barrier Debuff", lvl.player.barrierDebuffTimer, 80, 100);
+            if(lvl.player.speedDebuffTimer > 0) {
+                drawTimer("Speed Debuff", lvl.player.speedDebuffTimer, 80, 140);
+            }
+        } else if(lvl.player.speedDebuffTimer > 0) {
+            drawTimer("Speed Debuff", lvl.player.speedDebuffTimer, 80, 100);
+        }
+
     }
 
     /**
@@ -120,7 +130,7 @@ public class UI {
      */
     public void dialogue() {
         int x = lvl.tileSize * 2;
-        int y = lvl.tileSize/2 + lvl.tileSize * 5;
+        int y = lvl.tileSize / 2 + lvl.tileSize * 5;
         int width = lvl.screenWidth - (lvl.tileSize * 4);
         int height = lvl.tileSize * 5;
         drawWindow(x, y, width, height);
@@ -132,7 +142,7 @@ public class UI {
      * draws a window
      */
     public void drawWindow(int x, int y, int width, int height) {
-        g2D.setColor(new Color(0,0,0,200));
+        g2D.setColor(new Color(0, 0, 0, 200));
         g2D.fillRoundRect(x, y, width, height, 35, 35);
         g2D.setColor(Color.WHITE);
         int borderSize = 5;
@@ -144,40 +154,71 @@ public class UI {
      * allows the player to answer questions
      */
     public void question() {
-        int x = lvl.tileSize * 2;
-        int y = lvl.tileSize/2 + lvl.tileSize * 5;
-        int width = lvl.screenWidth - (lvl.tileSize * 4);
-        int height = lvl.tileSize * 5;
-        drawWindow(x, y, width, height);
-
-        g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
-        int questionNum;
-        int numberOfQuestions = 1;
-        questionNum = (int) (Math.random() * numberOfQuestions) + 1;
-        BufferedReader br = null;
-        if(lvl.levelNum == 2) {
-            br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/questions/lvl2/question" + questionNum + ".txt")));
-        } else if(lvl.levelNum == 3 || lvl.levelNum == 4) {
-            br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/questions/lvl2/question" + questionNum + ".txt")));
+        if (question == null || question.complete) {
+            question = new Question(this);
         }
-        ArrayList<String> lines = new ArrayList<>();
-        try {
-            String line = br.readLine();
-            while (line != null) {
-                lines.add(line);
-                line = br.readLine();
+        if (question.started) {
+            int x = lvl.tileSize * 2;
+            int y = lvl.tileSize / 2 + lvl.tileSize * 5;
+            int width = lvl.screenWidth - (lvl.tileSize * 4);
+            int height = lvl.tileSize * 5;
+            drawWindow(x, y, width, height);
+
+            g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+
+            g2D.setColor(Color.WHITE);
+            x += lvl.tileSize;
+            for (int i = 0; i < question.lines.size() - 1; i++) {
+                y += lvl.tileSize / 2;
+                g2D.drawString(question.lines.get(i), x, y);
             }
-        } catch (IOException e) {
-        }
-        g2D.setColor(Color.WHITE);
-        x += lvl.tileSize;
-        for(int i = 0; i < lines.size() - 1; i++) {
-            y += lvl.tileSize/2;
-            g2D.drawString(lines.get(i), x, y);
+            for (int i = 0; i < question.options.size(); i++) {
+                if (question.selected - 1 == i) {
+                    g2D.setColor(new Color(94, 94, 94));
+                } else {
+                    g2D.setColor(Color.WHITE);
+                }
+                y += lvl.tileSize / 2;
+                g2D.drawString(question.options.get(i), x, y);
+            }
+            if (lvl.keyIn.enter && question.selected != -1) {
+                if (question.selected == question.answer) {
+                    question.complete = true;
+                    if (question.secondAttempt) {
+                        showMessage("Latest debuff cured");
+                        if (lvl.gameState == lvl.BARRIER_QUESTION_STATE) {
+                            lvl.player.barrierDebuffTimer += 300;
+                        } else if (lvl.gameState == lvl.SPEED_QUESTION_STATE) {
+                            lvl.player.speedDebuffTimer += 10;
+                        }
+                    } else {
+                        lvl.player.barrierDebuffTimer = 0;
+                        lvl.player.speedDebuffTimer = 0;
+                        showMessage("All debuffs cured");
+                        lvl.assetSetter.barrierClear();
+                    }
+                } else {
+                    if (question.secondAttempt) {
+                        question.selected = -1;
+                        ;
+                        question.complete = true;
+                        showMessage("Failed to cure debuff");
+                        if (lvl.gameState == lvl.BARRIER_QUESTION_STATE) {
+                            lvl.player.barrierDebuffTimer += 600;
+                        } else if (lvl.gameState == lvl.SPEED_QUESTION_STATE) {
+                            lvl.player.speedDebuffTimer += 20;
+                        }
+                    } else {
+                        question.selected = -1;
+                        question.secondAttempt = true;
+                        showMessage("Incorrect answer this is your second attempt");
+                    }
+                }
+            }
         }
 
-        boolean answerRight = false;
-        if(answerRight) {
+
+        if (question.complete) {
             lvl.gameState = lvl.PLAY_STATE;
             lvl.updateOn = true;
         }
@@ -197,5 +238,46 @@ public class UI {
     public int centerText(String text) {
         int length = (int) g2D.getFontMetrics().getStringBounds(text, g2D).getWidth();
         return (lvl.screenWidth / 2) - (length / 2);
+    }
+
+    /**
+     * draws a timer
+     *
+     * @param text the text to be displayed in front of the timer
+     * @param time the time to be displayed
+     * @param x    the x position of the timer
+     * @param y the y position of the timer
+     */
+    public void drawTimer(String text, int time, int x, int y) {
+        int seconds = time / 30;
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+        String strSec = seconds + "";
+        if(seconds < 10) {
+            strSec = "0" + seconds;
+        }
+        g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+        g2D.setColor(Color.WHITE);
+        g2D.drawString(text + "   " + minutes + ":" + strSec, x, y);
+    }
+
+    /**
+     * draws a timer
+     *
+     * @param time the time to be displayed
+     * @param x    the x position of the timer
+     * @param y the y position of the timer
+     */
+    public void drawTimer(int time, int x, int y) {
+        int seconds = time / 30;
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+        String strSec = seconds + "";
+        if(seconds < 10) {
+            strSec = "0" + seconds;
+        }
+        g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+        g2D.setColor(Color.WHITE);
+        g2D.drawString(minutes + ":" + strSec, x, y);
     }
 }

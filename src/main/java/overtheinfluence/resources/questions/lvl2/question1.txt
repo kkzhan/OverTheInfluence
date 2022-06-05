@@ -1,10 +1,11 @@
 Line1 of question
 Line2 of question
 Line3 of question
-Answers
+ANSWERS
 1    Answer1
 2    Answer2
 3    Answer3
 4    Answer4
 Enter   the   respective   number   to   select   your   answer
+Then   hit   enter   to   submit   your   answer
 1

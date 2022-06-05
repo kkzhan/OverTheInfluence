@@ -23,8 +23,10 @@ public class Projectile extends Entity {
             boolean contactPlayer = lvl.collisionDetect.checkPlayer(this);
             if (contactPlayer) {
                 lvl.projectiles.remove(this);
-                lvl.player.barrierDebuffTimer += 1000;
                 lvl.gameState = lvl.BARRIER_QUESTION_STATE;
+                if(lvl.player.barrierDebuffTimer == 0) {
+                    lvl.assetSetter.barrierDebuff();
+                }
                 lvl.repaint();
             }
         }

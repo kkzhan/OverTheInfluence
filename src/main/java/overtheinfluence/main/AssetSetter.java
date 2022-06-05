@@ -46,7 +46,7 @@ public class AssetSetter {
      * sets the objects into the level.
      */
     public void setObject() {
-        if (lvl instanceof Exploration) {
+        if (lvl.levelNum == 1) {
             lvl.objects.add(new KitchenTable(this));
             lvl.objects.get(0).setPosition(12 * lvl.tileSize, (int) (17.5 * lvl.tileSize));
             lvl.objects.add(new Couch(this));
@@ -72,7 +72,7 @@ public class AssetSetter {
             lvl.objects.get(13).setPosition((int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
             lvl.objects.add(new IndicateArrow(this,0, 0));
             lvl.objects.get(14).setPosition((int) (3.32 * lvl.tileSize), (int)(9.8 * lvl.tileSize));
-        } else if (lvl instanceof Recovery) {
+        } else if (lvl.levelNum == 4) {
 
         }
         objectBlockLayout();

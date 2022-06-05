@@ -103,7 +103,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * the user interface for the game
      */
-    public UI ui = new UI(this);
+    public UI ui;
 
     /**
      * sets assets for the level
@@ -136,7 +136,7 @@ public class Level extends JPanel implements Runnable {
     public ArrayList<Projectile> projectiles = new ArrayList<>();
 
     /**
-     * the game state (1 = playing, 2 = paused, 3 = question state)
+     * the game state
      */
     public int gameState;
 
@@ -152,6 +152,11 @@ public class Level extends JPanel implements Runnable {
      */
     public int levelNum;
 
+    /**
+     * determines whether or not to update certain information
+     */
+    public boolean updateOn = true;
+
 
     /**
      * the constructor for the level class
@@ -161,6 +166,7 @@ public class Level extends JPanel implements Runnable {
     public Level(int levelNum, Game game) {
         thisGame = game;
         this.levelNum = levelNum;
+        ui = new UI(this);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.addKeyListener(keyIn);
         this.setFocusable(true);
@@ -169,9 +175,9 @@ public class Level extends JPanel implements Runnable {
         worldHeight = maxWorldRows * tileSize;
         complete = false;
         int speed = 0;
-        if (this instanceof Exploration || this instanceof Recovery || this instanceof RecoveryPart2) {
+        if (levelNum == 1 || levelNum == 3 || levelNum == 4) {
             speed = 8;
-        } else if (this instanceof InnerDemons) {
+        } else if (levelNum == 2) {
             speed = 5;
         }
         player = new Player(this, keyIn, speed);
@@ -204,7 +210,6 @@ public class Level extends JPanel implements Runnable {
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-        ((InnerDemons) this).dumbShitLol();
         while (gameThread != null) {
             currentTime = System.nanoTime();
 
@@ -230,11 +235,6 @@ public class Level extends JPanel implements Runnable {
     }
 
     /**
-     * determines whether or not to update certain information
-     */
-    public boolean updateOn = true;
-
-    /**
      * updates the game information from the player's movement
      */
     public void update() {
@@ -249,7 +249,14 @@ public class Level extends JPanel implements Runnable {
                     ui.showMessage("Answer this question on the first try to cure all debuffs", 30);
                     Timer timer = new Timer(2000, e -> {
                         ui.showMessage("Answer this question on the second try to cure the latest debuff", 30);
-                        Timer timer1 = new Timer(2000, e2 -> ui.showMessage("If you fail to answer the question you must endure the debuff", 30));
+                        Timer timer1 = new Timer(2000, e2 -> {
+                            ui.showMessage("If you fail to answer the question you must endure the debuff", 30);
+                            Timer timer2 = new Timer(2000, e3 -> {
+                                ui.question.started = true;
+                            });
+                            timer2.setRepeats(false);
+                            timer2.start();
+                        });
                         timer1.setRepeats(false);
                         timer1.start();
                     });
@@ -286,12 +293,9 @@ public class Level extends JPanel implements Runnable {
         }
 
         //sort entities by y position
-        Collections.sort(entities, new Comparator<Entity>() {
-            @Override
-            public int compare(Entity e1, Entity e2) {
-                int result = Integer.compare(e1.worldY, e2.worldY);
-                return result;
-            }
+        Collections.sort(entities, (e1, e2) -> {
+            int result = Integer.compare(e1.worldY, e2.worldY);
+            return result;
         });
 
         //draw entities

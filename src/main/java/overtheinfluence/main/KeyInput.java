@@ -31,6 +31,11 @@ public class KeyInput implements KeyListener {
     public boolean interact;
 
     /**
+     * whether the enter key has been pressed
+     */
+    public boolean enter;
+
+    /**
      * the level the game is on
      */
     Level lvl;
@@ -73,9 +78,28 @@ public class KeyInput implements KeyListener {
                 lvl.playMusic(-1);
             }
         }
-        //key pressed is 1
         if (key == KeyEvent.VK_1) {
-            System.out.println("1");
+            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+                lvl.ui.question.selected = 1;
+            }
+        }
+        if (key == KeyEvent.VK_2) {
+            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+                lvl.ui.question.selected = 2;
+            }
+        }
+        if (key == KeyEvent.VK_3) {
+            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+                lvl.ui.question.selected = 3;
+            }
+        }
+        if (key == KeyEvent.VK_4) {
+            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+                lvl.ui.question.selected = 4;
+            }
+        }
+        if (key == KeyEvent.VK_ENTER) {
+            enter = true;
         }
     }
 
@@ -96,6 +120,9 @@ public class KeyInput implements KeyListener {
         }
         if (key == KeyEvent.VK_E) {
             interact = false;
+        }
+        if (key == KeyEvent.VK_ENTER) {
+            enter = false;
         }
     }
 }

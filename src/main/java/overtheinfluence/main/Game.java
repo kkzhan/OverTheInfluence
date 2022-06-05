@@ -38,10 +38,10 @@ public class Game {
     public Game(Launcher launcher) {
         this.launcher = launcher;
         levels = new Level[4];
-        levels[0] = new Exploration(this);
-        levels[1] = new InnerDemons(this);
-        levels[2] = new Recovery(this);
-        levels[3] = new RecoveryPart2(this);
+        levels[0] = new Level(1, this);
+        levels[1] = new Level(2, this);
+        levels[2] = new Level(1, this); //fix to 3
+        levels[3] = new Level(1, this); //fix to 4
     }
 
     /**

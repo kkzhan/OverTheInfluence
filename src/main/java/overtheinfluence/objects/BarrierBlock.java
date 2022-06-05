@@ -47,7 +47,7 @@ public class BarrierBlock extends Entity {
         }
         if(visible) {
             try {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/divider.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/barrier.png"));
                 down1 = util.scaleImage(down1, drawWidth, drawHeight);
             } catch (Exception e) {
             }

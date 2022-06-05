@@ -1,0 +1,7 @@
+started
+completed
+player worldX worldY
+in rehab or town
+withdrawal meter
+completed tasks
+assigned tasks

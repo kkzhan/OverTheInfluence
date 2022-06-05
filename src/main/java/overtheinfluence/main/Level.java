@@ -1,7 +1,6 @@
 package main;
 
 import entity.*;
-import objects.*;
 import tiles.*;
 
 import javax.swing.*;
@@ -33,11 +32,6 @@ public class Level extends JPanel implements Runnable {
      * the game that this level is a part of
      */
     public Game thisGame;
-
-    /**
-     * whether or not the game is complete
-     */
-    private boolean complete;
 
     /**
      * the usable tile size
@@ -140,7 +134,7 @@ public class Level extends JPanel implements Runnable {
      */
     public int gameState;
 
-    public final int PLAY_STATE = 1, PAUSE_STATE = 2, BARRIER_QUESTION_STATE = 3, SPEED_QUESTION_STATE = 4, QUESTION_STATE = 5;
+    public final int PLAY_STATE = 1, PAUSE_STATE = 2, BARRIER_QUESTION_STATE = 3, SPEED_QUESTION_STATE = 4, QUESTION_STATE = 5, WIN_STATE = 6, LOSE_STATE = 7;
 
     /**
      * manages sound effects
@@ -158,9 +152,24 @@ public class Level extends JPanel implements Runnable {
     public boolean updateOn = true;
 
     /**
-     * the time for the level (represented by the number of frames)
+     * the time and initial time for the level
      */
-    public int time;
+    public int time, startTime;
+
+    /**
+     * has this level been started
+     */
+    boolean started = false;
+
+    /**
+     * whether or not the level is complete
+     */
+    boolean completed = false;
+
+    /**
+     * whether or not the level was failed
+     */
+    boolean failed = false;
 
 
     /**
@@ -178,13 +187,13 @@ public class Level extends JPanel implements Runnable {
         tm = new TileManager(this, "map" + levelNum);
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
-        complete = false;
         int speed = 0;
         if (levelNum == 1 || levelNum == 3 || levelNum == 4) {
             speed = 8;
         } else if (levelNum == 2) {
             speed = 5;
-            time = 600;
+            time = FPS * 60; //60 seconds
+            startTime = time;
         }
         player = new Player(this, keyIn, speed);
     }
@@ -193,7 +202,10 @@ public class Level extends JPanel implements Runnable {
      * sets up the level
      */
     public void setupLevel() {
-        assetSetter.setObject();
+        if(!started) {
+            assetSetter.setObject();
+            started = true;
+        }
         gameState = PLAY_STATE;
         if (levelNum == 1 || levelNum == 4) {
             playMusic(0);
@@ -237,7 +249,7 @@ public class Level extends JPanel implements Runnable {
      * @return true if the level is complete
      */
     public boolean isComplete() {
-        return complete;
+        return completed;
     }
 
     /**
@@ -246,9 +258,18 @@ public class Level extends JPanel implements Runnable {
     public void update() {
         if (gameState == PLAY_STATE) {
             if (levelNum == 2) {
-                if(time > 0) time--;
-                else {
-                    gameState = PAUSE_STATE;
+                int debuffInterval = FPS * 30; //30 seconds
+                if (time > 0) {
+                    time--;
+                    if((startTime - time) % debuffInterval == 0) {
+                        gameState = SPEED_QUESTION_STATE;
+                    } else if((startTime - time) % debuffInterval == debuffInterval - FPS * 2) {
+                        ui.showMessage("Incoming speed debuff", 45);
+                    }
+                } else {
+                    completed = true;
+                    failed = true;
+                    sound.stop();
                 }
             }
             player.update();

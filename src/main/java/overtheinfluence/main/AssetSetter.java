@@ -12,8 +12,8 @@ import java.util.*;
  * <p>This class sets objects and barrier blocks into the game.</p>
  *
  * <p>Work Allocation:<ul>
- *     <li>Object setting - Kevin Zhan</li>
- *     <li>Barrier block setting - Kevin Zhan</li>
+ * <li>Object setting - Kevin Zhan</li>
+ * <li>Barrier block setting - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -70,8 +70,18 @@ public class AssetSetter {
             lvl.objects.add(((House) lvl.objects.get(7)).triggerDoor);
             lvl.objects.add(new Desk(this));
             lvl.objects.get(13).setPosition((int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
-            lvl.objects.add(new IndicateArrow(this,0, 0));
-            lvl.objects.get(14).setPosition((int) (3.32 * lvl.tileSize), (int)(9.8 * lvl.tileSize));
+            lvl.objects.add(new IndicateArrow(this, 0, 0));
+            lvl.objects.get(14).setPosition((int) (3.32 * lvl.tileSize), (int) (9.8 * lvl.tileSize));
+        } else if (lvl.levelNum == 2) {
+            for(int i = 1; i < lvl.maxWorldRows - 1; i++) {
+                TriggerBlock finishLine = new TriggerBlock(this, lvl.tileSize, lvl.tileSize, (lvl.maxWorldCols - 7) * lvl.tileSize, i * lvl.tileSize, true) {
+                    @Override
+                    public void trigger() {
+                        lvl.completed = true;
+                    }
+                };
+                lvl.objects.add(finishLine);
+            }
         } else if (lvl.levelNum == 4) {
 
         }
@@ -111,8 +121,8 @@ public class AssetSetter {
      * debuffs the player by putting barriers in front of them
      */
     public void barrierDebuff() {
-        for(int i = 1; i < lvl.maxWorldRows - 1; i++) {
-            barriers.add(new BarrierBlock(this, lvl.player.worldX + (int)(lvl.tileSize * 1.25), i * lvl.tileSize, false, true));
+        for (int i = 1; i < lvl.maxWorldRows - 1; i++) {
+            barriers.add(new BarrierBlock(this, lvl.player.worldX + (int) (lvl.tileSize * 1.25), i * lvl.tileSize, false, true));
             lvl.objects.add(barriers.get(barriers.size() - 1));
         }
     }
@@ -121,7 +131,7 @@ public class AssetSetter {
      * clears the barriers in front of the player
      */
     public void barrierClear() {
-        for(int i = 0; i < barriers.size(); i++) {
+        for (int i = 0; i < barriers.size(); i++) {
             lvl.objects.remove(barriers.get(i));
         }
         barriers.clear();

@@ -51,6 +51,8 @@ public class UI {
 
     public Question question = null;
 
+    boolean startScreen = true;
+
     /**
      * constructor for the UI class
      */
@@ -128,6 +130,14 @@ public class UI {
                 drawTimer(lvl.time, centerText("00:00"), 72);
             }
         }
+
+        if(startScreen) {
+            startScreen();
+        }
+
+        if(lvl.completed) {
+            endScreen(!lvl.failed);
+        }
     }
 
     /**
@@ -141,6 +151,61 @@ public class UI {
         drawWindow(x, y, width, height);
 
         g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
+    }
+
+    /**
+     * displays the screen at the end of a level, whether success or failure
+     *
+     * @param success whether the level was successful
+     */
+    public void endScreen(boolean success) {
+        g2D.setColor(Color.BLACK);
+        g2D.fillRect(0, 0, lvl.screenWidth, lvl.screenHeight);
+        if(success) {
+            g2D.setColor(Color.GREEN);
+            g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 10));
+            g2D.drawString("Level Complete!", centerText("Level Complete!"), lvl.screenHeight / 2);
+            g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
+            g2D.setColor(Color.WHITE);
+            g2D.drawString("Press Enter to Continue", centerText("Press Enter to Continue"), lvl.screenHeight / 2 + lvl.tileSize);
+            g2D.drawString("Press Esc to Return to Menu", centerText("Press Esc to Return to Menu"), lvl.screenHeight / 2 + lvl.tileSize * 2);
+            if(lvl.keyIn.enter && !lvl.keyIn.escape) {
+                lvl.thisGame.nextLevel();
+            } else if(lvl.keyIn.escape && !lvl.keyIn.enter) {
+                lvl.thisGame.endLevel(true);
+            }
+        } else {
+            g2D.setColor(Color.RED);
+            g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 10));
+            g2D.drawString("Level Failed!", centerText("Level Failed!"), lvl.screenHeight / 2);
+            if(lvl.levelNum == 2) {
+                g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
+                g2D.setColor(Color.WHITE);
+                g2D.drawString("Press R to Retry", centerText("Press R to Retry"), lvl.screenHeight / 2 + lvl.tileSize);
+                g2D.drawString("Press Esc to Return to Menu", centerText("Press Esc to Return to Menu"), lvl.screenHeight / 2 + lvl.tileSize * 2);
+                if(lvl.keyIn.retry && !lvl.keyIn.escape) {
+                    lvl.thisGame.endLevel(true);
+                } else if(lvl.keyIn.escape && !lvl.keyIn.retry) {
+                    lvl.thisGame.endLevel(false);
+                }
+            } else if(lvl.levelNum == 3 || lvl.levelNum == 4) {
+                //you overdosed
+                //random if dead
+                //if dead no chance to retry
+            }
+        }
+    }
+
+    public void startScreen() {
+        g2D.setColor(Color.BLACK);
+        g2D.fillRect(0, 0, lvl.screenWidth, lvl.screenHeight);
+        g2D.setColor(Color.WHITE);
+        g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 10));
+        //introduce the level
+        g2D.drawString("Press Enter to Continue", centerText("Press Enter to Continue"), lvl.screenHeight / 2);
+        if(lvl.keyIn.enter) {
+            startScreen = false;
+        }
     }
 
     /**

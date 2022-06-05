@@ -53,7 +53,7 @@ public class House extends Entity {
         collision = true;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
         if (teleport) {
-            triggerDoor = new TriggerBlock(assetSetter, 40, 45, area.x + 85, area.y + 150) {
+            triggerDoor = new TriggerBlock(assetSetter, 40, 45, area.x + 85, area.y + 150, false) {
                 @Override
                 public void trigger() {
                     String message = "Press E to enter";
@@ -65,7 +65,7 @@ public class House extends Entity {
                 }
             };
         } else {
-            triggerDoor = new TriggerBlock(assetSetter, 40, 45, area.x + 85, area.y + 150) {
+            triggerDoor = new TriggerBlock(assetSetter, 40, 45, area.x + 85, area.y + 150, false) {
                 @Override
                 public void trigger() {
                     String message = "This is not your house you cannot enter";

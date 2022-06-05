@@ -57,7 +57,7 @@ public class Door extends Entity {
         down1 = util.scaleImage(down1, drawWidth, drawHeight);
         collision = true;
         if(teleport) {
-            this.teleport = new TriggerBlock(assetSetter,48, 18, x, y + 30) {
+            this.teleport = new TriggerBlock(assetSetter,48, 18, x, y + 30, false) {
                 @Override
                 public void trigger() {
                     assetSetter.lvl.player.worldX = targetX;

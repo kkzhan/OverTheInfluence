@@ -1,0 +1,4 @@
+started
+completed
+worldX, worldY
+completion of the quest chain

@@ -36,6 +36,16 @@ public class KeyInput implements KeyListener {
     public boolean enter;
 
     /**
+     * whether to retry the level
+     */
+    public boolean retry;
+
+    /**
+     * whether the escape key has been pressed
+     */
+    public boolean escape;
+
+    /**
      * the level the game is on
      */
     Level lvl;
@@ -101,6 +111,12 @@ public class KeyInput implements KeyListener {
         if (key == KeyEvent.VK_ENTER) {
             enter = true;
         }
+        if(key == KeyEvent.VK_R) {
+            retry = true;
+        }
+        if(key == KeyEvent.VK_ESCAPE) {
+            escape = true;
+        }
     }
 
     @Override
@@ -123,6 +139,12 @@ public class KeyInput implements KeyListener {
         }
         if (key == KeyEvent.VK_ENTER) {
             enter = false;
+        }
+        if(key == KeyEvent.VK_R) {
+            retry = false;
+        }
+        if(key == KeyEvent.VK_ESCAPE) {
+            escape = false;
         }
     }
 }

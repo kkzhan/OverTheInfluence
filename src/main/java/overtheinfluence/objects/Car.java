@@ -39,7 +39,7 @@ public class Car extends Entity {
         int drawHeight = 48;
         name = "Car";
         try {
-            if(assetSetter.lvl.levelNum == 1) {
+            if(assetSetter.lvl.levelNum == 4) {
                 if (carNum == 0) {
                     down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/redCar.png"));
                 } else if (carNum == 1) {
@@ -51,7 +51,7 @@ public class Car extends Entity {
                     down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/blueCar.png"));
                     down1 = reflectImage(down1);
                 }
-            } else if(assetSetter.lvl.levelNum == 4) {
+            } else if(assetSetter.lvl.levelNum == 1) {
                 if (carNum == 0 || carNum == 2) {
                     down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/cars/greyCar.png"));
                 } else if (carNum == 1 || carNum == 3) {

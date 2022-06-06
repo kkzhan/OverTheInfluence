@@ -1,5 +1,6 @@
-package entity;
+package projectiles;
 
+import entity.Entity;
 import main.Level;
 
 public class Projectile extends Entity {
@@ -7,6 +8,7 @@ public class Projectile extends Entity {
 
     public Projectile(Level lvl) {
         super(lvl);
+        maxLife = 8000;
     }
 
     public void set(int worldX, int worldY, String direction, boolean alive, Entity user) {

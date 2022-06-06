@@ -64,20 +64,22 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_W) {
-            up = true;
-        }
-        if (key == KeyEvent.VK_A) {
-            left = true;
-        }
-        if (key == KeyEvent.VK_S) {
-            down = true;
-        }
-        if (key == KeyEvent.VK_D) {
-            right = true;
-        }
-        if (key == KeyEvent.VK_E) {
-            interact = true;
+        if(lvl.started) {
+            if (key == KeyEvent.VK_W) {
+                up = true;
+            }
+            if (key == KeyEvent.VK_A) {
+                left = true;
+            }
+            if (key == KeyEvent.VK_S) {
+                down = true;
+            }
+            if (key == KeyEvent.VK_D) {
+                right = true;
+            }
+            if (key == KeyEvent.VK_E) {
+                interact = true;
+            }
         }
         if (key == KeyEvent.VK_P) {
             if (lvl.gameState == lvl.PLAY_STATE) {

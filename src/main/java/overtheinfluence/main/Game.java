@@ -72,9 +72,7 @@ public class Game {
                     JFrame frame = (JFrame) e.getSource();
                     int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
                     if (result == JOptionPane.YES_OPTION) {
-                        levels[currLevel - 1].gameThread = null;
-                        levels[currLevel - 1].stopMusic();
-                        window[currLevel - 1].dispose();
+                        closeLevel();
                         launcher.window.remove(launcher.mainPanel);
                         launcher.window.setVisible(true);
                         launcher.mainMenu();
@@ -98,9 +96,7 @@ public class Game {
     }
 
     public void endLevel(boolean retry) {
-        levels[currLevel - 1].gameThread = null;
-        levels[currLevel - 1].stopMusic();
-        window[currLevel - 1].dispose();
+        closeLevel();
         levels[currLevel - 1] = new Level(currLevel, this);
         window[currLevel - 1] = new JFrame("Over the Influence");
 
@@ -111,5 +107,11 @@ public class Game {
             launcher.window.setVisible(true);
             launcher.mainMenu();
         }
+    }
+
+    public void closeLevel() {
+        levels[currLevel - 1].gameThread = null;
+        levels[currLevel - 1].stopMusic();
+        window[currLevel - 1].dispose();
     }
 }

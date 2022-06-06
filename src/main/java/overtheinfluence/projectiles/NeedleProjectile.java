@@ -1,6 +1,5 @@
-package objects;
+package projectiles;
 
-import entity.*;
 import main.*;
 
 import java.awt.*;
@@ -14,9 +13,8 @@ public class NeedleProjectile extends Projectile {
         int drawWidth = 80;
         int drawHeight = 15;
         name = "Needle";
-        maxLife = 8000;
         life = maxLife;
-        speed = 20;
+        speed = 15;
         getImage();
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
         left1 = util.scaleImage(left1, drawWidth, drawHeight);

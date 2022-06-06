@@ -1,6 +1,10 @@
 package main;
 
 import entity.*;
+import projectiles.AlcoholProjectile;
+import projectiles.NeedleProjectile;
+import projectiles.PillProjectile;
+import projectiles.Projectile;
 import tiles.*;
 
 import javax.swing.*;
@@ -252,6 +256,19 @@ public class Level extends JPanel implements Runnable {
         return completed;
     }
 
+    public void sendProjectiles() {
+        Projectile p = new Projectile(this);
+        int rand = (int) (Math.random() * 3);
+        if (rand == 0) {
+            p = new PillProjectile(this);
+        } else if (rand == 1) {
+            p = new NeedleProjectile(this);
+        } else if (rand == 2) {
+            p = new AlcoholProjectile(this);
+        }
+        p.set((maxWorldCols - 3) * tileSize, (int)(Math.random() * (maxWorldRows - 2) * tileSize) + tileSize,"left",true,player);
+    }
+
     /**
      * updates the game information from the player's movement
      */
@@ -259,6 +276,9 @@ public class Level extends JPanel implements Runnable {
         if (gameState == PLAY_STATE) {
             if (levelNum == 2) {
                 int debuffInterval = FPS * 30; //30 seconds
+                if (startTime - time % 180 == 0) {
+                    sendProjectiles();
+                }
                 if (time > 0) {
                     time--;
                     if((startTime - time) % debuffInterval == 0) {

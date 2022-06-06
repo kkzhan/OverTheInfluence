@@ -68,10 +68,40 @@ public class AssetSetter {
             lvl.objects.add(((House) lvl.objects.get(5)).triggerDoor);
             lvl.objects.add(((House) lvl.objects.get(6)).triggerDoor);
             lvl.objects.add(((House) lvl.objects.get(7)).triggerDoor);
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.add(new GarbageBag(this));
+            lvl.objects.get(13).setPosition((int) (62.25 * lvl.tileSize), (int) (23.3 * lvl.tileSize));
+            lvl.objects.get(14).setPosition((int) (61.73 * lvl.tileSize), (int) (22.6 * lvl.tileSize));
+            lvl.objects.get(15).setPosition((int) (61.1 * lvl.tileSize), (int) (23.2 * lvl.tileSize));
+            lvl.objects.get(16).setPosition((int) (62.3 * lvl.tileSize), (int) (21.7 * lvl.tileSize));
+            lvl.objects.get(17).setPosition((int) (60.85 * lvl.tileSize), (int) (21.9 * lvl.tileSize));
+            lvl.objects.get(18).setPosition((int) (61.85 * lvl.tileSize), (int) (24.25 * lvl.tileSize));
+            lvl.objects.get(19).setPosition((int) (62.35 * lvl.tileSize), (int) (20.925 * lvl.tileSize));
+            lvl.objects.get(20).setPosition((int) (61.5 * lvl.tileSize), (int) (25.1 * lvl.tileSize));
+            lvl.objects.add(new Dumpster(this));
+            lvl.objects.add(new Dumpster(this));
+            lvl.objects.get(21).setPosition(46 * lvl.tileSize, 27 * lvl.tileSize);
+            lvl.objects.get(22).setPosition(46 * lvl.tileSize, 29 * lvl.tileSize);
+            lvl.objects.add(new Car(this, 0));
+            lvl.objects.add(new Car(this, 1));
+            lvl.objects.add(new Car(this, 2));
+            lvl.objects.add(new Car(this, 3));
+            lvl.objects.get(23).setPosition(9 * lvl.tileSize, 55 * lvl.tileSize);
+            lvl.objects.get(24).setPosition(48 * lvl.tileSize, (int)(51.5 * lvl.tileSize));
+            lvl.objects.get(25).setPosition(64 * lvl.tileSize, 54 * lvl.tileSize);
+            lvl.objects.get(26).setPosition(5 * lvl.tileSize, (int)(40.5 * lvl.tileSize));
+
+
             lvl.objects.add(new Desk(this));
-            lvl.objects.get(13).setPosition((int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
+            lvl.objects.get(27).setPosition((int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
             lvl.objects.add(new IndicateArrow(this, 0, 0));
-            lvl.objects.get(14).setPosition((int) (3.32 * lvl.tileSize), (int) (9.8 * lvl.tileSize));
+            lvl.objects.get(28).setPosition((int) (3.32 * lvl.tileSize), (int) (9.8 * lvl.tileSize));
         } else if (lvl.levelNum == 2) {
             for(int i = 1; i < lvl.maxWorldRows - 1; i++) {
                 TriggerBlock finishLine = new TriggerBlock(this, lvl.tileSize, lvl.tileSize, (lvl.maxWorldCols - 7) * lvl.tileSize, i * lvl.tileSize, true) {

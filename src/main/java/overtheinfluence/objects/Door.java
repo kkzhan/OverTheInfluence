@@ -49,7 +49,7 @@ public class Door extends Entity {
         try {
             if(assetSetter.lvl.levelNum == 1) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl1Door.png"));
-            } else if(assetSetter.lvl.levelNum == 4) {
+            } else if(assetSetter.lvl.levelNum == 3) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/lvl3Door.png"));
             }
         } catch (IOException e) {

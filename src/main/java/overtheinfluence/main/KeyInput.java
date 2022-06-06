@@ -91,22 +91,22 @@ public class KeyInput implements KeyListener {
             }
         }
         if (key == KeyEvent.VK_1) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+            if(lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 1;
             }
         }
         if (key == KeyEvent.VK_2) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+            if(lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 2;
             }
         }
         if (key == KeyEvent.VK_3) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+            if(lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 3;
             }
         }
         if (key == KeyEvent.VK_4) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete && lvl.ui.question.started) {
+            if(lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 4;
             }
         }

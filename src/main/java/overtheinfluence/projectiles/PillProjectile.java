@@ -14,7 +14,7 @@ public class PillProjectile extends Projectile {
         int drawHeight = 21;
         name = "Needle";
         life = maxLife;
-        speed = 20;
+        speed = 8;
         getImage();
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
         left1 = util.scaleImage(left1, drawWidth, drawHeight);

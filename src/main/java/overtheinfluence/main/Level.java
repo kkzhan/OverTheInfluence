@@ -1,14 +1,10 @@
 package main;
 
 import entity.*;
-import projectiles.AlcoholProjectile;
-import projectiles.NeedleProjectile;
-import projectiles.PillProjectile;
-import projectiles.Projectile;
+import projectiles.*;
 import tiles.*;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.util.*;
 
@@ -78,7 +74,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * frame rate for game animation
      */
-    int FPS = 30;
+    public int FPS = 30;
 
     /**
      * the tile manager that draws tiles for the world map
@@ -129,6 +125,11 @@ public class Level extends JPanel implements Runnable {
     public ArrayList<Entity> npcs = new ArrayList<>();
 
     /**
+     * stores all blocks in the game
+     */
+    public ArrayList<Entity> blocks = new ArrayList<>();
+
+    /**
      * stores all projectiles in the game
      */
     public ArrayList<Projectile> projectiles = new ArrayList<>();
@@ -168,12 +169,17 @@ public class Level extends JPanel implements Runnable {
     /**
      * whether or not the level is complete
      */
-    boolean completed = false;
+    public boolean completed = false;
 
     /**
      * whether or not the level was failed
      */
     boolean failed = false;
+
+    /**
+     * the inner demon for level 2
+     */
+    public InnerDemon innerDemon;
 
 
     /**
@@ -191,27 +197,24 @@ public class Level extends JPanel implements Runnable {
         tm = new TileManager(this, "map" + levelNum);
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
-        int speed = 0;
-        if (levelNum == 1 || levelNum == 3 || levelNum == 4) {
-            speed = 8;
-        } else if (levelNum == 2) {
-            speed = 5;
-            time = FPS * 60; //60 seconds
+        if (levelNum == 2) {
+            time = FPS * 600; //10 minutes
             startTime = time;
+            innerDemon = new InnerDemon(this);
         }
-        player = new Player(this, keyIn, speed);
+        player = new Player(this, keyIn, 8);
     }
 
     /**
      * sets up the level
      */
     public void setupLevel() {
-        if(!started) {
+        if (!started) {
             assetSetter.setObject();
             started = true;
         }
         gameState = PLAY_STATE;
-        if (levelNum == 1 || levelNum == 4) {
+        if (levelNum == 1) {
             playMusic(0);
         } else if (levelNum == 2 || levelNum == 3) {
             playMusic(1);
@@ -266,7 +269,9 @@ public class Level extends JPanel implements Runnable {
         } else if (rand == 2) {
             p = new AlcoholProjectile(this);
         }
-        p.set((maxWorldCols - 3) * tileSize, (int)(Math.random() * (maxWorldRows - 2) * tileSize) + tileSize,"left",true,player);
+        int randY = (int) (Math.random() * (maxWorldRows - 3) * tileSize) + tileSize;
+        p.set(player.worldX + 12 * tileSize, randY, "left", true, player);
+        projectiles.add(p);
     }
 
     /**
@@ -275,16 +280,20 @@ public class Level extends JPanel implements Runnable {
     public void update() {
         if (gameState == PLAY_STATE) {
             if (levelNum == 2) {
+                innerDemon.update();
                 int debuffInterval = FPS * 30; //30 seconds
-                if (startTime - time % 180 == 0) {
-                    sendProjectiles();
-                }
                 if (time > 0) {
                     time--;
-                    if((startTime - time) % debuffInterval == 0) {
+                    if ((startTime - time) % debuffInterval == 0) {
+                        projectiles.clear();
+                        player.invincible = true;
+                        player.invincibleTimer = FPS * 5;
                         gameState = SPEED_QUESTION_STATE;
-                    } else if((startTime - time) % debuffInterval == debuffInterval - FPS * 2) {
+                    } else if ((startTime - time) % debuffInterval == debuffInterval - FPS * 2) {
                         ui.showMessage("Incoming speed debuff", 45);
+                    }
+                    if ((startTime - time) % 15 == 0 && player.worldX > tileSize * 8) {
+                        sendProjectiles();
                     }
                 } else {
                     completed = true;
@@ -297,29 +306,9 @@ public class Level extends JPanel implements Runnable {
                 projectiles.get(i).update();
             }
         } else if (gameState == BARRIER_QUESTION_STATE || gameState == SPEED_QUESTION_STATE) {
-            if (updateOn) {
-                try {
-                    ui.showMessage("Answer this question on the first try to cure all debuffs", 30);
-                    Timer timer = new Timer(2000, e -> {
-                        ui.showMessage("Answer this question on the second try to cure the latest debuff", 30);
-                        Timer timer1 = new Timer(2000, e2 -> {
-                            ui.showMessage("If you fail to answer the question you must endure the debuff", 30);
-                            Timer timer2 = new Timer(2000, e3 -> {
-                                ui.question.started = true;
-                            });
-                            timer2.setRepeats(false);
-                            timer2.start();
-                        });
-                        timer1.setRepeats(false);
-                        timer1.start();
-                    });
-                    timer.setRepeats(false);
-                    timer.start();
-                    updateOn = false;
-                } catch (Exception e) {
-                }
+            if (!ui.inQuestion) {
+                ui.question();
             }
-            ui.question();
         }
     }
 
@@ -330,8 +319,16 @@ public class Level extends JPanel implements Runnable {
 
         tm.draw(g2D); //draw tiles before player so that player can walk on top of tiles
 
+        for(int i = 0; i < blocks.size(); i++) {
+            blocks.get(i).draw(g2D);
+        }
+
         //add entities to list
         entities.add(player);
+
+        if(levelNum == 2) {
+            entities.add(innerDemon);
+        }
 
         for (int i = 0; i < objects.size(); i++) {
             entities.add(objects.get(i));
@@ -373,7 +370,7 @@ public class Level extends JPanel implements Runnable {
      */
     public void playMusic(int i) {
         if (i == -1) {
-            if (levelNum == 1 || levelNum == 4) {
+            if (levelNum == 1) {
                 playMusic(0);
             } else if (levelNum == 2 || levelNum == 3) {
                 playMusic(1);

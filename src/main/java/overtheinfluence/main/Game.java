@@ -39,15 +39,14 @@ public class Game {
      */
     public Game(Launcher launcher) {
         this.launcher = launcher;
-        window = new JFrame[4];
+        window = new JFrame[3];
         for(int i = 0; i < window.length; i++) {
              window[i] = new JFrame("Over the Influence");
         }
-        levels = new Level[4];
+        levels = new Level[3];
         levels[0] = new Level(1, this);
         levels[1] = new Level(2, this);
         levels[2] = new Level(1, this); //fix to 3
-        levels[3] = new Level(1, this); //fix to 4
     }
 
     /**

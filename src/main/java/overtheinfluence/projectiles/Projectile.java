@@ -23,12 +23,17 @@ public class Projectile extends Entity {
     public void update() {
         if (user == lvl.player) {
             boolean contactPlayer = lvl.collisionDetect.checkPlayer(this);
+            if(lvl.collisionDetect.entityCollide(this, lvl.assetSetter.barriers, false) != -1) {
+                alive = false;
+            }
             if (contactPlayer) {
-                lvl.projectiles.remove(this);
+                lvl.projectiles.clear();
                 lvl.gameState = lvl.BARRIER_QUESTION_STATE;
                 if(lvl.player.barrierDebuffTimer == 0) {
                     lvl.assetSetter.barrierDebuff();
                 }
+                lvl.player.invincible = true;
+                lvl.player.invincibleTimer = lvl.FPS * 5;
                 lvl.repaint();
             }
         }

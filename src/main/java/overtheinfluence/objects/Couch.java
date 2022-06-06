@@ -37,7 +37,7 @@ public class Couch extends Entity {
         try {
             if (assetSetter.lvl.levelNum == 1) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Couch.png"));
-            } else if (assetSetter.lvl.levelNum == 4) {
+            } else if (assetSetter.lvl.levelNum == 3) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Couch.png"));
             }
             down1 = util.scaleImage(down1, drawWidth, drawHeight);

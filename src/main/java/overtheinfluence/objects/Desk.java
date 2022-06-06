@@ -37,7 +37,7 @@ public class Desk extends Entity {
         try {
             if (assetSetter.lvl.levelNum == 1) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Desk.png"));
-            } else if (assetSetter.lvl.levelNum == 4) {
+            } else if (assetSetter.lvl.levelNum == 3) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Desk.png"));
             }
             down1 = util.scaleImage(down1, drawWidth, drawHeight);

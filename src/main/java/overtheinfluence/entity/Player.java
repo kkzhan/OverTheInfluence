@@ -59,6 +59,16 @@ public class Player extends Entity {
     public int speedDebuffTimer, barrierDebuffTimer;
 
     /**
+     * whether the player is currently
+     */
+    public boolean invincible;
+
+    /**
+     * timer for invincibility
+     */
+    public int invincibleTimer;
+
+    /**
      * the Player constructor
      *
      * @param lvl   the level the player is in
@@ -79,8 +89,6 @@ public class Player extends Entity {
             worldX = (int) (lvl.tileSize * 1.5);
             worldY = lvl.worldHeight / 2 - lvl.tileSize / 2;
         } else if (lvl.levelNum == 3) {
-
-        } else if (lvl.levelNum == 4) {
 
         }
         this.speed = defaultSpeed;
@@ -119,7 +127,7 @@ public class Player extends Entity {
      */
     public void update() {
         if (speedDebuffTimer > 0 && lvl.gameState == lvl.PLAY_STATE) {
-            speed = defaultSpeed - 2;
+            speed = defaultSpeed / 2;
             speedDebuffTimer--;
             if (speedDebuffTimer == 0) {
                 speed = defaultSpeed;
@@ -138,8 +146,15 @@ public class Player extends Entity {
                 lvl.ui.showMessage("Barriers cleared");
             }
         }
+        if (invincibleTimer > 0 && lvl.gameState == lvl.PLAY_STATE) {
+            invincibleTimer--;
+            if (invincibleTimer == 0) {
+                invincible = false;
+            }
+        }
         //collision detection for interaction purposes
-        interactObject(lvl.collisionDetect.objectCollide(this, true));
+        interactObject(lvl.collisionDetect.objectCollide(this, true), false);
+        interactObject(lvl.collisionDetect.entityCollide(this, lvl.blocks, true), true);
         if (keyIn.up || keyIn.down || keyIn.left || keyIn.right) {
             if (keyIn.up) {
                 direction = "up";
@@ -160,10 +175,11 @@ public class Player extends Entity {
             collidingR = false;
             collidingT = false;
             lvl.collisionDetect.tileCollide(this);
+            lvl.collisionDetect.entityCollide(this, lvl.blocks, true);
             lvl.collisionDetect.entityCollide(this, lvl.npcs, true);
 
             //check object collision and interact with objects
-            interactObject(lvl.collisionDetect.objectCollide(this, true));
+            interactObject(lvl.collisionDetect.objectCollide(this, true), false);
 
             if (collidingT) {
                 worldY += speed;
@@ -205,9 +221,14 @@ public class Player extends Entity {
         }
     }
 
-    public void interactObject(int index) {
+    public void interactObject(int index, boolean block) {
         if (index != -1) {
-            String name = lvl.objects.get(index).name;
+            String name = "";
+            if (block) {
+                name = lvl.blocks.get(index).name;
+            } else {
+                name = lvl.objects.get(index).name;
+            }
             switch (name) {
                 case "Door":
                     lvl.ui.showMessage("Press E to open door");
@@ -226,7 +247,11 @@ public class Player extends Entity {
                     }
                     break;
                 case "TriggerBlock":
-                    ((TriggerBlock) (lvl.objects.get(index))).trigger();
+                    if (block) {
+                        ((TriggerBlock) (lvl.blocks.get(index))).trigger();
+                    } else {
+                        ((TriggerBlock) (lvl.objects.get(index))).trigger();
+                    }
                     break;
             }
         }

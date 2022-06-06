@@ -262,6 +262,9 @@ public class CollisionDetection {
         e.area.x = e.worldX + e.area.x;
         e.area.y = e.worldY + e.area.y;
         Rectangle hitbox = new Rectangle(lvl.player.worldX, lvl.player.worldY, lvl.tileSize, lvl.tileSize);
+        if(lvl.player.invincible) {
+            return false;
+        }
         switch(e.direction) {
             case "up":
                 e.worldY -= e.speed;

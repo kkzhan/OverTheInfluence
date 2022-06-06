@@ -1,11 +1,9 @@
-Line1 of question
-Line2 of question
-Line3 of question
+What is Alicia
 ANSWERS
-1    Answer1
-2    Answer2
-3    Answer3
-4    Answer4
+1    not short
+2    short
+3    tall
+4    large
 Enter   the   respective   number   to   select   your   answer
 Then   hit   enter   to   submit   your   answer
-1
+2

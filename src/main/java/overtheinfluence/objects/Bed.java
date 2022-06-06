@@ -33,7 +33,7 @@ public class Bed extends Entity {
         try {
             if (assetSetter.lvl.levelNum == 1) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Bed.png"));
-            } else if (assetSetter.lvl.levelNum == 4) {
+            } else if (assetSetter.lvl.levelNum == 3) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Bed.png"));
             }
         } catch (IOException e) {

@@ -14,7 +14,7 @@ public class AlcoholProjectile extends Projectile {
         int drawHeight = 68;
         name = "Alcohol";
         life = maxLife;
-        speed = 15;
+        speed = 5;
         getImage();
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
         left1 = util.scaleImage(left1, drawWidth, drawHeight);

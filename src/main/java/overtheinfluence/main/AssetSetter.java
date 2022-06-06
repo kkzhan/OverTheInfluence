@@ -1,5 +1,6 @@
 package main;
 
+import entity.Entity;
 import objects.*;
 
 import java.io.*;
@@ -31,7 +32,7 @@ public class AssetSetter {
     /**
      * stores added barriers
      */
-    public ArrayList<BarrierBlock> barriers = new ArrayList<>();
+    public ArrayList<Entity> barriers = new ArrayList<>();
 
     /**
      * constructor for AssetSetter
@@ -107,12 +108,13 @@ public class AssetSetter {
                 TriggerBlock finishLine = new TriggerBlock(this, lvl.tileSize, lvl.tileSize, (lvl.maxWorldCols - 7) * lvl.tileSize, i * lvl.tileSize, true) {
                     @Override
                     public void trigger() {
-                        lvl.completed = true;
+                        System.out.println("Level Complete!");
+                        lvl.innerDemon.dying = true;
                     }
                 };
-                lvl.objects.add(finishLine);
+                lvl.blocks.add(finishLine);
             }
-        } else if (lvl.levelNum == 4) {
+        } else if (lvl.levelNum == 3) {
 
         }
         objectBlockLayout();
@@ -153,7 +155,7 @@ public class AssetSetter {
     public void barrierDebuff() {
         for (int i = 1; i < lvl.maxWorldRows - 1; i++) {
             barriers.add(new BarrierBlock(this, lvl.player.worldX + (int) (lvl.tileSize * 1.25), i * lvl.tileSize, false, true));
-            lvl.objects.add(barriers.get(barriers.size() - 1));
+            lvl.blocks.add(barriers.get(barriers.size() - 1));
         }
     }
 
@@ -162,7 +164,7 @@ public class AssetSetter {
      */
     public void barrierClear() {
         for (int i = 0; i < barriers.size(); i++) {
-            lvl.objects.remove(barriers.get(i));
+            lvl.blocks.remove(barriers.get(i));
         }
         barriers.clear();
     }

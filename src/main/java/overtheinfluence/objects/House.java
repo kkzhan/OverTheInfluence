@@ -44,7 +44,7 @@ public class House extends Entity {
         try {
             if (assetSetter.lvl.levelNum == 1) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl1House.png"));
-            } else if (assetSetter.lvl.levelNum == 4) {
+            } else if (assetSetter.lvl.levelNum == 3) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl3House.png"));
             }
         } catch (IOException e) {

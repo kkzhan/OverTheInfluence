@@ -72,8 +72,8 @@ public class TileManager {
             setup(10, "houseWall", true);
             setup(11, "lvl1Fence", true);
         } else if (lvl.levelNum == 2) {
-            setup(0, "lvl3Floor", false);
-            setup(1, "streetHor", true);
+            setup(0, "lvl2Floor", false);
+            setup(1, "lvl2Walls", true);
         }
     }
 

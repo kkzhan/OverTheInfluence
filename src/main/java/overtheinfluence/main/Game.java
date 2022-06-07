@@ -74,7 +74,6 @@ public class Game {
      */
     public void playLevel(int level) {
         currLevel = level;
-        System.out.println("Level " + currLevel + " started");
         window[currLevel - 1].setResizable(false);
         window[currLevel - 1].add(levels[currLevel - 1]);
         window[currLevel - 1].setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -97,8 +96,10 @@ public class Game {
         window[currLevel - 1].pack();
         window[currLevel - 1].setLocationRelativeTo(null);
         window[currLevel - 1].setVisible(true);
-        levels[currLevel - 1].setupLevel();
         levels[currLevel - 1].startThread();
+        if(!levels[currLevel - 1].started) {
+            levels[currLevel - 1].setupLevel();
+        }
     }
 
     /**
@@ -119,10 +120,10 @@ public class Game {
      */
     public void endLevel(boolean retry) {
         closeLevel();
-        levels[currLevel - 1] = new Level(currLevel, this);
-        window[currLevel - 1] = new JFrame("Over the Influence");
 
         if (retry) {
+            levels[currLevel - 1] = new Level(currLevel, this);
+            window[currLevel - 1] = new JFrame("Over the Influence");
             playLevel(currLevel);
         } else {
             launcher.window.remove(launcher.mainPanel);

@@ -222,6 +222,8 @@ public class Launcher {
             JFrame dialog = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
             if (!gameStarted) {
                 JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (currentGame.levelComplete(1)) {
+                JOptionPane.showMessageDialog(dialog, "You have already completed this level!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from Level 1?", "Resume Level 1", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {

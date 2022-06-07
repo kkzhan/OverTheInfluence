@@ -108,18 +108,18 @@ public class Player extends Entity {
      * gets and stores the images for each direction of the player
      */
     public void getPlayerImage() {
-        up1 = setup("player/player_up_1");
-        up2 = setup("player/player_up_2");
-        up3 = setup("player/player_up_3");
-        down1 = setup("player/player_down_1");
-        down2 = setup("player/player_down_2");
-        down3 = setup("player/player_down_3");
-        left1 = setup("player/player_left_1");
-        left2 = setup("player/player_left_2");
-        left3 = setup("player/player_left_3");
-        right1 = setup("player/player_right_1");
-        right2 = setup("player/player_right_2");
-        right3 = setup("player/player_right_3");
+        up1 = setup("entities/player/player_up_1");
+        up2 = setup("entities/player/player_up_2");
+        up3 = setup("entities/player/player_up_3");
+        down1 = setup("entities/player/player_down_1");
+        down2 = setup("entities/player/player_down_2");
+        down3 = setup("entities/player/player_down_3");
+        left1 = setup("entities/player/player_left_1");
+        left2 = setup("entities/player/player_left_2");
+        left3 = setup("entities/player/player_left_3");
+        right1 = setup("entities/player/player_right_1");
+        right2 = setup("entities/player/player_right_2");
+        right3 = setup("entities/player/player_right_3");
     }
 
     /**

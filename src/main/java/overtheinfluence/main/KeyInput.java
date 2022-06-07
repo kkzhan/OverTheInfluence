@@ -112,6 +112,7 @@ public class KeyInput implements KeyListener {
         }
         if (key == KeyEvent.VK_ENTER) {
             enter = true;
+            System.out.println(lvl.player.worldX/lvl.tileSize + " " + lvl.player.worldY/lvl.tileSize);
         }
         if(key == KeyEvent.VK_R) {
             retry = true;

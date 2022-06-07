@@ -25,7 +25,7 @@ public class InnerDemon extends Entity {
         name = "Inner Demon";
         try {
             if (lvl.levelNum == 2) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/innerDemon/innerDemon1.png"));
+                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/entities/innerDemon/innerDemon1.png"));
                 down1 = util.scaleImage(down1, drawWidth, drawHeight);
             }
         } catch (Exception e) {

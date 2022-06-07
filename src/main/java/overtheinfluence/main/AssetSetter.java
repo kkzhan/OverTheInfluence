@@ -1,6 +1,7 @@
 package main;
 
-import entity.Entity;
+import NPC.*;
+import entity.*;
 import objects.*;
 
 import java.io.*;
@@ -94,17 +95,16 @@ public class AssetSetter {
             lvl.objects.add(new Car(this, 2));
             lvl.objects.add(new Car(this, 3));
             lvl.objects.get(23).setPosition(9 * lvl.tileSize, 55 * lvl.tileSize);
-            lvl.objects.get(24).setPosition(48 * lvl.tileSize, (int)(51.5 * lvl.tileSize));
+            lvl.objects.get(24).setPosition(48 * lvl.tileSize, (int) (51.5 * lvl.tileSize));
             lvl.objects.get(25).setPosition(64 * lvl.tileSize, 54 * lvl.tileSize);
-            lvl.objects.get(26).setPosition(5 * lvl.tileSize, (int)(40.5 * lvl.tileSize));
+            lvl.objects.get(26).setPosition(5 * lvl.tileSize, (int) (40.5 * lvl.tileSize));
 
+            lvl.npcs.add(new Friend(lvl, (int) (lvl.tileSize * 5.5), (int) (lvl.tileSize * 45.5), 2));
+            lvl.npcs.add(new Friend(lvl, lvl.tileSize * 7, lvl.tileSize * 45, 3));
 
-            lvl.objects.add(new Desk(this));
-            lvl.objects.get(27).setPosition((int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
-            lvl.objects.add(new IndicateArrow(this, 0, 0));
-            lvl.objects.get(28).setPosition((int) (3.32 * lvl.tileSize), (int) (9.8 * lvl.tileSize));
+            setup1();
         } else if (lvl.levelNum == 2) {
-            for(int i = 1; i < lvl.maxWorldRows - 1; i++) {
+            for (int i = 1; i < lvl.maxWorldRows - 1; i++) {
                 TriggerBlock finishLine = new TriggerBlock(this, lvl.tileSize, lvl.tileSize, (lvl.maxWorldCols - 7) * lvl.tileSize, i * lvl.tileSize, true) {
                     @Override
                     public void trigger() {
@@ -117,6 +117,36 @@ public class AssetSetter {
 
         }
         objectBlockLayout();
+    }
+
+    /**
+     * sets up level 1
+     */
+    public void setup1() {
+        Desk desk = new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
+        Friend friend = new Friend(lvl, lvl.tileSize * 5, lvl.tileSize * 45, 1);
+        Mom mom = new Mom(lvl, lvl.tileSize * 11, lvl.tileSize * 18);
+        Brother brother = new Brother(lvl, lvl.tileSize * 3, lvl.tileSize * 20);
+        Stranger stranger1 = new Stranger(lvl, lvl.tileSize * 40, lvl.tileSize * 51, 1); //oh i feel so sick
+        Stranger stranger2 = new Stranger(lvl, lvl.tileSize * 49, lvl.tileSize * 23, 2); //hidden person
+        Stranger stranger3 = new Stranger(lvl, lvl.tileSize * 78, lvl.tileSize * 55, 3); //what am i going to do
+        UnconsciousStranger unconsciousStranger = new UnconsciousStranger(lvl, (int)(lvl.tileSize * 40.5), (int)(lvl.tileSize * 29.5));
+        lvl.blocks.add(desk.trigger);
+        lvl.blocks.add(friend.trigger);
+        lvl.blocks.add(mom.trigger);
+        lvl.blocks.add(brother.trigger);
+        lvl.blocks.add(stranger1.trigger);
+        lvl.blocks.add(stranger2.trigger);
+        lvl.blocks.add(stranger3.trigger);
+        lvl.blocks.add(unconsciousStranger.trigger);
+        lvl.npcs.add(desk);
+        lvl.npcs.add(friend);
+        lvl.npcs.add(mom);
+        lvl.npcs.add(brother);
+        lvl.npcs.add(stranger1);
+        lvl.npcs.add(stranger2);
+        lvl.npcs.add(stranger3);
+        lvl.npcs.add(unconsciousStranger);
     }
 
     /**

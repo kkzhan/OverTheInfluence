@@ -57,7 +57,7 @@ public class UI {
 
     public ArrayList<Question> questionList = new ArrayList<>();
 
-    final int numOfQuestions = 1;
+    final int numOfQuestions = 2;
 
     int questionIndex = 0;
 
@@ -71,6 +71,10 @@ public class UI {
             font2 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf"));
         } catch (Exception e) {
         }
+        for(int i = 0; i < numOfQuestions; i++) {
+            questionList.add(new Question(this, i));
+        }
+        Collections.shuffle(questionList);
     }
 
     /**
@@ -250,8 +254,7 @@ public class UI {
      */
     public void question() {
         if (question == null || question.complete) {
-            question = new Question(this, questionIndex);
-            questionIndex++;
+            question = questionList.get(questionIndex++);
             if(questionIndex == numOfQuestions) {
                 questionIndex = 0;
             }

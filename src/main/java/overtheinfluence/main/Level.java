@@ -83,7 +83,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * handles keyboard input for movement
      */
-    KeyInput keyIn = new KeyInput(this);
+    public KeyInput keyIn = new KeyInput(this);
     /**
      * the thread the game runs on
      */
@@ -180,6 +180,11 @@ public class Level extends JPanel implements Runnable {
      * the inner demon for level 2
      */
     public InnerDemon innerDemon;
+
+    /**
+     * the sequence of entities to interact with in level 1
+     */
+    public ArrayList<Entity> lvl1Sequence = new ArrayList<>();
 
 
     /**

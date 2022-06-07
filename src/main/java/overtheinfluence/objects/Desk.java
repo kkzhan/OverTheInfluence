@@ -24,16 +24,27 @@ import java.io.*;
  */
 
 public class Desk extends Entity {
+
+    public TriggerBlock trigger;
+
+    public IndicateArrow arrow;
+
+    public boolean active = true;
+
     /**
      * the constructor for Desk objects
      *
      * @param assetSetter the asset setter used to set Desk objects in the world
+     * @param x the x coordinate of the Desk object in the world
+     * @param y the y coordinate of the Desk object in the world
      */
-    public Desk(AssetSetter assetSetter) {
+    public Desk(AssetSetter assetSetter, int x, int y) {
         super(assetSetter.lvl);
         int drawWidth = 30;
         int drawHeight = 64;
         name = "Desk";
+        worldX = x;
+        worldY = y;
         try {
             if (assetSetter.lvl.levelNum == 1) {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Desk.png"));
@@ -44,6 +55,24 @@ public class Desk extends Entity {
         } catch (IOException e) {
         }
         collision = true;
-        area = new Rectangle(0, 0, drawWidth, drawHeight);
+        area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
+
+        if(lvl.levelNum == 1) {
+            active = false;
+            trigger = new TriggerBlock(assetSetter, drawWidth + lvl.tileSize / 2, drawHeight, worldX, worldY - lvl.tileSize / 2, false) {
+                @Override
+                public void trigger() {
+                    if (active) {
+                        lvl.ui.showMessage("Press E to talk to your brother", 20);
+                        if (lvl.keyIn.interact) {
+                            lvl.objects.remove(arrow);
+                            //run dialogue
+                        }
+                    } else {
+                        lvl.ui.showMessage("There  is  someone  else  you need  to  talk  to  first", 10);
+                    }
+                }
+            };
+        }
     }
 }

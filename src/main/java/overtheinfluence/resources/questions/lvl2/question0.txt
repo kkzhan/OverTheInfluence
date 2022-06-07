@@ -1,9 +1,9 @@
-What is Alicia
+QUESTION WITHOUT QUESTION MARKS
 ANSWERS
-1    not short
-2    short
-3    tall
-4    large
+1    ANSWER1
+2    ANSWER2
+3    ANSWER3
+4    ANSWER4
 Enter   the   respective   number   to   select   your   answer
 Then   hit   enter   to   submit   your   answer
 2

@@ -90,7 +90,7 @@ public class CollisionDetection {
      *
      * @param e        the entity to check
      * @param isPlayer whether the entity is the player
-     * @return whether the entity is colliding with an object
+     * @return the index of the entity being collided with
      */
     public int objectCollide(Entity e, boolean isPlayer) {
         int index = -1;
@@ -108,7 +108,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.left) {
                     e.area.x -= e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if(lvl.objects.get(i).collision) e.collidingL = true;
+                        if (lvl.objects.get(i).collision) e.collidingL = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -117,7 +117,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.right) {
                     e.area.x += e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if(lvl.objects.get(i).collision) e.collidingR = true;
+                        if (lvl.objects.get(i).collision) e.collidingR = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -126,7 +126,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.up) {
                     e.area.y -= e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if(lvl.objects.get(i).collision) e.collidingT = true;
+                        if (lvl.objects.get(i).collision) e.collidingT = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -135,7 +135,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.down) {
                     e.area.y += e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if(lvl.objects.get(i).collision) e.collidingB = true;
+                        if (lvl.objects.get(i).collision) e.collidingB = true;
                         index = i;
                     }
                 }
@@ -175,6 +175,14 @@ public class CollisionDetection {
         return index;
     }
 
+    /**
+     * checks whether or not an entity is colliding with other entities
+     *
+     * @param e        the entity to check
+     * @param entities all the entities that the entity might be colliding with
+     * @param isPlayer whether the entity is the player
+     * @return the index of the entity being collided with
+     */
     public int entityCollide(Entity e, ArrayList<Entity> entities, boolean isPlayer) {
         int index = -1;
         for (int i = 0; i < entities.size(); i++) {
@@ -191,7 +199,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.left) {
                     e.area.x -= e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if(entities.get(i).collision) e.collidingL = true;
+                        if (entities.get(i).collision) e.collidingL = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -200,7 +208,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.right) {
                     e.area.x += e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if(entities.get(i).collision) e.collidingR = true;
+                        if (entities.get(i).collision) e.collidingR = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -209,7 +217,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.up) {
                     e.area.y -= e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if(entities.get(i).collision) e.collidingT = true;
+                        if (entities.get(i).collision) e.collidingT = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -218,7 +226,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.down) {
                     e.area.y += e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if(entities.get(i).collision) e.collidingB = true;
+                        if (entities.get(i).collision) e.collidingB = true;
                         index = i;
                     }
                 }
@@ -258,14 +266,20 @@ public class CollisionDetection {
         return index;
     }
 
+    /**
+     * checks if another entity is colliding with the player
+     *
+     * @param e the entity to check
+     * @return
+     */
     public boolean checkPlayer(Entity e) {
         e.area.x = e.worldX + e.area.x;
         e.area.y = e.worldY + e.area.y;
         Rectangle hitbox = new Rectangle(lvl.player.worldX, lvl.player.worldY, lvl.tileSize, lvl.tileSize);
-        if(lvl.player.invincible) {
+        if (lvl.player.invincible) {
             return false;
         }
-        switch(e.direction) {
+        switch (e.direction) {
             case "up":
                 e.worldY -= e.speed;
                 if (e.area.intersects(hitbox)) {

@@ -259,21 +259,6 @@ public class Level extends JPanel implements Runnable {
         return completed;
     }
 
-    public void sendProjectiles() {
-        Projectile p = new Projectile(this);
-        int rand = (int) (Math.random() * 3);
-        if (rand == 0) {
-            p = new PillProjectile(this);
-        } else if (rand == 1) {
-            p = new NeedleProjectile(this);
-        } else if (rand == 2) {
-            p = new AlcoholProjectile(this);
-        }
-        int randY = (int) (Math.random() * (maxWorldRows - 3) * tileSize) + tileSize;
-        p.set(player.worldX + 12 * tileSize, randY, "left", true, player);
-        projectiles.add(p);
-    }
-
     /**
      * updates the game information from the player's movement
      */
@@ -291,9 +276,6 @@ public class Level extends JPanel implements Runnable {
                         gameState = SPEED_QUESTION_STATE;
                     } else if ((startTime - time) % debuffInterval == debuffInterval - FPS * 2) {
                         ui.showMessage("Incoming speed debuff", 45);
-                    }
-                    if ((startTime - time) % 15 == 0 && player.worldX > tileSize * 8) {
-                        sendProjectiles();
                     }
                 } else {
                     completed = true;

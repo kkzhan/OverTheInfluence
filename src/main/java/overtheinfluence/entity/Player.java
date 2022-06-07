@@ -196,7 +196,11 @@ public class Player extends Entity {
 
 
             spriteCnt++; //how long the sprite can be displayed for
-            if (spriteCnt > 4) {
+            int limiter = 2; //how many frames the sprite can be displayed for
+            if(speedDebuffTimer > 0) {
+                limiter = 4;
+            }
+            if (spriteCnt > limiter) {
                 if (spriteNum == 1) {
                     spriteNum = 2;
                 } else if (spriteNum == 2) {
@@ -221,6 +225,12 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * allows the player to interact with objects
+     *
+     * @param index the index of the object in its respective arraylist
+     * @param block whether the object is a block entity or an object entity
+     */
     public void interactObject(int index, boolean block) {
         if (index != -1) {
             String name = "";

@@ -108,7 +108,6 @@ public class AssetSetter {
                 TriggerBlock finishLine = new TriggerBlock(this, lvl.tileSize, lvl.tileSize, (lvl.maxWorldCols - 7) * lvl.tileSize, i * lvl.tileSize, true) {
                     @Override
                     public void trigger() {
-                        System.out.println("Level Complete!");
                         lvl.innerDemon.dying = true;
                     }
                 };

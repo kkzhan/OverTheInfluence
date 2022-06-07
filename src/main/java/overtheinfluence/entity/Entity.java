@@ -98,15 +98,36 @@ public class Entity {
      */
     public String name = "";
 
+    /**
+     * the entity's current life
+     */
     public int life;
+
+    /**
+     * the entity's maximum life
+     */
     public int maxLife;
 
+    /**
+     * whether or not the entity is currently alive
+     */
     public boolean alive;
 
+    /**
+     * the utility tool used to manage certain tasks
+     */
     public UtilTool util = new UtilTool();
 
+    /**
+     * the entity's dialogue if applicable
+     */
     public ArrayList<String> dialogues = new ArrayList<>();
 
+    /**
+     * constructor for the Entity class
+     *
+     * @param lvl the level the entity is in
+     */
     public Entity(Level lvl) {
         this.lvl = lvl;
         direction = "down";
@@ -198,6 +219,12 @@ public class Entity {
         }
     }
 
+    /**
+     * sets the position of the entity in the world
+     *
+     * @param x the x coordinate to set
+     * @param y the y coordinate to set
+     */
     public void setPosition(int x, int y) {
         worldX = x;
         worldY = y;

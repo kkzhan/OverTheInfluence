@@ -26,10 +26,19 @@ public class Game {
      */
     private final Launcher launcher;
 
+    /**
+     * array of levels to be played
+     */
     private Level[] levels;
 
+    /**
+     * arroy of windows for the levels to be played on
+     */
     private JFrame[] window;
 
+    /**
+     * the level number of the current level
+     */
     public int currLevel;
 
     /**
@@ -58,6 +67,11 @@ public class Game {
         return levels[levelNum - 1].isComplete();
     }
 
+    /**
+     * plays a specific level
+     *
+     * @param level the number of the level to be played
+     */
     public void playLevel(int level){
         currLevel = level;
         window[currLevel - 1].setResizable(false);
@@ -86,6 +100,9 @@ public class Game {
         levels[currLevel - 1].startThread();
     }
 
+    /**
+     * plays the level after the current one
+     */
     public void nextLevel() {
         levels[currLevel - 1].gameThread = null;
         levels[currLevel - 1].stopMusic();
@@ -94,6 +111,10 @@ public class Game {
         playLevel(currLevel);
     }
 
+    /**
+     * ends the level
+     * @param retry whether or not to retry the level
+     */
     public void endLevel(boolean retry) {
         closeLevel();
         levels[currLevel - 1] = new Level(currLevel, this);
@@ -108,6 +129,9 @@ public class Game {
         }
     }
 
+    /**
+     * closes the current level
+     */
     public void closeLevel() {
         levels[currLevel - 1].gameThread = null;
         levels[currLevel - 1].stopMusic();

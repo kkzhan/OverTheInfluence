@@ -1,16 +1,33 @@
 package projectiles;
 
-import entity.Entity;
-import main.Level;
+import entity.*;
+import main.*;
 
 public class Projectile extends Entity {
+    /**
+     * the user who is sending the projectiles
+     */
     Entity user;
 
+    /**
+     * constructor for Projectile class
+     *
+     * @param lvl the level the projectile is being used in
+     */
     public Projectile(Level lvl) {
         super(lvl);
         maxLife = 8000;
     }
 
+    /**
+     * sets the initial position of the projectile
+     *
+     * @param worldX the x coordinate
+     * @param worldY the y coordinate
+     * @param direction the direction the projectile is moving in
+     * @param alive whether the projectile is initilly alive
+     * @param user the user of the projectile
+     */
     public void set(int worldX, int worldY, String direction, boolean alive, Entity user) {
         this.worldX = worldX;
         this.worldY = worldY;
@@ -20,8 +37,11 @@ public class Projectile extends Entity {
         this.life = this.maxLife;
     }
 
+    /**
+     * updates information regarding the projectile and its coordinates
+     */
     public void update() {
-        if (user == lvl.player) {
+        if (user != lvl.player) {
             boolean contactPlayer = lvl.collisionDetect.checkPlayer(this);
             if(lvl.collisionDetect.entityCollide(this, lvl.assetSetter.barriers, false) != -1) {
                 alive = false;

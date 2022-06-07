@@ -329,6 +329,7 @@ public class UI {
         int distance = endPoint - startPoint;
         int progress = lvl.player.worldX - startPoint;
         int progressPercent = (int) (((double) progress / (double) distance) * 100);
+        if(progressPercent > 100) progressPercent = 100;
         g2D.setColor(new Color(140, 132, 132, 150));
         g2D.fillRect(200, lvl.tileSize / 4, lvl.screenWidth - 400, lvl.tileSize / 2);
         g2D.setColor(new Color(121, 145, 180, 200));

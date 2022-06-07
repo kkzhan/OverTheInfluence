@@ -5,8 +5,15 @@ import main.*;
 import java.awt.*;
 
 public class PillProjectile extends Projectile {
+    /**
+     * the level the projectile is in
+     */
     Level lvl;
 
+    /**
+     * constructor for PillProjectile class
+     * @param lvl the level
+     */
     public PillProjectile(Level lvl) {
         super(lvl);
         this.lvl = lvl;
@@ -15,12 +22,8 @@ public class PillProjectile extends Projectile {
         name = "Needle";
         life = maxLife;
         speed = 8;
-        getImage();
+        left1 = setup("objects/projectiles/pill");
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
         left1 = util.scaleImage(left1, drawWidth, drawHeight);
-    }
-
-    public void getImage() {
-        left1 = setup("objects/projectiles/pill");
     }
 }

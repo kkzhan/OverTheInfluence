@@ -59,6 +59,9 @@ public class Launcher {
      */
     JPanel mainPanel = new JPanel();
 
+    /**
+     * constructor for the Launcher class
+     */
     public Launcher() {
         currentGame = new Game(this);
         window.setResizable(false);

@@ -1,5 +1,7 @@
 package main;
 
+import entity.*;
+
 import java.awt.*;
 import java.util.*;
 
@@ -61,6 +63,10 @@ public class UI {
 
     int questionIndex = 0;
 
+    int dialogueIndex = 0;
+
+    int dialogueTimer = 5;
+
     /**
      * constructor for the UI class
      */
@@ -106,7 +112,7 @@ public class UI {
     public void draw(Graphics2D g2D) {
         this.g2D = g2D;
 
-        if (msgOn && msgTime <= msgTimeLimit) {
+        if (msgOn && msgTime <= msgTimeLimit && lvl.gameState == lvl.PLAY_STATE || lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
             g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
             g2D.setColor(Color.GRAY);
             g2D.fillRect(centerText(msg) - 5, lvl.player.screenY - 20, (int) g2D.getFontMetrics().getStringBounds(msg, g2D).getWidth() + 10, 20);
@@ -126,6 +132,10 @@ public class UI {
 
         if (lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
             question();
+        }
+
+        if(lvl.gameState == lvl.DIALOGUE_STATE) {
+            dialogue();
         }
 
         if (lvl.levelNum == 2) {
@@ -170,13 +180,29 @@ public class UI {
      * displays dialogue with NPC or objects
      */
     public void dialogue() {
-        int x = lvl.tileSize * 2;
-        int y = lvl.tileSize / 2 + lvl.tileSize * 5;
-        int width = lvl.screenWidth - (lvl.tileSize * 4);
-        int height = lvl.tileSize * 5;
-        drawWindow(x, y, width, height);
+        if(lvl.gameState == lvl.DIALOGUE_STATE) {
+            int x = lvl.tileSize * 2;
+            int y = lvl.tileSize / 2 + lvl.tileSize * 5;
+            int width = lvl.screenWidth - (lvl.tileSize * 4);
+            int height = lvl.tileSize * 5;
+            drawWindow(x, y, width, height);
 
-        g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
+            g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
+
+            //do whatever font stuff
+            //draw Enter + triangle pointing to right
+            String dialogue = lvl.speaker.dialogue.get(dialogueIndex);
+            g2D.drawString(dialogue, x + lvl.tileSize * 2, y + lvl.tileSize * 2);
+            dialogueTimer--;
+            if(lvl.keyIn.enter && dialogueTimer <= 0 && lvl.gameState == lvl.DIALOGUE_STATE) {
+                dialogueIndex++;
+                if(dialogueIndex >= lvl.speaker.dialogue.size()) {
+                    dialogueIndex = 0;
+                    lvl.gameState = lvl.PLAY_STATE;
+                }
+                dialogueTimer = 5;
+            }
+        }
     }
 
     /**

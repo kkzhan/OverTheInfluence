@@ -139,7 +139,7 @@ public class Level extends JPanel implements Runnable {
      */
     public int gameState;
 
-    public final int PLAY_STATE = 1, PAUSE_STATE = 2, BARRIER_QUESTION_STATE = 3, SPEED_QUESTION_STATE = 4, QUESTION_STATE = 5, WIN_STATE = 6, LOSE_STATE = 7;
+    public final int PLAY_STATE = 1, PAUSE_STATE = 2, BARRIER_QUESTION_STATE = 3, SPEED_QUESTION_STATE = 4, QUESTION_STATE = 5, DIALOGUE_STATE = 6;
 
     /**
      * manages sound effects
@@ -185,6 +185,11 @@ public class Level extends JPanel implements Runnable {
      * the sequence of entities to interact with in level 1
      */
     public ArrayList<Entity> lvl1Sequence = new ArrayList<>();
+
+    /**
+     * the entity speaking dialogue
+     */
+    public Entity speaker;
 
 
     /**
@@ -296,6 +301,8 @@ public class Level extends JPanel implements Runnable {
             if (!ui.inQuestion) {
                 ui.question();
             }
+        } else if(gameState == DIALOGUE_STATE) {
+
         }
     }
 

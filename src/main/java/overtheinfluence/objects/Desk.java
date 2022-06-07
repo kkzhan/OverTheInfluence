@@ -40,6 +40,7 @@ public class Desk extends Entity {
      */
     public Desk(AssetSetter assetSetter, int x, int y) {
         super(assetSetter.lvl);
+        setDialogues();
         int drawWidth = 30;
         int drawHeight = 64;
         name = "Desk";
@@ -59,6 +60,7 @@ public class Desk extends Entity {
 
         if(lvl.levelNum == 1) {
             active = false;
+            Desk desk = this;
             trigger = new TriggerBlock(assetSetter, drawWidth + lvl.tileSize / 2, drawHeight, worldX, worldY - lvl.tileSize / 2, false) {
                 @Override
                 public void trigger() {
@@ -70,9 +72,17 @@ public class Desk extends Entity {
                         }
                     } else {
                         lvl.ui.showMessage("There  is  someone  else  you need  to  talk  to  first", 10);
+                        if(lvl.keyIn.interact) {
+                            desk.speak();
+                        }
                     }
                 }
             };
         }
+    }
+
+    public void setDialogues() {
+        dialogue.add("I'm not sure what to say");
+        dialogue.add("I'm not sure what to say about this");
     }
 }

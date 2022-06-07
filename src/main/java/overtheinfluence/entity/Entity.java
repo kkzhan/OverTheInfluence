@@ -121,7 +121,7 @@ public class Entity {
     /**
      * the entity's dialogue if applicable
      */
-    public ArrayList<String> dialogues = new ArrayList<>();
+    public ArrayList<String> dialogue = new ArrayList<>();
 
     /**
      * constructor for the Entity class
@@ -228,5 +228,10 @@ public class Entity {
     public void setPosition(int x, int y) {
         worldX = x;
         worldY = y;
+    }
+
+    public void speak() {
+        lvl.speaker = this;
+        lvl.gameState = lvl.DIALOGUE_STATE;
     }
 }

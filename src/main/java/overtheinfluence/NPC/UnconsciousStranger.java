@@ -11,8 +11,6 @@ public class UnconsciousStranger extends Entity {
 
     public IndicateArrow arrow;
 
-    public boolean active = true;
-
 
     /**
      * constructor for the Stranger class
@@ -23,6 +21,7 @@ public class UnconsciousStranger extends Entity {
      */
     public UnconsciousStranger(Level lvl, int x, int y) {
         super(lvl);
+        setDialogues();
         direction = "down";
         name = "Unconscious Stranger";
         collision = true;
@@ -32,21 +31,26 @@ public class UnconsciousStranger extends Entity {
         worldY = y;
         area = new Rectangle(worldX, worldY, lvl.tileSize, lvl.tileSize);
         if (lvl.levelNum == 1) {
-            active = false;
+            Entity e = this;
             trigger = new TriggerBlock(lvl.assetSetter, 4 * lvl.tileSize, 3 * lvl.tileSize, worldX - lvl.tileSize / 2, worldY - lvl.tileSize / 2, false) {
                 @Override
                 public void trigger() {
-                    if (active) {
-                        lvl.ui.showMessage("Press E to interact", 20);
-                        if (lvl.keyIn.interact) {
-                            lvl.objects.remove(arrow);
-                            //run dialogue
-                        }
-                    } else {
-                        lvl.ui.showMessage("There  is  someone  else  you need  to  talk  to  first", 10);
+                    lvl.ui.showMessage("Press E to interact with the unconscious stranger", 20);
+                    if (lvl.keyIn.interact) {
+                        lvl.objects.remove(arrow);
+                        lvl.entities.remove(arrow);
+                        e.speak();
+                        lvl.lvl1Sequence.remove(e);
                     }
                 }
             };
+            arrow = new IndicateArrow(lvl.assetSetter, worldX + 10, worldY - lvl.tileSize);
+            lvl.objects.add(arrow);
         }
+    }
+
+    public void setDialogues() {
+        dialogue.add("Unconscious Person#*This person seems to have blacked out after taking too many drugs.*");
+        dialogue.add("Unconscious Person#*They seem to be in a state of euphoria#but they also don’t seem to be in a good place in life.*");
     }
 }

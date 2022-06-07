@@ -58,7 +58,7 @@ public class CollisionDetection {
         tileUp1 = lvl.tm.tileMap[leftCol][topRow];
         tileUp2 = lvl.tm.tileMap[rightCol][topRow];
         if (lvl.tm.tile[tileUp1].collision || lvl.tm.tile[tileUp2].collision) {
-            e.collidingT = true;
+            e.collision = true;
         }
         topRow = worldYTop / lvl.tileSize;
 
@@ -66,7 +66,7 @@ public class CollisionDetection {
         tileDown1 = lvl.tm.tileMap[leftCol][bottomRow];
         tileDown2 = lvl.tm.tileMap[rightCol][bottomRow];
         if (lvl.tm.tile[tileDown1].collision || lvl.tm.tile[tileDown2].collision) {
-            e.collidingB = true;
+            e.collision = true;
         }
         bottomRow = worldYBottom / lvl.tileSize;
 
@@ -74,14 +74,14 @@ public class CollisionDetection {
         tileLeft1 = lvl.tm.tileMap[leftCol][topRow];
         tileLeft2 = lvl.tm.tileMap[leftCol][bottomRow];
         if (lvl.tm.tile[tileLeft1].collision || lvl.tm.tile[tileLeft2].collision) {
-            e.collidingL = true;
+            e.collision = true;
         }
 
         rightCol = (worldXRight + e.speed) / lvl.tileSize;
         tileRight1 = lvl.tm.tileMap[rightCol][topRow];
         tileRight2 = lvl.tm.tileMap[rightCol][bottomRow];
         if (lvl.tm.tile[tileRight1].collision || lvl.tm.tile[tileRight2].collision) {
-            e.collidingR = true;
+            e.collision = true;
         }
     }
 
@@ -108,7 +108,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.left) {
                     e.area.x -= e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if (lvl.objects.get(i).collision) e.collidingL = true;
+                        if (lvl.objects.get(i).collision) e.collision = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -117,7 +117,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.right) {
                     e.area.x += e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if (lvl.objects.get(i).collision) e.collidingR = true;
+                        if (lvl.objects.get(i).collision) e.collision = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -126,7 +126,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.up) {
                     e.area.y -= e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if (lvl.objects.get(i).collision) e.collidingT = true;
+                        if (lvl.objects.get(i).collision) e.collision = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -135,7 +135,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.down) {
                     e.area.y += e.speed;
                     if (e.area.intersects(lvl.objects.get(i).area)) {
-                        if (lvl.objects.get(i).collision) e.collidingB = true;
+                        if (lvl.objects.get(i).collision) e.collision = true;
                         index = i;
                     }
                 }
@@ -144,25 +144,25 @@ public class CollisionDetection {
                     case "up":
                         e.area.y -= e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                     case "down":
                         e.area.y += e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                     case "left":
                         e.area.x -= e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                     case "right":
                         e.area.x += e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                 }
@@ -199,7 +199,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.left) {
                     e.area.x -= e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if (entities.get(i).collision) e.collidingL = true;
+                        if (entities.get(i).collision) e.collision = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -208,7 +208,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.right) {
                     e.area.x += e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if (entities.get(i).collision) e.collidingR = true;
+                        if (entities.get(i).collision) e.collision = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -217,7 +217,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.up) {
                     e.area.y -= e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if (entities.get(i).collision) e.collidingT = true;
+                        if (entities.get(i).collision) e.collision = true;
                         index = i;
                     }
                     e.area.x = e.areaDefaultX + e.worldX;
@@ -226,7 +226,7 @@ public class CollisionDetection {
                 if (((Player) e).keyIn.down) {
                     e.area.y += e.speed;
                     if (e.area.intersects(entities.get(i).area)) {
-                        if (entities.get(i).collision) e.collidingB = true;
+                        if (entities.get(i).collision) e.collision = true;
                         index = i;
                     }
                 }
@@ -235,25 +235,25 @@ public class CollisionDetection {
                     case "up":
                         e.area.y -= e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                     case "down":
                         e.area.y += e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                     case "left":
                         e.area.x -= e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                     case "right":
                         e.area.x += e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
-                            e.collidingL = true;
+                            e.collision = true;
                         }
                         break;
                 }

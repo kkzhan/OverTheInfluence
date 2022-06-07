@@ -59,6 +59,8 @@ public class Launcher {
      */
     JPanel mainPanel = new JPanel();
 
+    DataHandler dataHandler = new DataHandler(this);
+
     /**
      * constructor for the Launcher class
      */
@@ -78,7 +80,7 @@ public class Launcher {
                 }
             }
         });
-        processFile();
+        dataHandler.processData();
         splashScreen();
     }
 
@@ -555,6 +557,8 @@ public class Launcher {
         window.add(panel);
         window.pack();
         panel.setLayout(null);
+
+        dataHandler.saveData();
 
         window.removeWindowListener(window.getWindowListeners()[0]);
 

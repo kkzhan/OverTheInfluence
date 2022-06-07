@@ -49,8 +49,8 @@ public class Game {
     public Game(Launcher launcher) {
         this.launcher = launcher;
         window = new JFrame[3];
-        for(int i = 0; i < window.length; i++) {
-             window[i] = new JFrame("Over the Influence");
+        for (int i = 0; i < window.length; i++) {
+            window[i] = new JFrame("Over the Influence");
         }
         levels = new Level[3];
         levels[0] = new Level(1, this);
@@ -72,13 +72,14 @@ public class Game {
      *
      * @param level the number of the level to be played
      */
-    public void playLevel(int level){
+    public void playLevel(int level) {
         currLevel = level;
+        System.out.println("Level " + currLevel + " started");
         window[currLevel - 1].setResizable(false);
         window[currLevel - 1].add(levels[currLevel - 1]);
         window[currLevel - 1].setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         //check if there is already a window listener
-        if(window[currLevel - 1].getWindowListeners().length == 0) {
+        if (window[currLevel - 1].getWindowListeners().length == 0) {
             window[currLevel - 1].addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -113,6 +114,7 @@ public class Game {
 
     /**
      * ends the level
+     *
      * @param retry whether or not to retry the level
      */
     public void endLevel(boolean retry) {
@@ -120,7 +122,7 @@ public class Game {
         levels[currLevel - 1] = new Level(currLevel, this);
         window[currLevel - 1] = new JFrame("Over the Influence");
 
-        if(retry) {
+        if (retry) {
             playLevel(currLevel);
         } else {
             launcher.window.remove(launcher.mainPanel);

@@ -141,12 +141,14 @@ public class KeyInput implements KeyListener {
         }
         if (key == KeyEvent.VK_ENTER) {
             enter = false;
+            lvl.ui.dialogueReady = true;
         }
         if(key == KeyEvent.VK_R) {
             retry = false;
         }
         if(key == KeyEvent.VK_ESCAPE) {
             escape = false;
+            lvl.lvl1Sequence.clear();
         }
     }
 }

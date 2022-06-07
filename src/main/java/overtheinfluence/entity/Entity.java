@@ -69,26 +69,6 @@ public class Entity {
     public int areaDefaultX, areaDefaultY;
 
     /**
-     * whether the entity is currently colliding to the left
-     */
-    public boolean collidingL = false;
-
-    /**
-     * whether the entity is currently colliding to the right
-     */
-    public boolean collidingR = false;
-
-    /**
-     * whether the entity is currently colliding to the top
-     */
-    public boolean collidingT = false;
-
-    /**
-     * whether the entity is currently colliding to the bottom
-     */
-    public boolean collidingB = false;
-
-    /**
      * whether the object can be collided with and blocks the player and other objects
      */
     public boolean collision;

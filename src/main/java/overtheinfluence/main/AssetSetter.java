@@ -127,10 +127,10 @@ public class AssetSetter {
         Friend friend = new Friend(lvl, lvl.tileSize * 5, lvl.tileSize * 45, 1);
         Mom mom = new Mom(lvl, lvl.tileSize * 11, lvl.tileSize * 18);
         Brother brother = new Brother(lvl, lvl.tileSize * 3, lvl.tileSize * 20);
-        Stranger stranger1 = new Stranger(lvl, lvl.tileSize * 40, lvl.tileSize * 51, 1); //oh i feel so sick
-        Stranger stranger2 = new Stranger(lvl, lvl.tileSize * 49, lvl.tileSize * 23, 2); //hidden person
-        Stranger stranger3 = new Stranger(lvl, lvl.tileSize * 78, lvl.tileSize * 55, 3); //what am i going to do
-        UnconsciousStranger unconsciousStranger = new UnconsciousStranger(lvl, (int)(lvl.tileSize * 40.5), (int)(lvl.tileSize * 29.5));
+        Stranger stranger1 = new Stranger(lvl, lvl.tileSize * 79, lvl.tileSize * 56, 1);
+        Stranger stranger2 = new Stranger(lvl, lvl.tileSize * 47, lvl.tileSize * 21, 2);
+        Stranger stranger3 = new Stranger(lvl, lvl.tileSize * 40, lvl.tileSize * 51, 3);
+        UnconsciousStranger unconsciousStranger = new UnconsciousStranger(lvl, (int) (lvl.tileSize * 40.5), (int) (lvl.tileSize * 29.5));
         lvl.blocks.add(desk.trigger);
         lvl.blocks.add(friend.trigger);
         lvl.blocks.add(mom.trigger);
@@ -139,6 +139,14 @@ public class AssetSetter {
         lvl.blocks.add(stranger2.trigger);
         lvl.blocks.add(stranger3.trigger);
         lvl.blocks.add(unconsciousStranger.trigger);
+        lvl.lvl1Sequence.add(desk);
+        lvl.lvl1Sequence.add(friend);
+        lvl.lvl1Sequence.add(mom);
+        lvl.lvl1Sequence.add(brother);
+        lvl.lvl1Sequence.add(stranger1);
+        lvl.lvl1Sequence.add(stranger2);
+        lvl.lvl1Sequence.add(stranger3);
+        lvl.lvl1Sequence.add(unconsciousStranger);
         lvl.npcs.add(desk);
         lvl.npcs.add(friend);
         lvl.npcs.add(mom);
@@ -147,6 +155,15 @@ public class AssetSetter {
         lvl.npcs.add(stranger2);
         lvl.npcs.add(stranger3);
         lvl.npcs.add(unconsciousStranger);
+        TriggerBlock endTrigger = new TriggerBlock(this, 4 * lvl.tileSize, lvl.tileSize, 3 * lvl.tileSize, 5 * lvl.tileSize, false) {
+            @Override
+            public void trigger() {
+                if(lvl.lvl1Sequence.size() == 0) {
+                    lvl.completed = true;
+                }
+            }
+        };
+        lvl.blocks.add(endTrigger);
     }
 
     /**

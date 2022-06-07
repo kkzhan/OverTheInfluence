@@ -101,7 +101,7 @@ public class Player extends Entity {
         areaDefaultX = area.x;
         areaDefaultY = area.y;
         area.width = 5;
-        area.height = 7;
+        area.height = 9;
     }
 
     /**
@@ -170,10 +170,7 @@ public class Player extends Entity {
                 worldX += speed;
             }
 
-            collidingB = false;
-            collidingL = false;
-            collidingR = false;
-            collidingT = false;
+            collision = false;
             lvl.collisionDetect.tileCollide(this);
             lvl.collisionDetect.entityCollide(this, lvl.blocks, true);
             lvl.collisionDetect.entityCollide(this, lvl.npcs, true);
@@ -181,19 +178,28 @@ public class Player extends Entity {
             //check object collision and interact with objects
             interactObject(lvl.collisionDetect.objectCollide(this, true), false);
 
-            if (collidingT) {
-                worldY += speed;
+            switch(direction) {
+                case "up":
+                    if (collision) {
+                        worldY += speed;
+                    }
+                    break;
+                case "down":
+                    if (collision) {
+                        worldY -= speed;
+                    }
+                    break;
+                case "left":
+                    if (collision) {
+                        worldX += speed;
+                    }
+                    break;
+                case "right":
+                    if (collision) {
+                        worldX -= speed;
+                    }
+                    break;
             }
-            if (collidingB) {
-                worldY -= speed;
-            }
-            if (collidingL) {
-                worldX += speed;
-            }
-            if (collidingR) {
-                worldX -= speed;
-            }
-
 
             spriteCnt++; //how long the sprite can be displayed for
             int limiter = 2; //how many frames the sprite can be displayed for
@@ -244,7 +250,8 @@ public class Player extends Entity {
                     lvl.ui.showMessage("Press E to open door");
                     if (keyIn.interact) {
                         Door temp = (Door) lvl.objects.get(index);
-                        lvl.objects.remove(index);
+                        lvl.objects.remove(temp);
+                        lvl.entities.remove(temp);
                         lvl.playSFX(2);
                         Thread tempThread = new Thread(() -> {
                             try {

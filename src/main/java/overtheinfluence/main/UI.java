@@ -65,7 +65,7 @@ public class UI {
 
     int dialogueIndex = 0;
 
-    int dialogueTimer = 5;
+    public boolean dialogueReady = true;
 
     /**
      * constructor for the UI class
@@ -77,7 +77,7 @@ public class UI {
             font2 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf"));
         } catch (Exception e) {
         }
-        for(int i = 0; i < numOfQuestions; i++) {
+        for (int i = 0; i < numOfQuestions; i++) {
             questionList.add(new Question(this, i));
         }
         Collections.shuffle(questionList);
@@ -112,13 +112,15 @@ public class UI {
     public void draw(Graphics2D g2D) {
         this.g2D = g2D;
 
-        if (msgOn && msgTime <= msgTimeLimit && lvl.gameState == lvl.PLAY_STATE || lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
-            g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
-            g2D.setColor(Color.GRAY);
-            g2D.fillRect(centerText(msg) - 5, lvl.player.screenY - 20, (int) g2D.getFontMetrics().getStringBounds(msg, g2D).getWidth() + 10, 20);
-            g2D.setColor(Color.WHITE);
-            g2D.drawString(msg, centerText(msg), lvl.player.screenY - 5);
-            msgTime++;
+        if (msgOn && msgTime <= msgTimeLimit) {
+            if(lvl.gameState == lvl.PLAY_STATE || lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
+                g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+                g2D.setColor(Color.GRAY);
+                g2D.fillRect(centerText(msg) - 5, lvl.player.screenY - 20, (int) g2D.getFontMetrics().getStringBounds(msg, g2D).getWidth() + 10, 20);
+                g2D.setColor(Color.WHITE);
+                g2D.drawString(msg, centerText(msg), lvl.player.screenY - 5);
+                msgTime++;
+            }
         } else if (msgOn) {
             msgOn = false;
             msgTime = 0;
@@ -134,13 +136,11 @@ public class UI {
             question();
         }
 
-        if(lvl.gameState == lvl.DIALOGUE_STATE) {
+        if (lvl.gameState == lvl.DIALOGUE_STATE) {
             dialogue();
         }
 
-        if (lvl.levelNum == 2) {
-            displayProgress();
-        }
+        displayProgress();
 
         if (lvl.gameState == lvl.PLAY_STATE) {
             if (lvl.player.barrierDebuffTimer > 0) {
@@ -180,27 +180,37 @@ public class UI {
      * displays dialogue with NPC or objects
      */
     public void dialogue() {
-        if(lvl.gameState == lvl.DIALOGUE_STATE) {
+        if (lvl.gameState == lvl.DIALOGUE_STATE) {
             int x = lvl.tileSize * 2;
             int y = lvl.tileSize / 2 + lvl.tileSize * 5;
             int width = lvl.screenWidth - (lvl.tileSize * 4);
             int height = lvl.tileSize * 5;
             drawWindow(x, y, width, height);
 
-            g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
 
             //do whatever font stuff
             //draw Enter + triangle pointing to right
-            String dialogue = lvl.speaker.dialogue.get(dialogueIndex);
-            g2D.drawString(dialogue, x + lvl.tileSize * 2, y + lvl.tileSize * 2);
-            dialogueTimer--;
-            if(lvl.keyIn.enter && dialogueTimer <= 0 && lvl.gameState == lvl.DIALOGUE_STATE) {
+            g2D.setColor(Color.WHITE);
+            g2D.setFont(font1.deriveFont(Font.BOLD, lvl.screenHeight / 20));
+            g2D.drawString("Enter >", lvl.screenWidth - (int) (lvl.tileSize * 4.5), lvl.screenHeight - (int) (2.5 * lvl.tileSize));
+
+            y += lvl.tileSize;
+            String[] dialogue = lvl.speaker.dialogue.get(dialogueIndex).split("#");
+            for (int i = 0; i < dialogue.length; i++) {
+                if (i == 0) {
+                    g2D.setFont(font1.deriveFont(Font.BOLD, lvl.screenHeight / 28));
+                } else {
+                    g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+                }
+                g2D.drawString(dialogue[i], x + lvl.tileSize, y + lvl.tileSize * i);
+            }
+            if (lvl.keyIn.enter && dialogueReady && lvl.gameState == lvl.DIALOGUE_STATE) {
                 dialogueIndex++;
-                if(dialogueIndex >= lvl.speaker.dialogue.size()) {
+                if (dialogueIndex >= lvl.speaker.dialogue.size()) {
                     dialogueIndex = 0;
                     lvl.gameState = lvl.PLAY_STATE;
                 }
-                dialogueTimer = 5;
+                dialogueReady = false;
             }
         }
     }
@@ -281,7 +291,7 @@ public class UI {
     public void question() {
         if (question == null || question.complete) {
             question = questionList.get(questionIndex++);
-            if(questionIndex == numOfQuestions) {
+            if (questionIndex == numOfQuestions) {
                 questionIndex = 0;
             }
         }
@@ -352,19 +362,30 @@ public class UI {
     }
 
     public void displayProgress() {
-        g2D.setStroke(new BasicStroke(1));
-        int endPoint = (lvl.maxWorldCols - 8) * lvl.tileSize;
-        int startPoint = (int) (lvl.tileSize * 1.5);
-        int distance = endPoint - startPoint;
-        int progress = lvl.player.worldX - startPoint;
-        int progressPercent = (int) (((double) progress / (double) distance) * 100);
-        if(progressPercent > 100) progressPercent = 100;
-        g2D.setColor(new Color(140, 132, 132, 150));
-        g2D.fillRect(200, lvl.tileSize / 4, lvl.screenWidth - 400, lvl.tileSize / 2);
-        g2D.setColor(new Color(121, 145, 180, 200));
-        g2D.fillRect(200, lvl.tileSize / 4, (progressPercent * (lvl.screenWidth - 400)) / 100, lvl.tileSize / 2);
-        g2D.setColor(Color.BLACK);
-        g2D.drawRect(200, lvl.tileSize / 4, lvl.screenWidth - 400, lvl.tileSize / 2);
+        if(lvl.levelNum == 1) {
+            g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+            g2D.setColor(Color.WHITE);
+            g2D.drawString("Found: " + (8 - lvl.lvl1Sequence.size()) + " / 8", lvl.tileSize, lvl.tileSize);
+            if(lvl.lvl1Sequence.size() == 0) {
+                g2D.drawString("Return to start", lvl.tileSize, (int)(lvl.tileSize * 1.5));
+            }
+        } else if(lvl.levelNum == 2) {
+            g2D.setStroke(new BasicStroke(1));
+            int endPoint = (lvl.maxWorldCols - 8) * lvl.tileSize;
+            int startPoint = (int) (lvl.tileSize * 1.5);
+            int distance = endPoint - startPoint;
+            int progress = lvl.player.worldX - startPoint;
+            int progressPercent = (int) (((double) progress / (double) distance) * 100);
+            if (progressPercent > 100) progressPercent = 100;
+            g2D.setColor(new Color(140, 132, 132, 150));
+            g2D.fillRect(200, lvl.tileSize / 4, lvl.screenWidth - 400, lvl.tileSize / 2);
+            g2D.setColor(new Color(121, 145, 180, 200));
+            g2D.fillRect(200, lvl.tileSize / 4, (progressPercent * (lvl.screenWidth - 400)) / 100, lvl.tileSize / 2);
+            g2D.setColor(Color.BLACK);
+            g2D.drawRect(200, lvl.tileSize / 4, lvl.screenWidth - 400, lvl.tileSize / 2);
+        } else if(lvl.levelNum == 3) {
+
+        }
     }
 
     /**

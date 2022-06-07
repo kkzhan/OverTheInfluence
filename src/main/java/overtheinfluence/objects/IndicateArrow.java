@@ -25,22 +25,6 @@ import java.awt.image.*;
  */
 
 public class IndicateArrow extends Entity {
-    /**
-     * the counter for the frames of the arrows display animation
-     */
-    public int frameCount;
-    /**
-     * the frame of the arrows display animation
-     */
-    public int frame;
-    /**
-     * the first image of the arrows display animation
-     */
-    BufferedImage arrow1;
-    /**
-     * the second image of the arrows display animation
-     */
-    BufferedImage arrow2;
 
     /**
      * Constructor for the IndicateArrow class
@@ -54,8 +38,9 @@ public class IndicateArrow extends Entity {
         int drawHeight = 40;
         name = "IndicateArrow";
         collision = false;
-        area = new Rectangle(x, y, drawWidth, drawHeight);
-        frameCount = 0;
+        worldX = x;
+        worldY = y;
+        area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
         try {
             down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/arrow1.png"));
             down2 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/arrow2.png"));

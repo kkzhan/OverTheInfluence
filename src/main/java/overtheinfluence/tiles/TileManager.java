@@ -152,6 +152,12 @@ public class TileManager {
                             case "g":
                                 num = 16;
                                 break;
+                            case "h":
+                                num = 17;
+                                break;
+                            case "i":
+                                num = 18;
+                                break;
                         }
                     }
                     tileMap[col][row] = num;
@@ -201,12 +207,12 @@ public class TileManager {
                     worldX - lvl.tileSize < lvl.player.worldX + lvl.player.screenX &&
                     worldY + lvl.tileSize > lvl.player.worldY - lvl.player.screenY &&
                     worldY - lvl.tileSize < lvl.player.worldY + lvl.player.screenY) {
-                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY,null);
+                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY, null);
             } else if (lvl.player.screenX > lvl.player.worldX ||
                     lvl.player.screenY > lvl.player.worldY ||
                     rightOffset > lvl.worldWidth - lvl.player.worldX ||
                     bottomOffset > lvl.worldHeight - lvl.player.worldY) {
-                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY,null);
+                g2D.drawImage(tile[tileMap[worldCol][worldRow]].image, screenX, screenY, null);
             }
             worldCol++;
             if (worldCol == lvl.maxWorldCols) {

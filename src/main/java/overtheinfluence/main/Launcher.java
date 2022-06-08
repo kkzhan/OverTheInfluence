@@ -88,7 +88,22 @@ public class Launcher {
      * This method displays the splash screen of the game
      */
     private void splashScreen() {
-        mainMenu();
+        JPanel splashPanel = new JPanel();
+        splashPanel.setBackground(bgColor);
+        splashPanel.setPreferredSize(new Dimension(1200, 800));
+        mainPanel = splashPanel;
+        window.add(mainPanel);
+        window.pack();
+        splashPanel.setLayout(null);
+        try {
+            //splash screen
+            Thread.sleep(1000);
+            window.remove(mainPanel);
+            window.repaint();
+            window.revalidate();
+            mainMenu();
+        } catch (InterruptedException e) {
+        }
     }
 
     /**

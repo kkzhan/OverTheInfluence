@@ -83,13 +83,14 @@ public class Player extends Entity {
         screenY = lvl.screenHeight / 2 - lvl.tileSize / 2;
 
         if (lvl.levelNum == 1) {
-            worldX = lvl.tileSize * 3;
-            worldY = (int) (lvl.tileSize * 5.25);
+            if (worldX == 0) worldX = lvl.tileSize * 3;
+            if (worldY == 0) worldY = (int) (lvl.tileSize * 5.25);
         } else if (lvl.levelNum == 2) {
-            worldX = (int) (lvl.tileSize * 1.5);
-            worldY = lvl.worldHeight / 2 - lvl.tileSize / 2;
+            if (worldX == 0) worldX = (int) (lvl.tileSize * 1.5);
+            if (worldY == 0) worldY = lvl.worldHeight / 2 - lvl.tileSize / 2;
         } else if (lvl.levelNum == 3) {
-
+            if (worldX == 0) worldX = lvl.tileSize * 3;
+            if (worldY == 0) worldY = (int) (lvl.tileSize * 5.25);
         }
         this.speed = defaultSpeed;
         direction = "down";
@@ -130,9 +131,11 @@ public class Player extends Entity {
             speed = defaultSpeed / 2;
             speedDebuffTimer--;
             if (speedDebuffTimer == 0) {
-                speed = defaultSpeed;
                 lvl.ui.showMessage("Speed restored");
             }
+        }
+        if (speedDebuffTimer == 0) {
+            speed = defaultSpeed;
         }
         if (barrierDebuffTimer > 0 && lvl.gameState == lvl.PLAY_STATE) {
             if (!barrierDebuff) {
@@ -141,10 +144,12 @@ public class Player extends Entity {
             }
             barrierDebuffTimer--;
             if (barrierDebuffTimer == 0) {
-                barrierDebuff = false;
-                lvl.assetSetter.barrierClear();
                 lvl.ui.showMessage("Barriers cleared");
             }
+        }
+        if (barrierDebuffTimer == 0) {
+            barrierDebuff = false;
+            lvl.assetSetter.barrierClear();
         }
         if (invincibleTimer > 0 && lvl.gameState == lvl.PLAY_STATE) {
             invincibleTimer--;
@@ -178,7 +183,7 @@ public class Player extends Entity {
             //check object collision and interact with objects
             interactObject(lvl.collisionDetect.objectCollide(this, true), false);
 
-            switch(direction) {
+            switch (direction) {
                 case "up":
                     if (collision) {
                         worldY += speed;
@@ -203,7 +208,7 @@ public class Player extends Entity {
 
             spriteCnt++; //how long the sprite can be displayed for
             int limiter = 2; //how many frames the sprite can be displayed for
-            if(speedDebuffTimer > 0) {
+            if (speedDebuffTimer > 0) {
                 limiter = 4;
             }
             if (spriteCnt > limiter) {
@@ -239,7 +244,7 @@ public class Player extends Entity {
      */
     public void interactObject(int index, boolean block) {
         if (index != -1) {
-            String name = "";
+            String name;
             if (block) {
                 name = lvl.blocks.get(index).name;
             } else {

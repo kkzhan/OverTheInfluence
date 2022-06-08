@@ -118,6 +118,7 @@ public class KeyInput implements KeyListener {
         }
         if(key == KeyEvent.VK_ESCAPE) {
             escape = true;
+            lvl.lvl1Sequence.clear();
         }
     }
 
@@ -148,7 +149,6 @@ public class KeyInput implements KeyListener {
         }
         if(key == KeyEvent.VK_ESCAPE) {
             escape = false;
-            lvl.lvl1Sequence.clear();
         }
     }
 }

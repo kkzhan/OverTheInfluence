@@ -152,11 +152,6 @@ public class Level extends JPanel implements Runnable {
     public int levelNum;
 
     /**
-     * determines whether or not to update certain information
-     */
-    public boolean updateOn = true;
-
-    /**
      * the time and initial time for the level
      */
     public int time, startTime;
@@ -169,7 +164,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * whether or not the level is complete
      */
-    public boolean completed = false;
+    public boolean complete = false;
 
     /**
      * whether or not the level was failed
@@ -207,12 +202,17 @@ public class Level extends JPanel implements Runnable {
         tm = new TileManager(this, "map" + levelNum);
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
-        if (levelNum == 2) {
-            time = FPS * 600; //10 minutes
+        player = new Player(this, keyIn, 8);
+        if (levelNum == 1) {
+            thisGame.launcher.dataHandler.processLevel1();
+        } else if (levelNum == 2) {
+            thisGame.launcher.dataHandler.processLevel2();
+            time = FPS * 360; //6 minutes
             startTime = time;
             innerDemon = new InnerDemon(this);
+        } else if (levelNum == 3) {
+            thisGame.launcher.dataHandler.processLevel3();
         }
-        player = new Player(this, keyIn, 8);
     }
 
     /**
@@ -266,7 +266,7 @@ public class Level extends JPanel implements Runnable {
      * @return true if the level is complete
      */
     public boolean isComplete() {
-        return completed;
+        return complete;
     }
 
     /**
@@ -276,7 +276,7 @@ public class Level extends JPanel implements Runnable {
         if (gameState == PLAY_STATE) {
             if (levelNum == 2) {
                 innerDemon.update();
-                int debuffInterval = FPS * 30; //30 seconds
+                int debuffInterval = FPS * 45; //30 seconds
                 if (time > 0) {
                     time--;
                     if ((startTime - time) % debuffInterval == 0) {
@@ -288,20 +288,20 @@ public class Level extends JPanel implements Runnable {
                         ui.showMessage("Incoming speed debuff", 45);
                     }
                 } else {
-                    completed = true;
+                    complete = true;
                     failed = true;
                     sound.stop();
                 }
             }
             player.update();
-            for (int i = 0; i < projectiles.size(); i++) {
+            for(int i = 0; i < projectiles.size(); i++) {
                 projectiles.get(i).update();
             }
         } else if (gameState == BARRIER_QUESTION_STATE || gameState == SPEED_QUESTION_STATE) {
             if (!ui.inQuestion) {
                 ui.question();
             }
-        } else if(gameState == DIALOGUE_STATE) {
+        } else if (gameState == DIALOGUE_STATE) {
 
         }
     }
@@ -320,36 +320,25 @@ public class Level extends JPanel implements Runnable {
         //add entities to list
         entities.add(player);
 
-        if(levelNum == 2) {
+        if (levelNum == 2) {
             entities.add(innerDemon);
         }
 
-        for (int i = 0; i < objects.size(); i++) {
-            entities.add(objects.get(i));
-        }
+        entities.addAll(objects);
 
-        for (int i = 0; i < npcs.size(); i++) {
-            entities.add(npcs.get(i));
-        }
+        entities.addAll(npcs);
 
-        for (int i = 0; i < projectiles.size(); i++) {
-            entities.add(projectiles.get(i));
-        }
+        entities.addAll(projectiles);
 
         //sort entities by y position
-        Collections.sort(entities, (e1, e2) -> {
-            int result = Integer.compare(e1.worldY, e2.worldY);
-            return result;
-        });
+        entities.sort(Comparator.comparingInt(e -> e.worldY));
 
         //draw entities
-        for (int i = 0; i < entities.size(); i++) {
+        for(int i = 0; i < entities.size(); i++) {
             entities.get(i).draw(g2D);
         }
         //remove entities from list
-        for (int i = 0; i < entities.size(); i++) {
-            entities.remove(i);
-        }
+        entities.clear();
 
         ui.draw(g2D);
 

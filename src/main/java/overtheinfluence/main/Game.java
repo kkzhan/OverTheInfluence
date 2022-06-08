@@ -19,17 +19,17 @@ public class Game {
     /**
      * whether or not the game has been started
      */
-    private boolean started;
+    boolean started;
 
     /**
      * the launcher that starts the game
      */
-    private final Launcher launcher;
+    public final Launcher launcher;
 
     /**
      * array of levels to be played
      */
-    private Level[] levels;
+    Level[] levels;
 
     /**
      * arroy of windows for the levels to be played on
@@ -55,7 +55,7 @@ public class Game {
         levels = new Level[3];
         levels[0] = new Level(1, this);
         levels[1] = new Level(2, this);
-        levels[2] = new Level(1, this); //fix to 3
+        levels[2] = new Level(3, this);
     }
 
     /**

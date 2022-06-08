@@ -1,7 +1,5 @@
 package main;
 
-import entity.*;
-
 import java.awt.*;
 import java.util.*;
 
@@ -73,14 +71,22 @@ public class UI {
     public UI(Level lvl) {
         this.lvl = lvl;
         try {
-            font1 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf"));
-            font2 = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf"));
+            font1 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf")));
+            font2 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf")));
         } catch (Exception e) {
         }
         for (int i = 0; i < numOfQuestions; i++) {
             questionList.add(new Question(this, i));
         }
         Collections.shuffle(questionList);
+    }
+
+    public void resetQuestions() {
+        for (int i = 0; i < numOfQuestions; i++) {
+            questionList.get(i).complete = false;
+            questionList.get(i).selected = -1;
+            questionList.get(i).secondAttempt = false;
+        }
     }
 
     /**
@@ -113,7 +119,7 @@ public class UI {
         this.g2D = g2D;
 
         if (msgOn && msgTime <= msgTimeLimit) {
-            if(lvl.gameState == lvl.PLAY_STATE || lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
+            if (lvl.gameState == lvl.PLAY_STATE || lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
                 g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
                 g2D.setColor(Color.GRAY);
                 g2D.fillRect(centerText(msg) - 5, lvl.player.screenY - 20, (int) g2D.getFontMetrics().getStringBounds(msg, g2D).getWidth() + 10, 20);
@@ -171,7 +177,7 @@ public class UI {
             startScreen();
         }
 
-        if (lvl.completed) {
+        if (lvl.complete) {
             endScreen(!lvl.failed);
         }
     }
@@ -232,7 +238,11 @@ public class UI {
             g2D.drawString("Press Enter to Continue", centerText("Press Enter to Continue"), lvl.screenHeight / 2 + lvl.tileSize);
             g2D.drawString("Press Esc to Return to Menu", centerText("Press Esc to Return to Menu"), lvl.screenHeight / 2 + lvl.tileSize * 2);
             if (lvl.keyIn.enter && !lvl.keyIn.escape) {
-                lvl.thisGame.nextLevel();
+                if (lvl.levelNum == 3) {
+                    lvl.thisGame.endLevel(false);
+                } else {
+                    lvl.thisGame.nextLevel();
+                }
             } else if (lvl.keyIn.escape && !lvl.keyIn.enter) {
                 lvl.thisGame.endLevel(false);
             }
@@ -291,7 +301,8 @@ public class UI {
     public void question() {
         if (question == null || question.complete) {
             question = questionList.get(questionIndex++);
-            if (questionIndex == numOfQuestions) {
+            if (questionIndex == questionList.size()) {
+                resetQuestions();
                 questionIndex = 0;
             }
         }
@@ -323,7 +334,7 @@ public class UI {
             if (question.selected == question.answer) {
                 question.complete = true;
                 if (question.secondAttempt) {
-                    showMessage("Latest debuff cured");
+                    showMessage("Latest debuff time has been halved");
                     if (lvl.gameState == lvl.BARRIER_QUESTION_STATE) {
                         lvl.player.barrierDebuffTimer += 300;
                     } else if (lvl.gameState == lvl.SPEED_QUESTION_STATE) {
@@ -338,7 +349,6 @@ public class UI {
             } else {
                 if (question.secondAttempt) {
                     question.selected = -1;
-                    ;
                     question.complete = true;
                     showMessage("Failed to cure debuff");
                     if (lvl.gameState == lvl.BARRIER_QUESTION_STATE) {
@@ -362,14 +372,19 @@ public class UI {
     }
 
     public void displayProgress() {
-        if(lvl.levelNum == 1) {
+        if (lvl.levelNum == 1) {
             g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+            g2D.setColor(Color.BLACK);
+            g2D.fillRect(lvl.tileSize - 10, lvl.tileSize - 20, (int) g2D.getFontMetrics().getStringBounds("Return to start", g2D).getWidth() + 20, 25);
+            if (lvl.lvl1Sequence.size() == 0) {
+                g2D.setColor(Color.BLACK);
+                g2D.fillRect(lvl.tileSize - 10, (int) (lvl.tileSize * 1.5) - 20, (int) g2D.getFontMetrics().getStringBounds("Return to start", g2D).getWidth() + 20, 25);
+                g2D.setColor(Color.WHITE);
+                g2D.drawString("Return to start", lvl.tileSize, (int) (lvl.tileSize * 1.5));
+            }
             g2D.setColor(Color.WHITE);
             g2D.drawString("Found: " + (8 - lvl.lvl1Sequence.size()) + " / 8", lvl.tileSize, lvl.tileSize);
-            if(lvl.lvl1Sequence.size() == 0) {
-                g2D.drawString("Return to start", lvl.tileSize, (int)(lvl.tileSize * 1.5));
-            }
-        } else if(lvl.levelNum == 2) {
+        } else if (lvl.levelNum == 2) {
             g2D.setStroke(new BasicStroke(1));
             int endPoint = (lvl.maxWorldCols - 8) * lvl.tileSize;
             int startPoint = (int) (lvl.tileSize * 1.5);
@@ -383,7 +398,7 @@ public class UI {
             g2D.fillRect(200, lvl.tileSize / 4, (progressPercent * (lvl.screenWidth - 400)) / 100, lvl.tileSize / 2);
             g2D.setColor(Color.BLACK);
             g2D.drawRect(200, lvl.tileSize / 4, lvl.screenWidth - 400, lvl.tileSize / 2);
-        } else if(lvl.levelNum == 3) {
+        } else if (lvl.levelNum == 3) {
 
         }
     }

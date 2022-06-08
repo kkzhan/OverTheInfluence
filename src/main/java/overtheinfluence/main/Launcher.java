@@ -37,7 +37,7 @@ public class Launcher {
     /**
      * the currently running game
      */
-    private Game currentGame;
+    public Game currentGame;
 
     /**
      * checks whether or not a previous game has been started
@@ -215,7 +215,8 @@ public class Launcher {
                 //start new game
                 gameStarted = true;
                 currentGame = new Game(this);
-                currentGame.playLevel(1); //fix to 1
+                dataHandler.saveData();
+                currentGame.playLevel(3); //fix to 1
             }
         });
         resume1.addActionListener(e -> {
@@ -239,6 +240,8 @@ public class Launcher {
                 JOptionPane.showMessageDialog(dialog, "You have not started a game yet!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!currentGame.levelComplete(1)) {
                 JOptionPane.showMessageDialog(dialog, "You have not completed Level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (currentGame.levelComplete(2)) {
+                JOptionPane.showMessageDialog(dialog, "You have already completed this level!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from Level 2?", "Resume Level 2", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {
@@ -256,6 +259,8 @@ public class Launcher {
                 JOptionPane.showMessageDialog(dialog, "You have not completed Level 1!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!currentGame.levelComplete(2)) {
                 JOptionPane.showMessageDialog(dialog, "You have not completed Level 2!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (currentGame.levelComplete(3)) {
+                JOptionPane.showMessageDialog(dialog, "You have already completed this level!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 int result = JOptionPane.showConfirmDialog(dialog, "Are you sure you want to resume from Level 3?", "Resume Level 3", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {

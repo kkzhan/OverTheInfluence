@@ -17,13 +17,13 @@ public class Stranger extends Entity {
      * @param lvl the level the stranger is in
      * @param x   the x coordinate of the stranger
      * @param y   the y coordinate of the stranger
-     * @num the number of the stranger
+     * @param num the number of the stranger
      */
     public Stranger(Level lvl, int x, int y, int num) {
         super(lvl);
         setDialogues(num);
         direction = "down";
-        name = "Stranger";
+        name = "Stranger" + num;
         collision = true;
         down1 = setup("entities/NPC/stranger" + num);
         down1 = util.scaleImage(down1, lvl.tileSize, lvl.tileSize);
@@ -31,13 +31,6 @@ public class Stranger extends Entity {
         worldY = y;
         area = new Rectangle(worldX, worldY, lvl.tileSize, lvl.tileSize);
 
-        if (num == 1) {
-            //dialogue
-        } else if (num == 2) {
-            //other dialogue
-        } else if (num == 3) {
-            //other other dialogue
-        }
         if (lvl.levelNum == 1) {
             Entity e = this;
             trigger = new TriggerBlock(lvl.assetSetter, 4 * lvl.tileSize, 3 * lvl.tileSize, worldX - lvl.tileSize / 2, worldY - lvl.tileSize / 2, false) {

@@ -48,7 +48,7 @@ public class AssetSetter {
      * sets the objects into the level.
      */
     public void setObject() {
-        if (lvl.levelNum == 1) {
+        if (lvl.levelNum == 1 || lvl.levelNum == 3) {
             lvl.objects.add(new KitchenTable(this));
             lvl.objects.get(0).setPosition(12 * lvl.tileSize, (int) (17.5 * lvl.tileSize));
             lvl.objects.add(new Couch(this));
@@ -98,11 +98,13 @@ public class AssetSetter {
             lvl.objects.get(24).setPosition(48 * lvl.tileSize, (int) (51.5 * lvl.tileSize));
             lvl.objects.get(25).setPosition(64 * lvl.tileSize, 54 * lvl.tileSize);
             lvl.objects.get(26).setPosition(5 * lvl.tileSize, (int) (40.5 * lvl.tileSize));
-
             lvl.npcs.add(new Friend(lvl, (int) (lvl.tileSize * 5.5), (int) (lvl.tileSize * 45.5), 2));
             lvl.npcs.add(new Friend(lvl, lvl.tileSize * 7, lvl.tileSize * 45, 3));
-
-            setup1();
+            if (lvl.levelNum == 1) {
+                setup1();
+            } else if (lvl.levelNum == 3) {
+                lvl.objects.add(new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize));
+            }
         } else if (lvl.levelNum == 2) {
             for (int i = 1; i < lvl.maxWorldRows - 1; i++) {
                 TriggerBlock finishLine = new TriggerBlock(this, lvl.tileSize, lvl.tileSize, (lvl.maxWorldCols - 7) * lvl.tileSize, i * lvl.tileSize, true) {
@@ -113,8 +115,6 @@ public class AssetSetter {
                 };
                 lvl.blocks.add(finishLine);
             }
-        } else if (lvl.levelNum == 3) {
-
         }
         objectBlockLayout();
     }
@@ -158,8 +158,8 @@ public class AssetSetter {
         TriggerBlock endTrigger = new TriggerBlock(this, 4 * lvl.tileSize, lvl.tileSize, 3 * lvl.tileSize, 5 * lvl.tileSize, false) {
             @Override
             public void trigger() {
-                if(lvl.lvl1Sequence.size() == 0) {
-                    lvl.completed = true;
+                if (lvl.lvl1Sequence.size() == 0) {
+                    lvl.complete = true;
                 }
             }
         };
@@ -209,8 +209,8 @@ public class AssetSetter {
      * clears the barriers in front of the player
      */
     public void barrierClear() {
-        for (int i = 0; i < barriers.size(); i++) {
-            lvl.blocks.remove(barriers.get(i));
+        for (Entity barrier : barriers) {
+            lvl.blocks.remove(barrier);
         }
         barriers.clear();
     }

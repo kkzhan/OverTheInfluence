@@ -66,14 +66,27 @@ public class TileManager {
             setup(4, "sidewalk", false);
             setup(5, "lvl1Grass1", false);
             setup(6, "lvl1Grass2", false);
-            setup(7, "lvl1Pavement", false);
+            setup(7, "pavement", false);
             setup(8, "lvl1Floor", false);
-            setup(9, "lvl1Asphalt", false);
+            setup(9, "asphalt", false);
             setup(10, "houseWall", true);
             setup(11, "lvl1Fence", true);
         } else if (lvl.levelNum == 2) {
             setup(0, "lvl2Floor", false);
             setup(1, "lvl2Walls", true);
+        } else if (lvl.levelNum == 3) {
+            setup(0, "divider", true);
+            setup(1, "streetHor", false);
+            setup(2, "streetVer", false);
+            setup(3, "streetInt", false);
+            setup(4, "sidewalk", false);
+            setup(5, "lvl3Grass1", false);
+            setup(6, "lvl3Grass2", false);
+            setup(7, "pavement", false);
+            setup(8, "lvl3Floor", false);
+            setup(9, "asphalt", false);
+            setup(10, "houseWall", true);
+            setup(11, "lvl3Fence", true);
         }
     }
 

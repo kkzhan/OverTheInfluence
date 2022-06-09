@@ -87,6 +87,9 @@ public class TileManager {
             setup(9, "asphalt", false);
             setup(10, "houseWall", true);
             setup(11, "lvl3Fence", true);
+            setup(12, "whiteWall", true);
+            setup(13, "rehabFloor", false);
+            setup(14, "yogaRoomFloor", false);
         }
     }
 

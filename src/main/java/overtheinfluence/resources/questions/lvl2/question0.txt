@@ -1,9 +1,9 @@
-QUESTION
+What is 1 + 1
 ANSWERS
-1    OPTION1
-2    OPTION2
-3    OPTION3
-4    OPTION4
+1    1
+2    2
+3    3
+4    4
 Enter   the   respective   number   to   select   your   answer
 Then   hit   enter   to   submit   your   answer
 2

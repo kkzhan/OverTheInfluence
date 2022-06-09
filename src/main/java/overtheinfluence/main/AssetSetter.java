@@ -103,7 +103,7 @@ public class AssetSetter {
             if (lvl.levelNum == 1) {
                 setup1();
             } else if (lvl.levelNum == 3) {
-                lvl.objects.add(new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize));
+                setup3();
             }
         } else if (lvl.levelNum == 2) {
             for (int i = 1; i < lvl.maxWorldRows - 1; i++) {
@@ -131,14 +131,45 @@ public class AssetSetter {
         Stranger stranger2 = new Stranger(lvl, lvl.tileSize * 47, lvl.tileSize * 21, 2);
         Stranger stranger3 = new Stranger(lvl, lvl.tileSize * 40, lvl.tileSize * 51, 3);
         UnconsciousStranger unconsciousStranger = new UnconsciousStranger(lvl, (int) (lvl.tileSize * 40.5), (int) (lvl.tileSize * 29.5));
-        lvl.blocks.add(desk.trigger);
-        lvl.blocks.add(friend.trigger);
-        lvl.blocks.add(mom.trigger);
-        lvl.blocks.add(brother.trigger);
-        lvl.blocks.add(stranger1.trigger);
-        lvl.blocks.add(stranger2.trigger);
-        lvl.blocks.add(stranger3.trigger);
-        lvl.blocks.add(unconsciousStranger.trigger);
+//        lvl.blocks.add(desk.trigger);
+//        lvl.blocks.add(friend.trigger);
+//        lvl.blocks.add(mom.trigger);
+//        lvl.blocks.add(brother.trigger);
+//        lvl.blocks.add(stranger1.trigger);
+//        lvl.blocks.add(stranger2.trigger);
+//        lvl.blocks.add(stranger3.trigger);
+//        lvl.blocks.add(unconsciousStranger.trigger);
+        lvl.blocks.add(new Dumpster(this));
+        lvl.npcs.add(desk);
+        lvl.npcs.add(friend);
+        lvl.npcs.add(mom);
+        lvl.npcs.add(brother);
+        lvl.npcs.add(stranger1);
+        lvl.npcs.add(stranger2);
+        lvl.npcs.add(stranger3);
+        lvl.npcs.add(unconsciousStranger);
+    }
+
+    /**
+     * sets up level 3
+     */
+    public void setup3() {
+        Desk desk = new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
+        Friend friend = new Friend(lvl, lvl.tileSize * 5, lvl.tileSize * 45, 1);
+        Mom mom = new Mom(lvl, lvl.tileSize * 11, lvl.tileSize * 18);
+        Brother brother = new Brother(lvl, lvl.tileSize * 3, lvl.tileSize * 20);
+        Stranger stranger1 = new Stranger(lvl, lvl.tileSize * 79, lvl.tileSize * 56, 1);
+        Stranger stranger2 = new Stranger(lvl, lvl.tileSize * 47, lvl.tileSize * 21, 2);
+        Stranger stranger3 = new Stranger(lvl, lvl.tileSize * 40, lvl.tileSize * 51, 3);
+        UnconsciousStranger unconsciousStranger = new UnconsciousStranger(lvl, (int) (lvl.tileSize * 40.5), (int) (lvl.tileSize * 29.5));
+//        lvl.blocks.add(desk.trigger);
+//        lvl.blocks.add(friend.trigger);
+//        lvl.blocks.add(mom.trigger);
+//        lvl.blocks.add(brother.trigger);
+//        lvl.blocks.add(stranger1.trigger);
+//        lvl.blocks.add(stranger2.trigger);
+//        lvl.blocks.add(stranger3.trigger);
+//        lvl.blocks.add(unconsciousStranger.trigger);
         lvl.lvl1Sequence.add(desk);
         lvl.lvl1Sequence.add(friend);
         lvl.lvl1Sequence.add(mom);

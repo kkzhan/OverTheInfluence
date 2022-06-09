@@ -118,7 +118,6 @@ public class KeyInput implements KeyListener {
         }
         if(key == KeyEvent.VK_ESCAPE) {
             escape = true;
-            lvl.lvl1Sequence.clear();
         }
     }
 

@@ -53,7 +53,7 @@ public class Projectile extends Entity {
                     lvl.assetSetter.barrierDebuff();
                 }
                 lvl.player.invincible = true;
-                lvl.player.invincibleTimer = lvl.FPS * 5;
+                lvl.player.invincibleTimer = lvl.FPS * 10;
                 lvl.repaint();
             }
         }

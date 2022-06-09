@@ -57,7 +57,7 @@ public class UI {
 
     public ArrayList<Question> questionList = new ArrayList<>();
 
-    final int numOfQuestions = 2;
+    final int numOfQuestions;
 
     int questionIndex = 0;
 
@@ -70,6 +70,11 @@ public class UI {
      */
     public UI(Level lvl) {
         this.lvl = lvl;
+        if(lvl.levelNum == 2) {
+            numOfQuestions = 9;
+        } else {
+            numOfQuestions = 0;
+        }
         try {
             font1 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf")));
             font2 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf")));

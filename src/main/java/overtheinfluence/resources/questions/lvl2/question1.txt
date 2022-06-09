@@ -1,9 +1,11 @@
-What is 2 + 2
+Which  of  the  following  is  a  sign  that  you  are  a
+drug  addict
+
 ANSWERS
-1    1
-2    2
-3    3
-4    4
+1    Spending  money  on  drugs  that  you  cannot  afford
+2    Eating  too  much  food
+3    A  sudden  improvement  in  social  abilities
+4    Increased  awareness  of  your  surroundings
 Enter   the   respective   number   to   select   your   answer
 Then   hit   enter   to   submit   your   answer
-4
+1

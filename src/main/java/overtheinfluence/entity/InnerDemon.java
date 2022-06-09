@@ -40,7 +40,7 @@ public class InnerDemon extends Entity {
     }
 
     public void update() {
-        if ((lvl.startTime - lvl.time) % 45 == 0 && lvl.player.worldX > lvl.tileSize * 8) {
+        if ((lvl.startTime - lvl.time) % 60 == 0 && lvl.player.worldX > lvl.tileSize * 8) {
             sendProjectiles();
         }
         if (dying) {

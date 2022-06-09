@@ -1,0 +1,10 @@
+Drug  addiction  is  a
+
+ANSWERS
+1    Chronic  disease
+2    Respiratory  illness
+3    Cardiovascular  disease
+4    Infectious  disease
+Enter   the   respective   number   to   select   your   answer
+Then   hit   enter   to   submit   your   answer
+1

@@ -1,9 +1,11 @@
-What is 1 + 1
+Which  of  the  following  is  a  side  effect  of  developing
+a  drug  addiction
+
 ANSWERS
-1    1
-2    2
-3    3
-4    4
+1    Developing  an  eating  disorder
+2    Damaging  relationships  with  friends  and  family
+3    Becoming  smarter  stronger  and  more  athletic
+4    All  of  the  above
 Enter   the   respective   number   to   select   your   answer
 Then   hit   enter   to   submit   your   answer
 2

@@ -18,7 +18,7 @@ public class Question {
         if (ui.lvl.levelNum == 2) {
             br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/questions/lvl2/question" + num + ".txt")));
         } else if (ui.lvl.levelNum == 3) {
-            br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/questions/lvl2/question" + num + ".txt")));
+            br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/resources/questions/lvl3/question" + num + ".txt")));
         }
         if (ui.lvl.levelNum == 2 || ui.lvl.levelNum == 3) {
             try {

@@ -1,4 +1,4 @@
-package NPC;
+package npc;
 
 import entity.*;
 import main.*;

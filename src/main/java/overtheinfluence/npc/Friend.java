@@ -1,4 +1,4 @@
-package NPC;
+package npc;
 
 import entity.*;
 import main.*;
@@ -17,7 +17,7 @@ public class Friend extends Entity {
      * @param lvl the level the friend is in
      * @param x   the x coordinate of the friend
      * @param y   the y coordinate of the friend
-     * @num the number of the friend
+     * @param num the number of the friend
      */
     public Friend(Level lvl, int x, int y, int num) {
         super(lvl);

@@ -15,7 +15,7 @@ import java.awt.image.*;
  * <p>Work Allocation:<ul>
  * <li>Coordinate tracking - Alexander Peng</li>
  * <li>Image implementation - Kevin Zhan</li>
- * <li>Movement animatino - Kevin Zhan</li>
+ * <li>Movement animation - Kevin Zhan</li>
  * <li>Directional movement from keyboard input - Kevin Zhan & Alexander Peng</li>
  * <li>Character display - Kevin Zhan</li>
  * <li>Collision detection - Kevin Zhan</li>

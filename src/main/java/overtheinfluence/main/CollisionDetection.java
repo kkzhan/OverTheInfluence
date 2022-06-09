@@ -270,7 +270,7 @@ public class CollisionDetection {
      * checks if another entity is colliding with the player
      *
      * @param e the entity to check
-     * @return
+     * @return whether there is collision with the player
      */
     public boolean checkPlayer(Entity e) {
         e.area.x = e.worldX + e.area.x;

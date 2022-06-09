@@ -1,6 +1,6 @@
 package main;
 
-import NPC.*;
+import npc.*;
 import entity.*;
 import objects.*;
 

@@ -1,9 +1,6 @@
 package tiles;
 
-import javax.imageio.ImageIO;
 import java.awt.image.*;
-import java.io.*;
-import java.util.Objects;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of

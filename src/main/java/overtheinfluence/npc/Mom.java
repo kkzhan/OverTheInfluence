@@ -29,7 +29,7 @@ public class Mom extends Entity {
         worldX = x;
         worldY = y;
         area = new Rectangle(worldX, worldY, lvl.tileSize, lvl.tileSize);
-        if (lvl.levelNum == 1) {
+        if (lvl.levelNum != 2) {
             Entity e = this;
             trigger = new TriggerBlock(lvl.assetSetter, 2 * lvl.tileSize, 2 * lvl.tileSize, worldX - lvl.tileSize / 2, worldY - lvl.tileSize / 2, false) {
                 @Override
@@ -40,6 +40,7 @@ public class Mom extends Entity {
                         lvl.entities.remove(arrow);
                         e.speak();
                         lvl.lvl1Sequence.remove(e);
+                        lvl.lvl3Sequence.remove(e);
                     }
                 }
             };
@@ -49,11 +50,18 @@ public class Mom extends Entity {
     }
 
     public void setDialogues() {
-        dialogue.add("Mom#*sniff* ");
-        dialogue.add("Mom#What happened to you? You haven’t been yourself lately…");
-        dialogue.add("Mom#The drugs must have messed with you somehow.");
-        dialogue.add("Mom#You never spend time with us anymore and on the rare occasions that#you do, you never seem happy.");
-        dialogue.add("Mom#You’re only 16 and the drugs have already taken over you… ");
-        dialogue.add("Mom#*sniff*");
+        if(lvl.levelNum == 1) {
+            dialogue.add("Mom#*sniff* ");
+            dialogue.add("Mom#What happened to you? You haven’t been yourself lately…");
+            dialogue.add("Mom#The drugs must have messed with you somehow.");
+            dialogue.add("Mom#You never spend time with us anymore and on the rare occasions that#you do, you never seem happy.");
+            dialogue.add("Mom#You’re only 16 and the drugs have already taken over you… ");
+            dialogue.add("Mom#*sniff*");
+        } else if(lvl.levelNum == 3) {
+            dialogue.add("Mom#I'm so happy that you overcame your drug addiction!");
+            dialogue.add("Mom#It's like the old you is back again.");
+            dialogue.add("Mom#You seem much happier and you've been spending much more time with#other people.");
+            dialogue.add("Just remember to drink water and eat food so you don't relapse.");
+        }
     }
 }

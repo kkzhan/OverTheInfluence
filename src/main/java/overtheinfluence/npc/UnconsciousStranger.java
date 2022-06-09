@@ -30,7 +30,7 @@ public class UnconsciousStranger extends Entity {
         worldX = x;
         worldY = y;
         area = new Rectangle(worldX, worldY, lvl.tileSize, lvl.tileSize);
-        if (lvl.levelNum == 1) {
+        if (lvl.levelNum != 2) {
             Entity e = this;
             trigger = new TriggerBlock(lvl.assetSetter, 4 * lvl.tileSize, 3 * lvl.tileSize, worldX - lvl.tileSize / 2, worldY - lvl.tileSize / 2, false) {
                 @Override
@@ -41,6 +41,7 @@ public class UnconsciousStranger extends Entity {
                         lvl.entities.remove(arrow);
                         e.speak();
                         lvl.lvl1Sequence.remove(e);
+                        lvl.lvl3Sequence.remove(e);
                     }
                 }
             };
@@ -50,7 +51,14 @@ public class UnconsciousStranger extends Entity {
     }
 
     public void setDialogues() {
-        dialogue.add("Unconscious Person#*This person seems to have blacked out after taking too many drugs.*");
-        dialogue.add("Unconscious Person#*They seem to be in a state of euphoria#but they also don’t seem to be in a good place in life.*");
+        if (lvl.levelNum == 1) {
+            dialogue.add("Unconscious Person#*This person seems to have blacked out after taking too many drugs.*");
+            dialogue.add("Unconscious Person#*They seem to be in a state of euphoria#but they also don’t seem to be in a good place in life.*");
+        } else if (lvl.levelNum == 3) {
+            dialogue.add("Unconscious Person#*This person seems to have blacked out after taking too many drugs.*");
+            dialogue.add("Unconscious Person#*They seem to be in a state of euphoria#but they also don’t seem to be in a good place in life.*");
+            dialogue.add("Unconscious Person#*The realization sinks in that this is what you looked like to others#before you got help.*");
+            dialogue.add("Unconscious Person#*You feel bad for the person, but also happy that you've grown as a person.*");
+        }
     }
 }

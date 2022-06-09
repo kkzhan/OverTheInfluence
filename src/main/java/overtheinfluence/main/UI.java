@@ -70,7 +70,7 @@ public class UI {
      */
     public UI(Level lvl) {
         this.lvl = lvl;
-        if(lvl.levelNum == 2) {
+        if (lvl.levelNum == 2) {
             numOfQuestions = 9;
         } else {
             numOfQuestions = 0;
@@ -404,7 +404,13 @@ public class UI {
             g2D.setColor(Color.BLACK);
             g2D.drawRect(200, lvl.tileSize / 4, lvl.screenWidth - 400, lvl.tileSize / 2);
         } else if (lvl.levelNum == 3) {
-
+            g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+            g2D.setColor(Color.BLACK);
+            g2D.fillRect(lvl.tileSize - 10, lvl.tileSize - 20, (int) g2D.getFontMetrics().getStringBounds("Talk to People: 0 / 0", g2D).getWidth() + 20, 25);
+            g2D.setColor(Color.WHITE);
+            if (lvl.lvl3Sequence.size() != 0) {
+                g2D.drawString("Talk to People: " + (7 - lvl.lvl3Sequence.size()) + " / 7", lvl.tileSize, lvl.tileSize);
+            }
         }
     }
 

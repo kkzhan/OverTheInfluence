@@ -21,7 +21,7 @@ public class PillProjectile extends Projectile {
         int drawHeight = 21;
         name = "Needle";
         life = maxLife;
-        speed = 8;
+        speed = 10;
         left1 = setup("objects/projectiles/pill");
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
         left1 = util.scaleImage(left1, drawWidth, drawHeight);

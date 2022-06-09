@@ -231,7 +231,7 @@ public class Launcher {
                 gameStarted = true;
                 currentGame = new Game(this);
                 dataHandler.saveData();
-                currentGame.playLevel(2); //fix to 1
+                currentGame.playLevel(3); //fix to 1
             }
         });
         resume1.addActionListener(e -> {

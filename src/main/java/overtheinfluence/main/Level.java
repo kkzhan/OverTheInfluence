@@ -182,6 +182,11 @@ public class Level extends JPanel implements Runnable {
     public ArrayList<Entity> lvl1Sequence = new ArrayList<>();
 
     /**
+     * the sequence of entities to interact with in level 3
+     */
+    public ArrayList<Entity> lvl3Sequence = new ArrayList<>();
+
+    /**
      * the entity speaking dialogue
      */
     public Entity speaker;
@@ -207,7 +212,7 @@ public class Level extends JPanel implements Runnable {
             thisGame.launcher.dataHandler.processLevel1();
         } else if (levelNum == 2) {
             thisGame.launcher.dataHandler.processLevel2();
-            time = FPS * 360; //6 minutes
+            time = FPS * 180; //3 minutes
             startTime = time;
             innerDemon = new InnerDemon(this);
         } else if (levelNum == 3) {
@@ -276,7 +281,7 @@ public class Level extends JPanel implements Runnable {
         if (gameState == PLAY_STATE) {
             if (levelNum == 2) {
                 innerDemon.update();
-                int debuffInterval = FPS * 45; //30 seconds
+                int debuffInterval = FPS * 45; //45 seconds
                 if (time > 0) {
                     time--;
                     if ((startTime - time) % debuffInterval == 0) {

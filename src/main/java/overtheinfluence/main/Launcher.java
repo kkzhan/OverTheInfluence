@@ -88,22 +88,18 @@ public class Launcher {
      * This method displays the splash screen of the game
      */
     private void splashScreen() {
-        JPanel splashPanel = new JPanel();
-        splashPanel.setBackground(bgColor);
-        splashPanel.setPreferredSize(new Dimension(1200, 800));
-        mainPanel = splashPanel;
-        window.add(mainPanel);
+        Icon imgIcon = new ImageIcon(this.getClass().getResource("/resources/launcherFiles/splashScreen.gif"));
+        JLabel label = new JLabel(imgIcon);
+        label.setBounds(0, 0, 1200, 800);
+        label.setPreferredSize(new Dimension(1200, 800));
+        window.add(label);
         window.pack();
-        splashPanel.setLayout(null);
         try {
-            //splash screen
-            Thread.sleep(1000);
-            window.remove(mainPanel);
-            window.repaint();
-            window.revalidate();
-            mainMenu();
+            Thread.sleep(3000);
+            window.remove(label);
         } catch (InterruptedException e) {
         }
+        mainMenu();
     }
 
     /**
@@ -176,6 +172,7 @@ public class Launcher {
                 exitProgram();
             }
         });
+        window.repaint();
     }
 
     /**
@@ -573,27 +570,18 @@ public class Launcher {
      * This method is used to confirm the user's choice to quit the game and exit the program
      */
     private void exitProgram() {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(1200, 800));
-        panel.setBackground(bgColor);
-        window.add(panel);
-        window.pack();
-        panel.setLayout(null);
-
-        dataHandler.saveData();
-
-        window.removeWindowListener(window.getWindowListeners()[0]);
-
-        BufferedImage endPageImg = null;
-        try {
-            endPageImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/endScreen.png")));
-        } catch (IOException e) {
-        }
-        JLabel endPage = new JLabel(new ImageIcon(endPageImg.getScaledInstance(1200, 800, Image.SCALE_SMOOTH)));
+        JPanel panel = new JPanel(true);
+        Icon imgIcon = new ImageIcon(this.getClass().getResource("/resources/launcherFiles/thankYouForPlaying.png"));
+        JLabel endPage = new JLabel(imgIcon);
         endPage.setSize(new Dimension(1200, 800));
         endPage.setLocation(0, 0);
         panel.add(endPage);
-
+        window.add(panel);
+        window.pack();
+        panel.setLayout(null);
+        window.repaint();
+        dataHandler.saveData();
+        window.removeWindowListener(window.getWindowListeners()[0]);
         Timer timer = new Timer(1500, e -> System.exit(0));
         timer.setRepeats(false);
         timer.start();

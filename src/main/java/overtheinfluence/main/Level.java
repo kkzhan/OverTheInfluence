@@ -139,7 +139,10 @@ public class Level extends JPanel implements Runnable {
      */
     public int gameState;
 
-    public final int PLAY_STATE = 1, PAUSE_STATE = 2, BARRIER_QUESTION_STATE = 3, SPEED_QUESTION_STATE = 4, QUESTION_STATE = 5, DIALOGUE_STATE = 6;
+    /**
+     * the different game state values
+     */
+    public final int PLAY_STATE = 1, PAUSE_STATE = 2, BARRIER_QUESTION_STATE = 3, SPEED_QUESTION_STATE = 4, THERAPY_QUESTION_STATE = 5, DIALOGUE_STATE = 6, INVENTORY_STATE = 7;
 
     /**
      * manages sound effects
@@ -169,7 +172,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * whether or not the level was failed
      */
-    boolean failed = false;
+    public boolean failed = false;
 
     /**
      * the inner demon for level 2
@@ -191,6 +194,27 @@ public class Level extends JPanel implements Runnable {
      */
     public Entity speaker;
 
+    /**
+     * the colour of the yoga mat that the player needs to go to
+     */
+    public String matColor;
+
+    /**
+     * whether the challenges has been started
+     */
+    public boolean yogaStarted, therapyStarted;
+
+    /**
+     * whether the target yoga mat has been reached
+     */
+    public boolean matReached = true;
+
+    /**
+     * number of yoga mats that have been assigned
+     */
+    public int matCount = 0;
+
+    public SystemSpeaker systemSpeaker = new SystemSpeaker(this);
 
     /**
      * the constructor for the level class
@@ -208,15 +232,10 @@ public class Level extends JPanel implements Runnable {
         worldWidth = maxWorldCols * tileSize;
         worldHeight = maxWorldRows * tileSize;
         player = new Player(this, keyIn, 8);
-        if (levelNum == 1) {
-            thisGame.launcher.dataHandler.processLevel1();
-        } else if (levelNum == 2) {
-            thisGame.launcher.dataHandler.processLevel2();
+        if (levelNum == 2) {
             time = FPS * 180; //3 minutes
             startTime = time;
             innerDemon = new InnerDemon(this);
-        } else if (levelNum == 3) {
-            thisGame.launcher.dataHandler.processLevel3();
         }
     }
 
@@ -229,11 +248,6 @@ public class Level extends JPanel implements Runnable {
             started = true;
         }
         gameState = PLAY_STATE;
-        if (levelNum == 1) {
-            playMusic(0);
-        } else if (levelNum == 2 || levelNum == 3) {
-            playMusic(1);
-        }
     }
 
     /**
@@ -298,16 +312,61 @@ public class Level extends JPanel implements Runnable {
                     sound.stop();
                 }
             }
+            if (levelNum == 3) {
+                if(therapyStarted && player.yogaChallenge && gameState != DIALOGUE_STATE) {
+                    gameState = THERAPY_QUESTION_STATE;
+                }
+                if(lvl3Sequence.size() == 0) {
+                    complete = true;
+                    failed = false;
+                    ui.endScreen(true);
+                }
+            }
+
+            if(player.inRehab) {
+                player.withdrawalDeduct = 35;
+            } else {
+                player.withdrawalDeduct = 5;
+            }
+
+            if (yogaStarted) {
+                if (matReached) {
+                    assetSetter.shuffleYogaMats();
+                    //random number between 0 and 3
+                    int random = (int) (Math.random() * 4);
+                    switch (random) {
+                        case 0:
+                            matColor = "Blue";
+                            break;
+                        case 1:
+                            matColor = "Green";
+                            break;
+                        case 2:
+                            matColor = "Pink";
+                            break;
+                        case 3:
+                            matColor = "Purple";
+                            break;
+                    }
+                    ui.instruction = "Go to the " + matColor + " mat";
+                    matReached = false;
+                }
+                if (matCount == 30) {
+                    yogaStarted = false;
+                    player.yogaChallenge = true;
+                    systemSpeaker.clearDialogue();
+                    systemSpeaker.addDialogue("Congratulations!#You successfully completed a yoga session.#You feel much more relaxed and calm.#Your urge to take drugs decreased by a bit.");
+                    systemSpeaker.speak();
+                }
+            }
             player.update();
-            for(int i = 0; i < projectiles.size(); i++) {
+            for (int i = 0; i < projectiles.size(); i++) {
                 projectiles.get(i).update();
             }
-        } else if (gameState == BARRIER_QUESTION_STATE || gameState == SPEED_QUESTION_STATE) {
+        } else if (gameState == BARRIER_QUESTION_STATE || gameState == SPEED_QUESTION_STATE || gameState == THERAPY_QUESTION_STATE) {
             if (!ui.inQuestion) {
                 ui.question();
             }
-        } else if (gameState == DIALOGUE_STATE) {
-
         }
     }
 
@@ -318,7 +377,7 @@ public class Level extends JPanel implements Runnable {
 
         tm.draw(g2D); //draw tiles before player so that player can walk on top of tiles
 
-        for(int i = 0; i < blocks.size(); i++) {
+        for (int i = 0; i < blocks.size(); i++) {
             blocks.get(i).draw(g2D);
         }
 
@@ -339,7 +398,7 @@ public class Level extends JPanel implements Runnable {
         entities.sort(Comparator.comparingInt(e -> e.worldY));
 
         //draw entities
-        for(int i = 0; i < entities.size(); i++) {
+        for (int i = 0; i < entities.size(); i++) {
             entities.get(i).draw(g2D);
         }
         //remove entities from list

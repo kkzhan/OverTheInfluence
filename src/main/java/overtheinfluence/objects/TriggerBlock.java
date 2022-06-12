@@ -44,7 +44,7 @@ public abstract class TriggerBlock extends Entity {
         if (visible) {
             try {
                 down1 = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/finishLine.png"));
-                down1 = util.scaleImage(down1, 48, 48);
+                down1 = scaleImage(down1, 48, 48);
             } catch (Exception e) {
             }
         }

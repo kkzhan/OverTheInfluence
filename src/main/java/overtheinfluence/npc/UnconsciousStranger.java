@@ -6,9 +6,32 @@ import objects.*;
 
 import java.awt.*;
 
+/**
+ * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
+ * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
+ *
+ * <p>This class contains information about the NPC that is an unconscious person lying on the ground.</p>
+ *
+ * <p>Work Allocation:<ul>
+ * <li>UnconsciousStranger class - Kevin Zhan</li>
+ * <li>UnconsciousStranger artwork - Alexander Peng</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class UnconsciousStranger extends Entity {
+    /**
+     * the trigger block that will activate when the player is near
+     */
     public TriggerBlock trigger;
 
+    /**
+     * the arrow indicating that this entity can be interacted with
+     */
     public IndicateArrow arrow;
 
 
@@ -26,7 +49,7 @@ public class UnconsciousStranger extends Entity {
         name = "Unconscious Stranger";
         collision = true;
         down1 = setup("entities/NPC/unconscious");
-        down1 = util.scaleImage(down1, lvl.tileSize, lvl.tileSize);
+        down1 = scaleImage(down1, lvl.tileSize, lvl.tileSize);
         worldX = x;
         worldY = y;
         area = new Rectangle(worldX, worldY, lvl.tileSize, lvl.tileSize);

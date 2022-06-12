@@ -7,7 +7,7 @@ import java.awt.event.*;
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
  * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
  *
- * <p>This class will operate one full game.</p>
+ * <p>This class will operate one full game of OverTheInfluence.</p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
  *
@@ -16,11 +16,6 @@ import java.awt.event.*;
  */
 
 public class Game {
-    /**
-     * whether or not the game has been started
-     */
-    boolean started;
-
     /**
      * the launcher that starts the game
      */
@@ -92,6 +87,11 @@ public class Game {
                     }
                 }
             });
+        }
+        if(level == 1) {
+            levels[currLevel - 1].playMusic(0);
+        } else {
+            levels[currLevel - 1].playMusic(1);
         }
         window[currLevel - 1].pack();
         window[currLevel - 1].setLocationRelativeTo(null);

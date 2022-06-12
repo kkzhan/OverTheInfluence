@@ -13,6 +13,12 @@ import java.util.*;
  * <li>UI creation - Kevin Zhan</li>
  * <li>Font selection - Alexander Peng</li>
  * <li>Text centering - Alexander Peng</li>
+ * <li>Window drawing - Alexander Peng</li>
+ * <li>Dialogue implementation - Kevin Zhan</li>
+ * <li>Question implementation - Kevin Zhan</li>
+ * <li>Start and end screens - Alexander Peng</li>
+ * <li>Inventory - Alexander Peng</li>
+ * <li>Task progress and withdrawal bar - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -47,23 +53,71 @@ public class UI {
      */
     public int msgTime;
 
+    /**
+     * how long the message can be displayed for
+     */
     public int msgTimeLimit = 10;
 
+    /**
+     * the question that the player will have to answer
+     */
     public Question question = null;
 
+    /**
+     * whether the player is currently answering a question
+     */
     boolean inQuestion = false;
 
+    /**
+     * whether the start screen is still active
+     */
     boolean startScreen = true;
 
+    /**
+     * a list of questions to be answered
+     */
     public ArrayList<Question> questionList = new ArrayList<>();
 
+    /**
+     * the total number of questions
+     */
     final int numOfQuestions;
 
+    /**
+     * the index of the current question in the question list
+     */
     int questionIndex = 0;
 
+    /**
+     * the index of the current dialogue in the available dialogue
+     */
     int dialogueIndex = 0;
 
+    /**
+     * whether the player is ready for the next line of dialogue
+     */
     public boolean dialogueReady = true;
+
+    /**
+     * the instruction to be given to the player
+     */
+    public String instruction;
+
+    /**
+     * the number of questions the player has answered right in therapy
+     */
+    public int rightCount = 0;
+
+    /**
+     * whether the player has completed therapy in level 3
+     */
+    public boolean doneTherapy = false;
+
+    /**
+     * the current selected option in the inventory
+     */
+    public int inventorySelect = -1;
+
 
     /**
      * constructor for the UI class
@@ -73,7 +127,7 @@ public class UI {
         if (lvl.levelNum == 2) {
             numOfQuestions = 9;
         } else {
-            numOfQuestions = 0;
+            numOfQuestions = 3;
         }
         try {
             font1 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf")));
@@ -86,12 +140,16 @@ public class UI {
         Collections.shuffle(questionList);
     }
 
+    /**
+     * resets questions so that they can be used again
+     */
     public void resetQuestions() {
         for (int i = 0; i < numOfQuestions; i++) {
             questionList.get(i).complete = false;
             questionList.get(i).selected = -1;
             questionList.get(i).secondAttempt = false;
         }
+        rightCount = 0;
     }
 
     /**
@@ -143,12 +201,16 @@ public class UI {
             screenPaused();
         }
 
-        if (lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE) {
+        if (lvl.gameState == lvl.BARRIER_QUESTION_STATE || lvl.gameState == lvl.SPEED_QUESTION_STATE || lvl.gameState == lvl.THERAPY_QUESTION_STATE) {
             question();
         }
 
         if (lvl.gameState == lvl.DIALOGUE_STATE) {
             dialogue();
+        }
+
+        if (lvl.gameState == lvl.INVENTORY_STATE) {
+            inventory();
         }
 
         displayProgress();
@@ -255,7 +317,7 @@ public class UI {
             g2D.setColor(Color.RED);
             g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 10));
             g2D.drawString("Level Failed!", centerText("Level Failed!"), lvl.screenHeight / 2);
-            if (lvl.levelNum == 2) {
+            if (lvl.levelNum == 2 || lvl.levelNum == 3) {
                 g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
                 g2D.setColor(Color.WHITE);
                 g2D.drawString("Press R to Retry", centerText("Press R to Retry"), lvl.screenHeight / 2 + lvl.tileSize);
@@ -265,23 +327,99 @@ public class UI {
                 } else if (lvl.keyIn.escape && !lvl.keyIn.retry) {
                     lvl.thisGame.endLevel(false);
                 }
-            } else if (lvl.levelNum == 3) {
-                //you overdosed
-                //random if dead
-                //if dead no chance to retry
             }
         }
     }
 
+    /**
+     * displays the start screen before a player continues to the level
+     */
     public void startScreen() {
         g2D.setColor(Color.BLACK);
         g2D.fillRect(0, 0, lvl.screenWidth, lvl.screenHeight);
         g2D.setColor(Color.WHITE);
         g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 10));
-        //introduce the level
-        g2D.drawString("Press Enter to Continue", centerText("Press Enter to Continue"), lvl.screenHeight / 2);
+        String levelDesc = "";
+        if(lvl.levelNum == 1) {
+            levelDesc = "Level 1   Exploration";
+        } else if(lvl.levelNum == 2) {
+            levelDesc = "Level 2   Inner Demons";
+        } else if(lvl.levelNum == 3) {
+            levelDesc = "Level 3   Recovery";
+        }
+        g2D.drawString(levelDesc, centerText(levelDesc), lvl.screenHeight / 2);
+        g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
+        g2D.drawString("Press Enter to Continue", centerText("Press Enter to Continue"), lvl.screenHeight / 2 + lvl.tileSize);
         if (lvl.keyIn.enter) {
             startScreen = false;
+            if (lvl.levelNum == 3) {
+                lvl.systemSpeaker.clearDialogue();
+                lvl.systemSpeaker.addDialogue("Withdrawal#The bar at the bottom of your screen is your withdrawal meter.");
+                lvl.systemSpeaker.addDialogue("Withdrawal#It empties as you move. When it is empty you will relapse.");
+                lvl.systemSpeaker.addDialogue("Withdrawal#Mitigate the effects by consuming water or food that you can get at#designated locations in regular intervals.");
+                lvl.systemSpeaker.addDialogue("Withdrawal#Remember to press I to check your inventory for food or water.");
+                lvl.systemSpeaker.speak();
+            }
+        }
+        dialogueReady = false;
+    }
+
+    /**
+     * displays the inventory
+     */
+    public void inventory() {
+        int x = lvl.tileSize * 2;
+        int y = lvl.tileSize / 2 + lvl.tileSize * 5;
+        int width = lvl.screenWidth - (lvl.tileSize * 4);
+        int height = lvl.tileSize * 5;
+        drawWindow(x, y, width, height);
+
+        g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
+
+        g2D.setColor(Color.WHITE);
+        x += lvl.tileSize;
+        y += lvl.tileSize;
+        g2D.drawString("Inventory:", x, y);
+        y += lvl.tileSize;
+        if (inventorySelect == 1) {
+            g2D.setColor(new Color(94, 94, 94));
+        }
+        g2D.drawString("Food: " + lvl.player.inventory[0], x, y);
+        g2D.setColor(Color.WHITE);
+        if (inventorySelect == 2) {
+            g2D.setColor(new Color(94, 94, 94));
+        }
+        y += lvl.tileSize / 2;
+        g2D.drawString("Water: " + lvl.player.inventory[1], x, y);
+        g2D.setColor(Color.WHITE);
+        y += lvl.tileSize / 2;
+        g2D.drawString("Enter   the   respective   number   to   select", x, y);
+        y += lvl.tileSize / 2;
+        g2D.drawString("Then   hit   enter   to   consume  one.", x, y);
+        y += lvl.tileSize / 2;
+        g2D.drawString("Press   Esc   to   close   inventory.", x, y);
+        if (lvl.keyIn.enter) {
+            if (inventorySelect == 1) {
+                if (lvl.player.inventory[0] > 0) {
+                    lvl.player.inventory[0]--;
+                    showMessage("You ate food x1");
+                    if (lvl.player.inRehab) {
+                        lvl.player.withdrawalLevel += 40;
+                    } else {
+                        lvl.player.withdrawalLevel += 400;
+                    }
+                }
+            } else if (inventorySelect == 2) {
+                if (lvl.player.inventory[1] > 0) {
+                    lvl.player.inventory[1]--;
+                    showMessage("You drank water x1");
+                    if (lvl.player.inRehab) {
+                        lvl.player.withdrawalLevel += 50;
+                    } else {
+                        lvl.player.withdrawalLevel += 500;
+                    }
+                }
+            }
         }
     }
 
@@ -305,11 +443,38 @@ public class UI {
      */
     public void question() {
         if (question == null || question.complete) {
-            question = questionList.get(questionIndex++);
-            if (questionIndex == questionList.size()) {
+            if (questionIndex < questionList.size()) {
+                question = questionList.get(questionIndex++);
+            } else {
+                if (lvl.levelNum == 3) doneTherapy = true;
+            }
+        }
+        if (doneTherapy) {
+            if (rightCount < numOfQuestions) {
                 resetQuestions();
                 questionIndex = 0;
+                doneTherapy = false;
+                lvl.gameState = lvl.PLAY_STATE;
+                lvl.therapyStarted = false;
+                lvl.systemSpeaker.dialogue.clear();
+                lvl.systemSpeaker.dialogue.add("Dr. Dockter#You did not pass the test.#Go complete another yoga challenge.");
+                lvl.systemSpeaker.dialogue.add("Dr. Dockter#Come back and see me after.");
+                lvl.systemSpeaker.speak();
+                lvl.player.therapyChallenge = false;
+                lvl.player.yogaChallenge = false;
+                lvl.therapyStarted = false;
+                lvl.yogaStarted = false;
+            } else {
+                lvl.player.therapyChallenge = true;
+                lvl.gameState = lvl.PLAY_STATE;
+                lvl.systemSpeaker.dialogue.clear();
+                lvl.systemSpeaker.dialogue.add("Dr. Dockter#Alright, I think you’re ready to go back out into the real world.");
+                lvl.systemSpeaker.dialogue.add("Dr. Dockter#Just remember, drug addiction is a chronic illness,#meaning it will never completely go away.");
+                lvl.systemSpeaker.dialogue.add("Dr. Dockter#You will always feel a slight urge to take drugs but#it is important that you control yourself.");
+                lvl.systemSpeaker.dialogue.add("Dr. Dockter#Relapsing back into drug usage is common, so don’t be#discouraged if it happens to you.");
+                lvl.systemSpeaker.dialogue.add("Dr. Dockter#Just keep trying, and eventually, you will learn to control your desires.");
             }
+            return;
         }
         inQuestion = true;
         int x = lvl.tileSize * 2;
@@ -335,9 +500,11 @@ public class UI {
             y += lvl.tileSize / 2;
             g2D.drawString(question.options.get(i), x, y);
         }
-        if (lvl.keyIn.enter && question.selected != -1) {
+
+        if (lvl.keyIn.enter && dialogueReady && question.selected != -1) {
             if (question.selected == question.answer) {
                 question.complete = true;
+                rightCount++;
                 if (question.secondAttempt) {
                     showMessage("Latest debuff time has been halved");
                     if (lvl.gameState == lvl.BARRIER_QUESTION_STATE) {
@@ -345,7 +512,7 @@ public class UI {
                     } else if (lvl.gameState == lvl.SPEED_QUESTION_STATE) {
                         lvl.player.speedDebuffTimer += 300;
                     }
-                } else {
+                } else if (lvl.gameState != lvl.THERAPY_QUESTION_STATE) {
                     lvl.player.barrierDebuffTimer = 0;
                     lvl.player.speedDebuffTimer = 0;
                     showMessage("All debuffs cured");
@@ -362,13 +529,18 @@ public class UI {
                         lvl.player.speedDebuffTimer += 600;
                     }
                 } else {
-                    question.selected = -1;
-                    question.secondAttempt = true;
-                    showMessage("Incorrect answer this is your second attempt");
+                    if (lvl.gameState == lvl.THERAPY_QUESTION_STATE) {
+                        question.complete = true;
+                        showMessage("Incorrect answer");
+                    } else {
+                        question.selected = -1;
+                        question.secondAttempt = true;
+                        showMessage("Incorrect answer this is your second attempt");
+                    }
                 }
             }
+            dialogueReady = false;
         }
-
 
         if (question.complete) {
             lvl.gameState = lvl.PLAY_STATE;
@@ -376,6 +548,7 @@ public class UI {
         }
     }
 
+    //displays the player's current progress in tasks as well as the withdrawal bar
     public void displayProgress() {
         if (lvl.levelNum == 1) {
             g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
@@ -406,11 +579,38 @@ public class UI {
         } else if (lvl.levelNum == 3) {
             g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 30));
             g2D.setColor(Color.BLACK);
-            g2D.fillRect(lvl.tileSize - 10, lvl.tileSize - 20, (int) g2D.getFontMetrics().getStringBounds("Talk to People: 0 / 0", g2D).getWidth() + 20, 25);
+            int width = (int) g2D.getFontMetrics().getStringBounds("Talk to your Psychiatrist", g2D).getWidth() + 20;
+            g2D.fillRect(lvl.tileSize - 10, lvl.tileSize - 20, width, 25);
             g2D.setColor(Color.WHITE);
-            if (lvl.lvl3Sequence.size() != 0) {
-                g2D.drawString("Talk to People: " + (7 - lvl.lvl3Sequence.size()) + " / 7", lvl.tileSize, lvl.tileSize);
+            if (lvl.player.inRehab) {
+                if (!lvl.player.yogaChallenge) {
+                    g2D.drawString("Complete Yoga Challenge", lvl.tileSize, lvl.tileSize);
+                    g2D.setColor(Color.BLACK);
+                    g2D.fillRect(lvl.tileSize - 10, (int) (1.5 * lvl.tileSize) - 20, width, 25);
+                    g2D.setColor(Color.WHITE);
+                    if (!lvl.yogaStarted) {
+                        g2D.drawString("Press Shift to start", lvl.tileSize, (int) (lvl.tileSize * 1.5));
+                    } else {
+                        g2D.drawString(instruction, lvl.tileSize, (int) (lvl.tileSize * 1.5));
+                    }
+                    if (lvl.keyIn.shift) {
+                        lvl.yogaStarted = true;
+                    }
+                } else if (!lvl.player.therapyChallenge) {
+                    g2D.drawString("Talk to your Psychiatrist", lvl.tileSize, lvl.tileSize);
+                }
+            } else {
+                if (lvl.lvl3Sequence.size() != 0) {
+                    g2D.drawString("Talk to People: " + (7 - lvl.lvl3Sequence.size()) + " / 7", lvl.tileSize, lvl.tileSize);
+                }
             }
+            //draw a blue rectangle to indicate the progress
+            int percentWithdrawal = lvl.player.withdrawalLevel / 1000;
+            g2D.setStroke(new BasicStroke(1));
+            g2D.setColor(new Color(121, 145, 180, 200));
+            g2D.fillRect(200, lvl.screenHeight - lvl.tileSize, (percentWithdrawal * (lvl.screenWidth - 400)) / 100, lvl.tileSize / 2);
+            g2D.setColor(Color.BLACK);
+            g2D.drawRect(200, lvl.screenHeight - lvl.tileSize, lvl.screenWidth - 400, lvl.tileSize / 2);
         }
     }
 
@@ -477,9 +677,5 @@ public class UI {
         g2D.setFont(font1.deriveFont(Font.PLAIN, lvl.screenHeight / 20));
         g2D.setColor(Color.WHITE);
         g2D.drawString(strMin + ":" + strSec, x, y);
-    }
-
-    public void processQuestions(int num) {
-
     }
 }

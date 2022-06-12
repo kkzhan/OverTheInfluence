@@ -6,9 +6,32 @@ import objects.*;
 
 import java.awt.*;
 
+/**
+ * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
+ * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
+ *
+ * <p>This class contains information about the NPC that is the player's mother.</p>
+ *
+ * <p>Work Allocation:<ul>
+ * <li>Mom class - Kevin Zhan</li>
+ * <li>Mom artwork - Alexander Peng</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class Mom extends Entity {
+    /**
+     * the trigger block that will activate when the player is near
+     */
     public TriggerBlock trigger;
 
+    /**
+     * the arrow indicating that this entity can be interacted with
+     */
     public IndicateArrow arrow;
 
     /**
@@ -25,7 +48,7 @@ public class Mom extends Entity {
         name = "Mom";
         collision = true;
         down1 = setup("entities/NPC/lvl" + lvl.levelNum + "Mom");
-        down1 = util.scaleImage(down1, lvl.tileSize, lvl.tileSize);
+        down1 = scaleImage(down1, lvl.tileSize, lvl.tileSize);
         worldX = x;
         worldY = y;
         area = new Rectangle(worldX, worldY, lvl.tileSize, lvl.tileSize);
@@ -61,7 +84,8 @@ public class Mom extends Entity {
             dialogue.add("Mom#I'm so happy that you overcame your drug addiction!");
             dialogue.add("Mom#It's like the old you is back again.");
             dialogue.add("Mom#You seem much happier and you've been spending much more time with#other people.");
-            dialogue.add("Just remember to drink water and eat food so you don't relapse.");
+            dialogue.add("Mom#Just remember to drink water and eat food so you don't relapse.");
+            dialogue.add("Mom#You can always come back here if you ever need anything.");
         }
     }
 }

@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
@@ -59,8 +58,6 @@ public class Launcher {
      */
     JPanel mainPanel = new JPanel();
 
-    DataHandler dataHandler = new DataHandler(this);
-
     /**
      * constructor for the Launcher class
      */
@@ -69,18 +66,6 @@ public class Launcher {
         window.setResizable(false);
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        window.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                JFrame frame = (JFrame) e.getSource();
-                int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
-                if (result == JOptionPane.YES_OPTION) {
-                    frame.remove(mainPanel);
-                    exitProgram();
-                }
-            }
-        });
-        dataHandler.processData();
         splashScreen();
     }
 
@@ -227,8 +212,7 @@ public class Launcher {
                 //start new game
                 gameStarted = true;
                 currentGame = new Game(this);
-                dataHandler.saveData();
-                currentGame.playLevel(3); //fix to 1
+                currentGame.playLevel(1);
             }
         });
         resume1.addActionListener(e -> {
@@ -344,22 +328,17 @@ public class Launcher {
             window.remove(mainPanel);
             insLvl1();
         });
-        BufferedImage insTitle = null;
-        BufferedImage controlsTitle = null;
+
+        BufferedImage image = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
-            controlsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insControls.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insControls.png")));
         } catch (IOException e) {
         }
 
-        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
-        JLabel controls = new JLabel(new ImageIcon(controlsTitle.getScaledInstance(306, 78, Image.SCALE_SMOOTH)));
-        title.setSize(new Dimension(456, 78));
-        controls.setSize(new Dimension(306, 78));
-        title.setLocation(194, 70);
-        controls.setLocation(700, 70);
-        panel.add(title);
-        panel.add(controls);
+        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        imageLabel.setSize(new Dimension(1200, 650));
+        imageLabel.setLocation(0,0);
+        panel.add(imageLabel);
     }
 
     /**
@@ -400,22 +379,16 @@ public class Launcher {
             insLvl2();
         });
 
-        BufferedImage insTitle = null;
-        BufferedImage lvl1Title = null;
+        BufferedImage image = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
-            lvl1Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel1.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel1.png")));
         } catch (IOException e) {
         }
 
-        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
-        JLabel level1Title = new JLabel(new ImageIcon(lvl1Title.getScaledInstance(234, 78, Image.SCALE_SMOOTH)));
-        title.setSize(new Dimension(456, 78));
-        level1Title.setSize(new Dimension(234, 78));
-        title.setLocation(194, 70);
-        level1Title.setLocation(700, 70);
-        panel.add(title);
-        panel.add(level1Title);
+        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        imageLabel.setSize(new Dimension(1200, 650));
+        imageLabel.setLocation(0,0);
+        panel.add(imageLabel);
     }
 
     /**
@@ -456,22 +429,16 @@ public class Launcher {
             insLvl3();
         });
 
-        BufferedImage insTitle = null;
-        BufferedImage lvl2Title = null;
+        BufferedImage image = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
-            lvl2Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel2.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel2.png")));
         } catch (IOException e) {
         }
 
-        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
-        JLabel level2Title = new JLabel(new ImageIcon(lvl2Title.getScaledInstance(240, 78, Image.SCALE_SMOOTH)));
-        title.setSize(new Dimension(456, 78));
-        level2Title.setSize(new Dimension(240, 78));
-        title.setLocation(194, 70);
-        level2Title.setLocation(700, 70);
-        panel.add(title);
-        panel.add(level2Title);
+        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        imageLabel.setSize(new Dimension(1200, 650));
+        imageLabel.setLocation(0,0);
+        panel.add(imageLabel);
     }
 
     /**
@@ -512,22 +479,16 @@ public class Launcher {
             mainMenu();
         });
 
-        BufferedImage insTitle = null;
-        BufferedImage lvl3Title = null;
+        BufferedImage image = null;
         try {
-            insTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/instructionsTitle.png")));
-            lvl3Title = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel3.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel3.png")));
         } catch (IOException e) {
         }
 
-        JLabel title = new JLabel(new ImageIcon(insTitle.getScaledInstance(456, 78, Image.SCALE_SMOOTH)));
-        JLabel level3Title = new JLabel(new ImageIcon(lvl3Title.getScaledInstance(234, 78, Image.SCALE_SMOOTH)));
-        title.setSize(new Dimension(456, 78));
-        level3Title.setSize(new Dimension(234, 78));
-        title.setLocation(194, 70);
-        level3Title.setLocation(700, 70);
-        panel.add(title);
-        panel.add(level3Title);
+        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        imageLabel.setSize(new Dimension(1200, 650));
+        imageLabel.setLocation(0,0);
+        panel.add(imageLabel);
     }
 
     /**
@@ -555,15 +516,16 @@ public class Launcher {
             mainMenu();
         });
 
-        BufferedImage creditsTitle = null;
+        BufferedImage image = null;
         try {
-            creditsTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/creditsTitle.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/credits.png")));
         } catch (IOException e) {
         }
-        JLabel creditTitle = new JLabel(new ImageIcon(creditsTitle.getScaledInstance(344, 104, Image.SCALE_SMOOTH)));
-        creditTitle.setSize(new Dimension(344, 104));
-        creditTitle.setLocation(428, 70);
-        panel.add(creditTitle);
+
+        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        imageLabel.setSize(new Dimension(1200, 650));
+        imageLabel.setLocation(0,0);
+        panel.add(imageLabel);
     }
 
     /**
@@ -580,65 +542,9 @@ public class Launcher {
         window.pack();
         panel.setLayout(null);
         window.repaint();
-        dataHandler.saveData();
-        window.removeWindowListener(window.getWindowListeners()[0]);
         Timer timer = new Timer(1500, e -> System.exit(0));
         timer.setRepeats(false);
         timer.start();
-    }
-
-    /**
-     * This method displays the screen when the player wins
-     */
-    private void gameSuccess() {
-    }
-
-    /**
-     * This method displays the screen when the player loses
-     */
-    private void gameOver() {
-    }
-
-    /**
-     * This method will process the end of the game and display the appropriate screen
-     */
-    public void gameEnd() {
-        //to be implemented
-    }
-
-    /**
-     * This method will be used to access past game data
-     */
-    private void processFile() {
-        //to be implemented
-    }
-
-    /**
-     * This method will be used to store game data for future use
-     */
-    private void saveGame() {
-        //to be implemented
-    }
-
-    /**
-     * This method closes the launcher when the player starts a game
-     */
-    private void closeLauncher() {
-
-    }
-
-    /**
-     * This method opens the launcher when the player finishes or leaves the game
-     */
-    public void openLauncher() {
-        cleanUp();
-        mainMenu();
-    }
-
-    /**
-     * This method will be used to clean up the launcher screen in between pages
-     */
-    private void cleanUp() {
     }
 
     public static void main(String[] args) {

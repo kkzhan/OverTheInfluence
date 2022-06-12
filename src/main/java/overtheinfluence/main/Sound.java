@@ -62,6 +62,8 @@ public class Sound {
      */
     public void play() {
         clip.setFramePosition(0);
+        FloatControl fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        fc.setValue(-5.0f);
         clip.start();
         clips.add(clip);
     }

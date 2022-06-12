@@ -94,11 +94,6 @@ public class Entity {
     public boolean alive;
 
     /**
-     * the utility tool used to manage certain tasks
-     */
-    public UtilTool util = new UtilTool();
-
-    /**
      * the entity's dialogue if applicable
      */
     public ArrayList<String> dialogue = new ArrayList<>();
@@ -119,11 +114,10 @@ public class Entity {
      * @param path the path to the image
      */
     public BufferedImage setup(String path) {
-        UtilTool util = new UtilTool();
         BufferedImage img = null;
         try {
             img = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/" + path + ".png")));
-            img = util.scaleImage(img, lvl.tileSize, lvl.tileSize);
+            img = scaleImage(img, lvl.tileSize, lvl.tileSize);
         } catch (IOException e) {
         }
         return img;
@@ -186,10 +180,10 @@ public class Entity {
         }
 
         //only draws when around player
-        if (worldX + lvl.tileSize > lvl.player.worldX - lvl.player.screenX - 4 * lvl.tileSize &&
-                worldX - lvl.tileSize < lvl.player.worldX + lvl.player.screenX + 4 * lvl.tileSize &&
-                worldY + lvl.tileSize > lvl.player.worldY - lvl.player.screenY - 4 * lvl.tileSize &&
-                worldY - lvl.tileSize < lvl.player.worldY + lvl.player.screenY + 4 * lvl.tileSize) {
+        if (worldX + lvl.tileSize > lvl.player.worldX - lvl.player.screenX - 16 * lvl.tileSize &&
+                worldX - lvl.tileSize < lvl.player.worldX + lvl.player.screenX + 16 * lvl.tileSize &&
+                worldY + lvl.tileSize > lvl.player.worldY - lvl.player.screenY - 16 * lvl.tileSize &&
+                worldY - lvl.tileSize < lvl.player.worldY + lvl.player.screenY + 16 * lvl.tileSize) {
             g2D.drawImage(image, screenX, screenY, null);
         } else if (lvl.player.screenX > lvl.player.worldX ||
                 lvl.player.screenY > lvl.player.worldY ||
@@ -210,8 +204,26 @@ public class Entity {
         worldY = y;
     }
 
+    /**
+     * the entity speaks by displaying its dialogue
+     */
     public void speak() {
         lvl.speaker = this;
         lvl.gameState = lvl.DIALOGUE_STATE;
+    }
+
+    /**
+     * resizes the image to the specified size
+     * @param image the image to be scaled
+     * @param width the width of the scaled image
+     * @param height the height of the scaled image
+     * @return the scaled image
+     */
+    public BufferedImage scaleImage(BufferedImage image, int width, int height) {
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2D = scaledImage.createGraphics();
+        g2D.drawImage(image, 0, 0, width, height, null);
+        g2D.dispose();
+        return scaledImage;
     }
 }

@@ -19,6 +19,7 @@ import java.awt.image.*;
  * <li>Directional movement from keyboard input - Kevin Zhan & Alexander Peng</li>
  * <li>Character display - Kevin Zhan</li>
  * <li>Collision detection - Kevin Zhan</li>
+ * <li>Debuff/invincibility implementation - Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -69,6 +70,32 @@ public class Player extends Entity {
     public int invincibleTimer;
 
     /**
+     * whether the player is in rehab
+     */
+    public boolean inRehab;
+
+    /**
+     * whether the different level 3 challenges have been completed
+     */
+    public boolean yogaChallenge, therapyChallenge;
+
+    /**
+     * the level of the player's withdrawal
+     */
+    public int withdrawalLevel = 100000;
+
+    /**
+     * how much of the withdrawal bar the player loses per movement
+     */
+    public int withdrawalDeduct;
+
+    /**
+     * the player's inventory
+     */
+    public int[] inventory = new int[2]; //0 = food, 1 = water
+
+
+    /**
      * the Player constructor
      *
      * @param lvl   the level the player is in
@@ -89,8 +116,9 @@ public class Player extends Entity {
             if (worldX == 0) worldX = (int) (lvl.tileSize * 1.5);
             if (worldY == 0) worldY = lvl.worldHeight / 2 - lvl.tileSize / 2;
         } else if (lvl.levelNum == 3) {
-            if (worldX == 0) worldX = lvl.tileSize * 3;
-            if (worldY == 0) worldY = (int) (lvl.tileSize * 5.25);
+            inRehab = true;
+            if (worldX == 0) worldX = lvl.tileSize * 149;
+            if (worldY == 0) worldY = (int) (lvl.tileSize * 25.8);
         }
         this.speed = defaultSpeed;
         direction = "down";
@@ -127,6 +155,7 @@ public class Player extends Entity {
      * updates the player's position using the key input
      */
     public void update() {
+        if(withdrawalLevel > 100000) withdrawalLevel = 100000;
         if (speedDebuffTimer > 0 && lvl.gameState == lvl.PLAY_STATE) {
             speed = defaultSpeed / 2;
             speedDebuffTimer--;
@@ -157,6 +186,23 @@ public class Player extends Entity {
                 invincible = false;
             }
         }
+
+        if (lvl.levelNum == 3) {
+            if (therapyChallenge && inRehab) {
+                worldX = lvl.tileSize * 3;
+                worldY = (int) (lvl.tileSize * 5.25);
+                inRehab = false;
+            }
+            if (keyIn.up || keyIn.down || keyIn.left || keyIn.right) {
+                withdrawalLevel -= withdrawalDeduct;
+                if (withdrawalLevel <= 0) {
+                    withdrawalLevel = 0;
+                    lvl.failed = true;
+                    lvl.complete = true;
+                }
+            }
+        }
+
         //collision detection for interaction purposes
         interactObject(lvl.collisionDetect.objectCollide(this, true), false);
         interactObject(lvl.collisionDetect.entityCollide(this, lvl.blocks, true), true);
@@ -274,6 +320,36 @@ public class Player extends Entity {
                     } else {
                         ((TriggerBlock) (lvl.objects.get(index))).trigger();
                     }
+                    break;
+                case "Food":
+                    Entity temp = lvl.objects.get(index);
+                    lvl.objects.remove(temp);
+                    lvl.entities.remove(temp);
+                    inventory[0]++;
+                    lvl.ui.showMessage("x1 Food");
+                    Thread tempThread = new Thread(() -> {
+                        try {
+                            Thread.sleep(7500);
+                            lvl.objects.add(index, temp);
+                        } catch (InterruptedException e) {
+                        }
+                    });
+                    tempThread.start();
+                    break;
+                case "Water":
+                    Entity temp2 = lvl.objects.get(index);
+                    lvl.objects.remove(temp2);
+                    lvl.entities.remove(temp2);
+                    inventory[1]++;
+                    lvl.ui.showMessage("x1 Water");
+                    Thread tempThread2 = new Thread(() -> {
+                        try {
+                            Thread.sleep(15000);
+                            lvl.objects.add(index, temp2);
+                        } catch (InterruptedException e) {
+                        }
+                    });
+                    tempThread2.start();
                     break;
             }
         }

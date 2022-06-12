@@ -46,6 +46,11 @@ public class KeyInput implements KeyListener {
     public boolean escape;
 
     /**
+     * whether the shift key has been pressed
+     */
+    public boolean shift;
+
+    /**
      * the level the game is on
      */
     Level lvl;
@@ -64,7 +69,7 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if(lvl.started) {
+        if (lvl.started) {
             if (key == KeyEvent.VK_W) {
                 up = true;
             }
@@ -91,33 +96,49 @@ public class KeyInput implements KeyListener {
             }
         }
         if (key == KeyEvent.VK_1) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete) {
+            if (lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 1;
+            }
+            if (lvl.gameState == lvl.INVENTORY_STATE) {
+                lvl.ui.inventorySelect = 1;
             }
         }
         if (key == KeyEvent.VK_2) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete) {
+            if (lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 2;
+            }
+            if (lvl.gameState == lvl.INVENTORY_STATE) {
+                lvl.ui.inventorySelect = 2;
             }
         }
         if (key == KeyEvent.VK_3) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete) {
+            if (lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 3;
             }
         }
         if (key == KeyEvent.VK_4) {
-            if(lvl.ui.question != null && !lvl.ui.question.complete) {
+            if (lvl.ui.question != null && !lvl.ui.question.complete) {
                 lvl.ui.question.selected = 4;
             }
         }
         if (key == KeyEvent.VK_ENTER) {
             enter = true;
         }
-        if(key == KeyEvent.VK_R) {
+        if (key == KeyEvent.VK_R) {
             retry = true;
         }
-        if(key == KeyEvent.VK_ESCAPE) {
+        if (key == KeyEvent.VK_ESCAPE) {
             escape = true;
+            if (lvl.gameState == lvl.INVENTORY_STATE) {
+                lvl.gameState = lvl.PLAY_STATE;
+                lvl.ui.inventorySelect = -1;
+            }
+        }
+        if (key == KeyEvent.VK_SHIFT && lvl.gameState == lvl.PLAY_STATE) {
+            shift = true;
+        }
+        if (key == KeyEvent.VK_I && lvl.gameState == lvl.PLAY_STATE && lvl.levelNum == 3) {
+            lvl.gameState = lvl.INVENTORY_STATE;
         }
     }
 
@@ -143,11 +164,14 @@ public class KeyInput implements KeyListener {
             enter = false;
             lvl.ui.dialogueReady = true;
         }
-        if(key == KeyEvent.VK_R) {
+        if (key == KeyEvent.VK_R) {
             retry = false;
         }
-        if(key == KeyEvent.VK_ESCAPE) {
+        if (key == KeyEvent.VK_ESCAPE) {
             escape = false;
+        }
+        if (key == KeyEvent.VK_SHIFT) {
+            shift = false;
         }
     }
 }

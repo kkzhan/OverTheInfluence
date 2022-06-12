@@ -4,6 +4,7 @@ import main.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 
@@ -57,7 +58,6 @@ public class TileManager {
      * processes the tile images
      */
     public void tileImg() {
-        UtilTool util = new UtilTool();
         if (lvl.levelNum == 1) {
             setup(0, "divider", true);
             setup(1, "streetHor", false);
@@ -101,11 +101,10 @@ public class TileManager {
      * @param collision whether or not the tile is collidable
      */
     public void setup(int index, String path, boolean collision) {
-        UtilTool util = new UtilTool();
         try {
             tile[index] = new Tile();
             tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/tiles/" + path + ".png")));
-            tile[index].image = util.scaleImage(tile[index].image, lvl.tileSize, lvl.tileSize);
+            tile[index].image = scaleImage(tile[index].image, lvl.tileSize, lvl.tileSize);
             tile[index].collision = collision;
         } catch (IOException e) {
         }
@@ -223,5 +222,20 @@ public class TileManager {
                 worldRow++;
             }
         }
+    }
+
+    /**
+     * resizes the image to the specified size
+     * @param image the image to be scaled
+     * @param width the width of the scaled image
+     * @param height the height of the scaled image
+     * @return the scaled image
+     */
+    public BufferedImage scaleImage(BufferedImage image, int width, int height) {
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2D = scaledImage.createGraphics();
+        g2D.drawImage(image, 0, 0, width, height, null);
+        g2D.dispose();
+        return scaledImage;
     }
 }

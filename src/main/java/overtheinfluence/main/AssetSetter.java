@@ -16,6 +16,7 @@ import java.util.*;
  * <p>Work Allocation:<ul>
  * <li>Object setting - Kevin Zhan</li>
  * <li>Barrier block setting - Kevin Zhan</li>
+ * <li>Shuffling yoga mats - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -103,7 +104,7 @@ public class AssetSetter {
             if (lvl.levelNum == 1) {
                 setup1();
             } else if (lvl.levelNum == 3) {
-                lvl.objects.add(new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize));
+                lvl.objects.add(new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize, false));
                 setup3();
             }
         } else if (lvl.levelNum == 2) {
@@ -124,7 +125,7 @@ public class AssetSetter {
      * sets up level 1
      */
     public void setup1() {
-        Desk desk = new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize);
+        Desk desk = new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize, false);
         Friend friend = new Friend(lvl, lvl.tileSize * 5, lvl.tileSize * 45, 1);
         Mom mom = new Mom(lvl, lvl.tileSize * 11, lvl.tileSize * 18);
         Brother brother = new Brother(lvl, lvl.tileSize * 3, lvl.tileSize * 20);
@@ -156,12 +157,85 @@ public class AssetSetter {
         lvl.npcs.add(stranger2);
         lvl.npcs.add(stranger3);
         lvl.npcs.add(unconsciousStranger);
+        TriggerBlock endTrigger = new TriggerBlock(this, lvl.tileSize * 5, lvl.tileSize, 3 * lvl.tileSize, lvl.tileSize * 5, false) {
+            @Override
+            public void trigger() {
+                if(lvl.lvl1Sequence.size() == 0) {
+                    lvl.complete = true;
+                }
+            }
+        };
+        lvl.blocks.add(endTrigger);
     }
 
     /**
      * sets up level 3
      */
     public void setup3() {
+        //objects
+        Bed bed = new Bed(this);
+        bed.setPosition(147 * lvl.tileSize, (int) (25.25 * lvl.tileSize));
+        lvl.objects.add(bed);
+        lvl.objects.add(new Door(this, 146 * lvl.tileSize, 29 * lvl.tileSize, false, -1, -1));
+        lvl.objects.add(new Door(this, 141 * lvl.tileSize, 37 * lvl.tileSize, false, -1, -1));
+
+        //yoga challenge
+        YogaMat mat1 = new YogaMat(this, 100 * lvl.tileSize, 12 * lvl.tileSize, 1);
+        YogaMat mat2 = new YogaMat(this, 106 * lvl.tileSize, 12 * lvl.tileSize, 2);
+        YogaMat mat3 = new YogaMat(this, 112 * lvl.tileSize, 12 * lvl.tileSize, 3);
+        YogaMat mat4 = new YogaMat(this, 118 * lvl.tileSize, 12 * lvl.tileSize, 4);
+        lvl.blocks.add(mat1);
+        lvl.blocks.add(mat2);
+        lvl.blocks.add(mat3);
+        lvl.blocks.add(mat4);
+        lvl.blocks.add(mat1.trigger);
+        lvl.blocks.add(mat2.trigger);
+        lvl.blocks.add(mat3.trigger);
+        lvl.blocks.add(mat4.trigger);
+        TriggerBlock yogaTrigger = new TriggerBlock(this, 32 * lvl.tileSize, (int) (8.5 * lvl.tileSize), 97 * lvl.tileSize, (int) (9.5 * lvl.tileSize), true) {
+            @Override
+            public void trigger() {
+                if (!lvl.player.yogaChallenge && !lvl.yogaStarted) {
+                    lvl.yogaStarted = true;
+                    lvl.player.yogaChallenge = true;
+                }
+            }
+        };
+
+        //decorative dining tables
+        RehabTable table1 = new RehabTable(this);
+        table1.setPosition(lvl.tileSize * 112, lvl.tileSize * 24);
+        RehabTable table2 = new RehabTable(this);
+        table2.setPosition(lvl.tileSize * 112, lvl.tileSize * 29);
+        RehabTable table3 = new RehabTable(this);
+        table3.setPosition(lvl.tileSize * 112, lvl.tileSize * 34);
+        RehabTable table4 = new RehabTable(this);
+        table4.setPosition(lvl.tileSize * 128, lvl.tileSize * 24);
+        RehabTable table5 = new RehabTable(this);
+        table5.setPosition(lvl.tileSize * 128, lvl.tileSize * 29);
+        RehabTable table6 = new RehabTable(this);
+        table6.setPosition(lvl.tileSize * 128, lvl.tileSize * 34);
+        lvl.objects.add(table1);
+        lvl.objects.add(table2);
+        lvl.objects.add(table3);
+        lvl.objects.add(table4);
+        lvl.objects.add(table5);
+        lvl.objects.add(table6);
+
+        //consumables
+        lvl.objects.add(new Consumable(lvl, 139, 16, 0));
+        lvl.objects.add(new Consumable(lvl, 142, 16, 1));
+        lvl.objects.add(new Consumable(lvl, 11, 19, 0));
+        lvl.objects.add(new Consumable(lvl, 11, 21, 1));
+
+        //psychiatrist
+        Desk psychDesk = new Desk(this, (int) (136.5 * lvl.tileSize), 38 * lvl.tileSize, true);
+        lvl.blocks.add(psychDesk.trigger);
+        lvl.npcs.add(psychDesk);
+        Psychiatrist psych = new Psychiatrist(lvl, (int) (135.5 * lvl.tileSize), (int) (38.5 * lvl.tileSize));
+        lvl.npcs.add(psych);
+
+        //interactive npcs
         Friend friend = new Friend(lvl, lvl.tileSize * 5, lvl.tileSize * 45, 1);
         Mom mom = new Mom(lvl, lvl.tileSize * 11, lvl.tileSize * 18);
         Brother brother = new Brother(lvl, lvl.tileSize * 3, lvl.tileSize * 20);
@@ -190,6 +264,22 @@ public class AssetSetter {
         lvl.npcs.add(stranger2);
         lvl.npcs.add(stranger3);
         lvl.npcs.add(unconsciousStranger);
+    }
+
+    /**
+     * shuffles the positions of the level 3 yoga mats in rehabilitation
+     */
+    public void shuffleYogaMats() {
+        ArrayList<Entity> mats = new ArrayList<>();
+        for (Entity e : lvl.blocks) {
+            if (e instanceof YogaMat) {
+                mats.add(e);
+            }
+        }
+        Collections.shuffle(mats);
+        for (int i = 0; i < mats.size(); i++) {
+            (mats.get(i)).setPosition(lvl.tileSize * (100 + i * 6), lvl.tileSize * 12);
+        }
     }
 
     /**

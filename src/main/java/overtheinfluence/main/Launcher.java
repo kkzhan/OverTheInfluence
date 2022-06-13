@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
@@ -61,6 +62,11 @@ public class Launcher {
     JPanel mainPanel = new JPanel();
 
     /**
+     * if the splash screen is over
+     */
+    boolean splashOver = false;
+
+    /**
      * constructor for the Launcher class
      */
     public Launcher() {
@@ -81,18 +87,50 @@ public class Launcher {
         label.setPreferredSize(new Dimension(1200, 800));
         window.add(label);
         window.pack();
+        KeyListener keyListener = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                //ignore
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    splashOver = true;
+                    mainMenu();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                //ignore
+            }
+        };
         try {
-            Thread.sleep(42800);
-            window.remove(label);
+            Thread.sleep(11320);
+            window.addKeyListener(keyListener);
+            window.setFocusable(true);
         } catch (InterruptedException ignored) {
         }
-        mainMenu();
+        for(int i = 0; i < 32040; i++) {
+            if (splashOver) {
+                window.remove(label);
+                mainMenu();
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ignored) {
+            }
+        }
     }
 
     /**
      * This method displays the main menu of the game which provides access to the game, instructions, and credits
      */
     public void mainMenu() {
+        while (window.getKeyListeners().length > 0) {
+            window.removeKeyListener(window.getKeyListeners()[0]);
+        }
         BufferedImage mainScreenImg = null;
         try {
             mainScreenImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/mainScreen.png")));

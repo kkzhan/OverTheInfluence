@@ -97,7 +97,6 @@ public class Launcher {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     splashOver = true;
-                    mainMenu();
                 }
             }
 
@@ -116,6 +115,7 @@ public class Launcher {
             if (splashOver) {
                 window.remove(label);
                 mainMenu();
+                break;
             }
             try {
                 Thread.sleep(1);

@@ -7,9 +7,6 @@ import objects.*;
 import java.awt.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class contains information about the NPCs that are the player's friends.</p>
  *
  * <p>Work Allocation:<ul>
@@ -75,8 +72,11 @@ public class Friend extends Entity {
         }
     }
 
+    /**
+     * sets the dialogues for the friends
+     */
     public void setDialogues() {
-        if(lvl.levelNum == 1) {
+        if (lvl.levelNum == 1) {
             dialogue.add("You#Hey guys, wanna go out to eat?");
             dialogue.add("Freddy#Uhh yeah, maybe…");
             dialogue.add("Freddy#Oh sorry, my mom is calling me.");
@@ -92,7 +92,7 @@ public class Friend extends Entity {
             dialogue.add("You#Like what?");
             dialogue.add("Jenny#Like stealing and lying to other people.");
             dialogue.add("Jenny#Maybe we can go out some day in the future. See you around.");
-        } else if(lvl.levelNum == 3) {
+        } else if (lvl.levelNum == 3) {
             dialogue.add("Freddy#You’ve been looking and acting much better after you overcame#your drug addiction, bro.");
             dialogue.add("Freddy#I’m glad you’re doing well.");
             dialogue.add("Jenny# Yeah, I’m so proud of you for overcoming such a difficult challenge!");

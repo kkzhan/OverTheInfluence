@@ -7,9 +7,6 @@ import objects.*;
 import java.awt.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class contains information about the NPCs that are random strangers.</p>
  *
  * <p>Work Allocation:<ul>
@@ -74,6 +71,10 @@ public class Stranger extends Entity {
         }
     }
 
+    /**
+     * sets the dialogue for the strangers
+     * @param num the number of the stranger
+     */
     public void setDialogues(int num) {
         if (lvl.levelNum == 1) {
             if (num == 1) {

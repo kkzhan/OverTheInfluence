@@ -6,9 +6,6 @@ import main.*;
 import java.awt.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class contains information about the NPC that is the player's psychiatrist in rehabilitation.</p>
  *
  * <p>Work Allocation:<ul>

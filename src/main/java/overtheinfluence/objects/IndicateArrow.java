@@ -6,16 +6,15 @@ import main.*;
 import javax.imageio.*;
 import java.awt.*;
 import java.awt.image.*;
+import java.util.Objects;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class arrows that will hover above important object or NPCs in the game.</p>
  *
  * <p>Work Allocation:<ul>
  * <li>IndicateArrow class - Kevin Zhan</li>
  * <li>Arrow animation - Alexander Peng</li>
+ * <li>Arrow artwork - Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -42,12 +41,12 @@ public class IndicateArrow extends Entity {
         worldY = y;
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
         try {
-            down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/arrow1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/arrow2.png"));
-        } catch (Exception e) {
+            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/arrow1.png")));
+            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/arrow2.png")));
+        } catch (Exception ignored) {
         }
-        down1 = util.scaleImage(down1, drawWidth, drawHeight);
-        down2 = util.scaleImage(down2, drawWidth, drawHeight);
+        down1 = scaleImage(down1, drawWidth, drawHeight);
+        down2 = scaleImage(down2, drawWidth, drawHeight);
     }
 
     @Override

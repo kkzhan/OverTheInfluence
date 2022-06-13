@@ -1,20 +1,19 @@
 package objects;
 
-import entity.Entity;
+import entity.*;
 import main.*;
 
 import javax.imageio.*;
 import java.awt.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class represents Yoga Mat objects in the world.</p>
  *
  * <p>Work Allocation:<ul>
- * <li>Desk class - Kevin Zhan</li>
+ * <li>YogaMat class - Kevin Zhan</li>
+ * <li>Yoga mat artwork - Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -24,9 +23,14 @@ import java.io.*;
  */
 
 public class YogaMat extends Entity {
+    /**
+     * TriggerBlock that will be used to determine if the player has stepped on the mat
+     */
+    public final TriggerBlock trigger;
 
-    public TriggerBlock trigger;
-
+    /**
+     * the color of the mat
+     */
     public String color;
 
     /**
@@ -46,20 +50,20 @@ public class YogaMat extends Entity {
         worldY = y;
         try {
             if (num == 1) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/rehab/blueYogaMat.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/rehab/blueYogaMat.png")));
                 color = "Blue";
             } else if (num == 2) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/rehab/greenYogaMat.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/rehab/greenYogaMat.png")));
                 color = "Green";
             } else if (num == 3) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/rehab/pinkYogaMat.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/rehab/pinkYogaMat.png")));
                 color = "Pink";
             } else if (num == 4) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/rehab/purpleYogaMat.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/rehab/purpleYogaMat.png")));
                 color = "Purple";
             }
             down1 = scaleImage(down1, drawWidth, drawHeight);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
         collision = false;
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);

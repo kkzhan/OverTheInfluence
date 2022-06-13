@@ -6,15 +6,14 @@ import main.*;
 import javax.imageio.*;
 import java.awt.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class represents Kitchen Table objects in the world.</p>
  *
  * <p>Work Allocation:<ul>
- *     <li>KitchenTable class - Kevin Zhan</li>
+ * <li>KitchenTable class - Kevin Zhan</li>
+ * <li>Table artwork - Alexander Peng</li>
  * </ul></p>
  *
  *
@@ -37,13 +36,13 @@ public class KitchenTable extends Entity {
         name = "KitchenTable";
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1KitchenTable.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/furniture/lvl1KitchenTable.png")));
             } else if (assetSetter.lvl.levelNum == 3) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3KitchenTable.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/furniture/lvl3KitchenTable.png")));
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
-        down1 = util.scaleImage(down1, drawWidth, drawHeight);
+        down1 = scaleImage(down1, drawWidth, drawHeight);
         collision = true;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
     }

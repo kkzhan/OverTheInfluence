@@ -9,9 +9,6 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This is the superclass representing all entities.</p>
  *
  * <p>Work Allocation:<ul>
@@ -28,7 +25,7 @@ public class Entity {
     /**
      * the level the entity is in
      */
-    public Level lvl;
+    public final Level lvl;
 
     /**
      * the x and y coordinates of the entity in the world
@@ -89,14 +86,9 @@ public class Entity {
     public int maxLife;
 
     /**
-     * whether or not the entity is currently alive
-     */
-    public boolean alive;
-
-    /**
      * the entity's dialogue if applicable
      */
-    public ArrayList<String> dialogue = new ArrayList<>();
+    public final ArrayList<String> dialogue = new ArrayList<>();
 
     /**
      * constructor for the Entity class
@@ -109,7 +101,7 @@ public class Entity {
     }
 
     /**
-     * helps setup the entity image
+     * helps set up the entity image
      *
      * @param path the path to the image
      */
@@ -118,7 +110,7 @@ public class Entity {
         try {
             img = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/" + path + ".png")));
             img = scaleImage(img, lvl.tileSize, lvl.tileSize);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
         return img;
     }

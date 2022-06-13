@@ -4,14 +4,11 @@ import main.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class is responsible for managing tiles to create a functioning map, as well as processing map data
  * from a text file.</p>
  *
@@ -19,6 +16,8 @@ import java.util.*;
  * <li>Process tile images - Kevin Zhan</li>
  * <li>Process map - Kevin Zhan</li>
  * <li>Draw tiles on map - Kevin Zhan</li>
+ * <li>Map design - Kevin Zhan and Alexander Peng</li>
+ * <li>Map barrier layout - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -31,11 +30,11 @@ public class TileManager {
     /**
      * the level that is being played
      */
-    Level lvl;
+    final Level lvl;
     /**
      * the different types of tiles
      */
-    public Tile[] tile;
+    public final Tile[] tile;
     /**
      * the map layout of the tiles in the level
      */
@@ -98,7 +97,7 @@ public class TileManager {
      *
      * @param index     the index of the tile
      * @param path      the path to the image
-     * @param collision whether or not the tile is collidable
+     * @param collision whether the tile is collidable
      */
     public void setup(int index, String path, boolean collision) {
         try {
@@ -106,7 +105,7 @@ public class TileManager {
             tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/tiles/" + path + ".png")));
             tile[index].image = scaleImage(tile[index].image, lvl.tileSize, lvl.tileSize);
             tile[index].collision = collision;
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
@@ -132,35 +131,18 @@ public class TileManager {
                     try {
                         num = Integer.parseInt(nums[col]);
                     } catch (Exception e) {
-                        switch (nums[col]) {
-                            case "a":
-                                num = 10;
-                                break;
-                            case "b":
-                                num = 11;
-                                break;
-                            case "c":
-                                num = 12;
-                                break;
-                            case "d":
-                                num = 13;
-                                break;
-                            case "e":
-                                num = 14;
-                                break;
-                            case "f":
-                                num = 15;
-                                break;
-                            case "g":
-                                num = 16;
-                                break;
-                            case "h":
-                                num = 17;
-                                break;
-                            case "i":
-                                num = 18;
-                                break;
-                        }
+                        num = switch (nums[col]) {
+                            case "a" -> 10;
+                            case "b" -> 11;
+                            case "c" -> 12;
+                            case "d" -> 13;
+                            case "e" -> 14;
+                            case "f" -> 15;
+                            case "g" -> 16;
+                            case "h" -> 17;
+                            case "i" -> 18;
+                            default -> num;
+                        };
                     }
                     tileMap[col][row] = num;
                     col++;
@@ -170,7 +152,7 @@ public class TileManager {
                     col = 0;
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 

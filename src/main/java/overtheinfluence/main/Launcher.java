@@ -9,11 +9,13 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class is the launcher class of the game and includes the menu of the game as well as processes the launch
  * and end of games. </p>
+ *
+ * <p>
+ * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
+ * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
+ * </p>
  *
  * <p>Work Allocation:<ul>
  * <li>Splash Screen - Alexander Peng</li>
@@ -39,19 +41,19 @@ public class Launcher {
     public Game currentGame;
 
     /**
-     * checks whether or not a previous game has been started
+     * checks whether a previous game has been started
      */
     boolean gameStarted = false;
 
     /**
      * the window the game is displayed in
      */
-    JFrame window = new JFrame("Over the Influence");
+    final JFrame window = new JFrame("Over the Influence");
 
     /**
      * the background colour of the launcher
      */
-    Color bgColor = new Color(89, 89, 89);
+    final Color bgColor = new Color(89, 89, 89);
 
     /**
      * the main panel displayed in the launcher
@@ -73,16 +75,16 @@ public class Launcher {
      * This method displays the splash screen of the game
      */
     private void splashScreen() {
-        Icon imgIcon = new ImageIcon(this.getClass().getResource("/resources/launcherFiles/splashScreen.gif"));
+        Icon imgIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/resources/launcherFiles/splashScreen.gif")));
         JLabel label = new JLabel(imgIcon);
         label.setBounds(0, 0, 1200, 800);
         label.setPreferredSize(new Dimension(1200, 800));
         window.add(label);
         window.pack();
         try {
-            Thread.sleep(3000);
+            Thread.sleep(42800);
             window.remove(label);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         mainMenu();
     }
@@ -94,9 +96,9 @@ public class Launcher {
         BufferedImage mainScreenImg = null;
         try {
             mainScreenImg = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/mainScreen.png")));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
-        JLabel mainScreen = new JLabel(new ImageIcon(mainScreenImg.getScaledInstance(1200, 800, Image.SCALE_SMOOTH)));
+        JLabel mainScreen = new JLabel(new ImageIcon(Objects.requireNonNull(mainScreenImg).getScaledInstance(1200, 800, Image.SCALE_SMOOTH)));
         JPanel panel = new JPanel();
         panel.add(mainScreen);
         mainPanel = panel;
@@ -283,9 +285,9 @@ public class Launcher {
         BufferedImage playTitle = null;
         try {
             playTitle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/playTitle.png")));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
-        JLabel creditTitle = new JLabel(new ImageIcon(playTitle.getScaledInstance(276, 204, Image.SCALE_SMOOTH)));
+        JLabel creditTitle = new JLabel(new ImageIcon(Objects.requireNonNull(playTitle).getScaledInstance(276, 204, Image.SCALE_SMOOTH)));
         creditTitle.setSize(new Dimension(276, 204));
         creditTitle.setLocation(462, 70);
         panel.add(creditTitle);
@@ -332,12 +334,12 @@ public class Launcher {
         BufferedImage image = null;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insControls.png")));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
-        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        JLabel imageLabel = new JLabel(new ImageIcon(Objects.requireNonNull(image).getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
         imageLabel.setSize(new Dimension(1200, 650));
-        imageLabel.setLocation(0,0);
+        imageLabel.setLocation(0, 0);
         panel.add(imageLabel);
     }
 
@@ -382,12 +384,12 @@ public class Launcher {
         BufferedImage image = null;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel1.png")));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
-        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        JLabel imageLabel = new JLabel(new ImageIcon(Objects.requireNonNull(image).getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
         imageLabel.setSize(new Dimension(1200, 650));
-        imageLabel.setLocation(0,0);
+        imageLabel.setLocation(0, 0);
         panel.add(imageLabel);
     }
 
@@ -432,12 +434,12 @@ public class Launcher {
         BufferedImage image = null;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel2.png")));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
-        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        JLabel imageLabel = new JLabel(new ImageIcon(Objects.requireNonNull(image).getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
         imageLabel.setSize(new Dimension(1200, 650));
-        imageLabel.setLocation(0,0);
+        imageLabel.setLocation(0, 0);
         panel.add(imageLabel);
     }
 
@@ -482,12 +484,12 @@ public class Launcher {
         BufferedImage image = null;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/insLevel3.png")));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
-        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        JLabel imageLabel = new JLabel(new ImageIcon(Objects.requireNonNull(image).getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
         imageLabel.setSize(new Dimension(1200, 650));
-        imageLabel.setLocation(0,0);
+        imageLabel.setLocation(0, 0);
         panel.add(imageLabel);
     }
 
@@ -519,12 +521,12 @@ public class Launcher {
         BufferedImage image = null;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/launcherFiles/credits.png")));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
-        JLabel imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
+        JLabel imageLabel = new JLabel(new ImageIcon(Objects.requireNonNull(image).getScaledInstance(1200, 650, Image.SCALE_SMOOTH)));
         imageLabel.setSize(new Dimension(1200, 650));
-        imageLabel.setLocation(0,0);
+        imageLabel.setLocation(0, 0);
         panel.add(imageLabel);
     }
 
@@ -533,7 +535,7 @@ public class Launcher {
      */
     private void exitProgram() {
         JPanel panel = new JPanel(true);
-        Icon imgIcon = new ImageIcon(this.getClass().getResource("/resources/launcherFiles/thankYouForPlaying.png"));
+        Icon imgIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/resources/launcherFiles/thankYouForPlaying.png")));
         JLabel endPage = new JLabel(imgIcon);
         endPage.setSize(new Dimension(1200, 800));
         endPage.setLocation(0, 0);

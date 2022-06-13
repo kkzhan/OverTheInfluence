@@ -8,9 +8,6 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class sets objects and barrier blocks into the game.</p>
  *
  * <p>Work Allocation:<ul>
@@ -29,12 +26,12 @@ public class AssetSetter {
     /**
      * The level the assets are being set into.
      */
-    public Level lvl;
+    public final Level lvl;
 
     /**
      * stores added barriers
      */
-    public ArrayList<Entity> barriers = new ArrayList<>();
+    public final ArrayList<Entity> barriers = new ArrayList<>();
 
     /**
      * constructor for AssetSetter
@@ -103,7 +100,7 @@ public class AssetSetter {
             lvl.npcs.add(new Friend(lvl, lvl.tileSize * 7, lvl.tileSize * 45, 3));
             if (lvl.levelNum == 1) {
                 setup1();
-            } else if (lvl.levelNum == 3) {
+            } else {
                 lvl.objects.add(new Desk(this, (int) (3.25 * lvl.tileSize), 11 * lvl.tileSize, false));
                 setup3();
             }
@@ -192,16 +189,6 @@ public class AssetSetter {
         lvl.blocks.add(mat2.trigger);
         lvl.blocks.add(mat3.trigger);
         lvl.blocks.add(mat4.trigger);
-        TriggerBlock yogaTrigger = new TriggerBlock(this, 32 * lvl.tileSize, (int) (8.5 * lvl.tileSize), 97 * lvl.tileSize, (int) (9.5 * lvl.tileSize), true) {
-            @Override
-            public void trigger() {
-                if (!lvl.player.yogaChallenge && !lvl.yogaStarted) {
-                    lvl.yogaStarted = true;
-                    lvl.player.yogaChallenge = true;
-                }
-            }
-        };
-
         //decorative dining tables
         RehabTable table1 = new RehabTable(this);
         table1.setPosition(lvl.tileSize * 112, lvl.tileSize * 24);
@@ -307,7 +294,7 @@ public class AssetSetter {
                     col = 0;
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 

@@ -5,6 +5,7 @@ import main.AssetSetter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
@@ -47,9 +48,9 @@ public class BarrierBlock extends Entity {
         }
         if(visible) {
             try {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/barrier.png"));
-                down1 = util.scaleImage(down1, drawWidth, drawHeight);
-            } catch (Exception e) {
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/tiles/barrier.png")));
+                down1 = scaleImage(down1, drawWidth, drawHeight);
+            } catch (Exception ignored) {
             }
         }
     }

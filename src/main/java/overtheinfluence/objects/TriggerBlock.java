@@ -5,11 +5,9 @@ import main.AssetSetter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.util.Objects;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>Trigger blocks perform certain behaviour when the player interacts with or collides with it.</p>
  *
  * <p>Work Allocation:<ul>
@@ -32,7 +30,7 @@ public abstract class TriggerBlock extends Entity {
      * @param height      the height of the block
      * @param x           the x-coordinate of the block
      * @param y           the y-coordinate of the block
-     * @param visible     whether or not the block is visible
+     * @param visible     whether the block is visible
      */
     public TriggerBlock(AssetSetter assetSetter, int width, int height, int x, int y, boolean visible) {
         super(assetSetter.lvl);
@@ -43,9 +41,9 @@ public abstract class TriggerBlock extends Entity {
         worldY = y;
         if (visible) {
             try {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/tiles/finishLine.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/tiles/finishLine.png")));
                 down1 = scaleImage(down1, 48, 48);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

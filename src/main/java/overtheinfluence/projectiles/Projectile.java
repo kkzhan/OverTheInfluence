@@ -3,6 +3,19 @@ package projectiles;
 import entity.*;
 import main.*;
 
+/**
+ * <p>This is the superclass for Projectile objects.</p>
+ *
+ * <p>Work Allocation:<ul>
+ * <li>Projectile class - Kevin Zhan</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class Projectile extends Entity {
     /**
      * the user who is sending the projectiles
@@ -32,7 +45,6 @@ public class Projectile extends Entity {
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;
-        this.alive = alive;
         this.user = user;
         this.life = this.maxLife;
     }
@@ -43,9 +55,6 @@ public class Projectile extends Entity {
     public void update() {
         if (user != lvl.player) {
             boolean contactPlayer = lvl.collisionDetect.checkPlayer(this);
-            if(lvl.collisionDetect.entityCollide(this, lvl.assetSetter.barriers, false) != -1) {
-                alive = false;
-            }
             if (contactPlayer) {
                 lvl.projectiles.clear();
                 lvl.gameState = lvl.BARRIER_QUESTION_STATE;
@@ -59,22 +68,14 @@ public class Projectile extends Entity {
         }
 
         switch (direction) {
-            case "up":
-                worldY -= speed;
-                break;
-            case "down":
-                worldY += speed;
-                break;
-            case "left":
-                worldX -= speed;
-                break;
-            case "right":
-                worldX += speed;
-                break;
+            case "up" -> worldY -= speed;
+            case "down" -> worldY += speed;
+            case "left" -> worldX -= speed;
+            case "right" -> worldX += speed;
         }
         life--;
         if (life <= 0) {
-            alive = false;
+            lvl.projectiles.remove(this);
         }
     }
 }

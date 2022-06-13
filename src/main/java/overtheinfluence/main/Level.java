@@ -9,9 +9,6 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This is the superclass for levels that manages the overall structure of a singular level.</p>
  *
  * <p>Work Allocation:<ul>
@@ -31,7 +28,7 @@ public class Level extends JPanel implements Runnable {
     /**
      * the game that this level is a part of
      */
-    public Game thisGame;
+    public final Game thisGame;
 
     /**
      * the usable tile size
@@ -74,16 +71,16 @@ public class Level extends JPanel implements Runnable {
     /**
      * frame rate for game animation
      */
-    public int FPS = 30;
+    public final int FPS = 30;
 
     /**
      * the tile manager that draws tiles for the world map
      */
-    TileManager tm;
+    final TileManager tm;
     /**
      * handles keyboard input for movement
      */
-    public KeyInput keyIn = new KeyInput(this);
+    public final KeyInput keyIn = new KeyInput(this);
     /**
      * the thread the game runs on
      */
@@ -92,47 +89,47 @@ public class Level extends JPanel implements Runnable {
     /**
      * the collision detector
      */
-    public CollisionDetection collisionDetect = new CollisionDetection(this);
+    public final CollisionDetection collisionDetect = new CollisionDetection(this);
 
     /**
      * the user interface for the game
      */
-    public UI ui;
+    public final UI ui;
 
     /**
      * sets assets for the level
      */
-    public AssetSetter assetSetter = new AssetSetter(this);
+    public final AssetSetter assetSetter = new AssetSetter(this);
 
     /**
      * the player entity
      */
-    public Player player;
+    public final Player player;
 
     /**
      * stores all entities in the game
      */
-    public ArrayList<Entity> entities = new ArrayList<>();
+    public final ArrayList<Entity> entities = new ArrayList<>();
 
     /**
      * stores all objects in the game
      */
-    public ArrayList<Entity> objects = new ArrayList<>();
+    public final ArrayList<Entity> objects = new ArrayList<>();
 
     /**
      * stores all NPCs in the game
      */
-    public ArrayList<Entity> npcs = new ArrayList<>();
+    public final ArrayList<Entity> npcs = new ArrayList<>();
 
     /**
      * stores all blocks in the game
      */
-    public ArrayList<Entity> blocks = new ArrayList<>();
+    public final ArrayList<Entity> blocks = new ArrayList<>();
 
     /**
      * stores all projectiles in the game
      */
-    public ArrayList<Projectile> projectiles = new ArrayList<>();
+    public final ArrayList<Projectile> projectiles = new ArrayList<>();
 
     /**
      * the game state
@@ -147,12 +144,12 @@ public class Level extends JPanel implements Runnable {
     /**
      * manages sound effects
      */
-    Sound sound = new Sound();
+    final Sound sound = new Sound();
 
     /**
      * the level number
      */
-    public int levelNum;
+    public final int levelNum;
 
     /**
      * the time and initial time for the level
@@ -165,12 +162,12 @@ public class Level extends JPanel implements Runnable {
     boolean started = false;
 
     /**
-     * whether or not the level is complete
+     * whether the level is complete
      */
     public boolean complete = false;
 
     /**
-     * whether or not the level was failed
+     * whether the level was failed
      */
     public boolean failed = false;
 
@@ -182,12 +179,12 @@ public class Level extends JPanel implements Runnable {
     /**
      * the sequence of entities to interact with in level 1
      */
-    public ArrayList<Entity> lvl1Sequence = new ArrayList<>();
+    public final ArrayList<Entity> lvl1Sequence = new ArrayList<>();
 
     /**
      * the sequence of entities to interact with in level 3
      */
-    public ArrayList<Entity> lvl3Sequence = new ArrayList<>();
+    public final ArrayList<Entity> lvl3Sequence = new ArrayList<>();
 
     /**
      * the entity speaking dialogue
@@ -200,7 +197,7 @@ public class Level extends JPanel implements Runnable {
     public String matColor;
 
     /**
-     * whether the challenges has been started
+     * whether the challenges have been started
      */
     public boolean yogaStarted, therapyStarted;
 
@@ -214,7 +211,7 @@ public class Level extends JPanel implements Runnable {
      */
     public int matCount = 0;
 
-    public SystemSpeaker systemSpeaker = new SystemSpeaker(this);
+    public final SystemSpeaker systemSpeaker = new SystemSpeaker(this);
 
     /**
      * the constructor for the level class
@@ -313,7 +310,7 @@ public class Level extends JPanel implements Runnable {
                 }
             }
             if (levelNum == 3) {
-                if(therapyStarted && player.yogaChallenge && gameState != DIALOGUE_STATE) {
+                if(therapyStarted && player.yogaChallenge) {
                     gameState = THERAPY_QUESTION_STATE;
                 }
                 if(lvl3Sequence.size() == 0) {
@@ -335,18 +332,10 @@ public class Level extends JPanel implements Runnable {
                     //random number between 0 and 3
                     int random = (int) (Math.random() * 4);
                     switch (random) {
-                        case 0:
-                            matColor = "Blue";
-                            break;
-                        case 1:
-                            matColor = "Green";
-                            break;
-                        case 2:
-                            matColor = "Pink";
-                            break;
-                        case 3:
-                            matColor = "Purple";
-                            break;
+                        case 0 -> matColor = "Blue";
+                        case 1 -> matColor = "Green";
+                        case 2 -> matColor = "Pink";
+                        case 3 -> matColor = "Purple";
                     }
                     ui.instruction = "Go to the " + matColor + " mat";
                     matReached = false;

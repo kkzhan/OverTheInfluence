@@ -5,9 +5,6 @@ import java.net.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class is used for implementing sound into the levels.</p>
  *
  * <p>Work Allocation:<ul>
@@ -29,11 +26,11 @@ public class Sound {
     /**
      * ArrayList storing the paths for the audio file
      */
-    ArrayList<URL> soundPath = new ArrayList<>();
+    final ArrayList<URL> soundPath = new ArrayList<>();
     /**
      * an ArrayList to store all clips for access
      */
-    ArrayList<Clip> clips = new ArrayList<>();
+    final ArrayList<Clip> clips = new ArrayList<>();
 
     /**
      * constructor for the Sound class
@@ -53,7 +50,7 @@ public class Sound {
         try {
             clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(soundPath.get(i)));
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

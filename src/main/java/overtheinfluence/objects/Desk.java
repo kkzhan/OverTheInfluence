@@ -6,15 +6,14 @@ import main.*;
 import javax.imageio.*;
 import java.awt.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class represents Desk objects in the world.</p>
  *
  * <p>Work Allocation:<ul>
  * <li>Desk class - Kevin Zhan</li>
+ * <li>Desk artwork - Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -24,9 +23,14 @@ import java.io.*;
  */
 
 public class Desk extends Entity {
-
+    /**
+     * the trigger block that will activate when the player is near
+     */
     public TriggerBlock trigger;
 
+    /**
+     * the arrow indicating that this object can be interacted with
+     */
     public IndicateArrow arrow;
 
     /**
@@ -47,17 +51,17 @@ public class Desk extends Entity {
         worldY = y;
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Desk.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/furniture/lvl1Desk.png")));
             } else if (assetSetter.lvl.levelNum == 3) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Desk.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/furniture/lvl3Desk.png")));
             }
             if (rehab) {
                 drawWidth = 48;
                 drawHeight = 96;
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/rehab/psychiatristDesk.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/rehab/psychiatristDesk.png")));
             }
             down1 = scaleImage(down1, drawWidth, drawHeight);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
         collision = true;
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
@@ -97,6 +101,9 @@ public class Desk extends Entity {
         }
     }
 
+    /**
+     * sets the dialogues for the Desk object
+     */
     public void setDialogues() {
         if (lvl.levelNum == 1) {
             dialogue.add("Searching up#What is drug addiction?");

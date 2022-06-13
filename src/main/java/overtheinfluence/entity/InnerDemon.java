@@ -9,9 +9,6 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This is the Inner Demon class that acts as the enemy attacking the player in Level 2.
  * The Inner Demon is a representation of the player's own internal struggles while dealing
  * with drug addiction.</p>
@@ -55,7 +52,7 @@ public class InnerDemon extends Entity {
                 down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/entities/innerDemon/innerDemon1.png")));
                 down1 = scaleImage(down1, drawWidth, drawHeight);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         collision = true;
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
@@ -84,7 +81,7 @@ public class InnerDemon extends Entity {
                     down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/innerDemon/innerDemon2.png")));
                     down1 = scaleImage(down1, drawWidth, drawHeight);
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             if (deathTimer <= 0) {
                 lvl.entities.remove(this);

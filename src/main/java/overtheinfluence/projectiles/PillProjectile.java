@@ -4,11 +4,21 @@ import main.*;
 
 import java.awt.*;
 
+/**
+ * <p>This class is for drug projectiles that are in the form of pills.</p>
+ *
+ * <p>Work Allocation:<ul>
+ * <li>PillProjectile class - AlexanderPeng</li>
+ * <li>PillProjectile artwork - AlexanderPeng</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class PillProjectile extends Projectile {
-    /**
-     * the level the projectile is in
-     */
-    Level lvl;
 
     /**
      * constructor for PillProjectile class
@@ -16,7 +26,6 @@ public class PillProjectile extends Projectile {
      */
     public PillProjectile(Level lvl) {
         super(lvl);
-        this.lvl = lvl;
         int drawWidth = 45;
         int drawHeight = 21;
         name = "Needle";
@@ -24,6 +33,6 @@ public class PillProjectile extends Projectile {
         speed = 10;
         left1 = setup("objects/projectiles/pill");
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
-        left1 = util.scaleImage(left1, drawWidth, drawHeight);
+        left1 = scaleImage(left1, drawWidth, drawHeight);
     }
 }

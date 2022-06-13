@@ -3,10 +3,7 @@ package main;
 import java.awt.event.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
- * <p></p>
+ * <p>This class processes and manages all keyboard input for different controls.</p>
  *
  * <p>Work Allocation:<ul>
  * <li>KeyInput- Alexander Peng</li>
@@ -21,12 +18,12 @@ import java.awt.event.*;
 public class KeyInput implements KeyListener {
 
     /**
-     * whether or not the player is moving in a specific direction
+     * whether the player is moving in a specific direction
      */
     public boolean up, down, left, right;
 
     /**
-     * whether or not the player is interacting with an object
+     * whether the player is interacting with an object
      */
     public boolean interact;
 
@@ -53,7 +50,7 @@ public class KeyInput implements KeyListener {
     /**
      * the level the game is on
      */
-    Level lvl;
+    final Level lvl;
 
     /**
      * constructor for the KeyInput class

@@ -6,9 +6,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class is used for detection collision between entities, namely the player, and the tiles being moved over.</p>
  *
  * <p>Work Allocation:<ul>
@@ -27,7 +24,7 @@ public class CollisionDetection {
     /**
      * the level using the collision detection
      */
-    Level lvl;
+    final Level lvl;
 
     /**
      * constructor for CollisionDetection
@@ -141,30 +138,30 @@ public class CollisionDetection {
                 }
             } else {
                 switch (e.direction) {
-                    case "up":
+                    case "up" -> {
                         e.area.y -= e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
-                    case "down":
+                    }
+                    case "down" -> {
                         e.area.y += e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
-                    case "left":
+                    }
+                    case "left" -> {
                         e.area.x -= e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
-                    case "right":
+                    }
+                    case "right" -> {
                         e.area.x += e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
+                    }
                 }
             }
             e.area.x = e.areaDefaultX;
@@ -176,7 +173,7 @@ public class CollisionDetection {
     }
 
     /**
-     * checks whether or not an entity is colliding with other entities
+     * checks whether an entity is colliding with other entities
      *
      * @param e        the entity to check
      * @param entities all the entities that the entity might be colliding with
@@ -232,30 +229,30 @@ public class CollisionDetection {
                 }
             } else {
                 switch (e.direction) {
-                    case "up":
+                    case "up" -> {
                         e.area.y -= e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
-                    case "down":
+                    }
+                    case "down" -> {
                         e.area.y += e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
-                    case "left":
+                    }
+                    case "left" -> {
                         e.area.x -= e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
-                    case "right":
+                    }
+                    case "right" -> {
                         e.area.x += e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                        break;
+                    }
                 }
             }
             e.area.x = e.areaDefaultX;
@@ -280,30 +277,30 @@ public class CollisionDetection {
             return false;
         }
         switch (e.direction) {
-            case "up":
+            case "up" -> {
                 e.worldY -= e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-                break;
-            case "down":
+            }
+            case "down" -> {
                 e.worldY += e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-                break;
-            case "left":
+            }
+            case "left" -> {
                 e.worldX -= e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-                break;
-            case "right":
+            }
+            case "right" -> {
                 e.worldX += e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-                break;
+            }
         }
         e.area.x = e.areaDefaultX;
         e.area.y = e.areaDefaultY;

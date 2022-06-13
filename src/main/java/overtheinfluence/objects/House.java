@@ -6,15 +6,14 @@ import main.*;
 import javax.imageio.*;
 import java.awt.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class represents House objects in the world.</p>
  *
  * <p>Work Allocation:<ul>
  * <li>House class - Kevin Zhan</li>
+ * <li>House artwork - Alexander Peng</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -27,7 +26,7 @@ public class House extends Entity {
     /**
      * a trigger block within the door
      */
-    public TriggerBlock triggerDoor;
+    public final TriggerBlock triggerDoor;
 
     /**
      * Constructor for House objects
@@ -43,13 +42,13 @@ public class House extends Entity {
         name = "House";
         try {
             if (assetSetter.lvl.levelNum == 1) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl1House.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/buildings/lvl1House.png")));
             } else if (assetSetter.lvl.levelNum == 3) {
-                down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/buildings/lvl3House.png"));
+                down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/buildings/lvl3House.png")));
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
-        down1 = util.scaleImage(down1, drawWidth, drawHeight);
+        down1 = scaleImage(down1, drawWidth, drawHeight);
         collision = true;
         area = new Rectangle(0, 0, drawWidth, drawHeight);
         if (teleport) {
@@ -75,6 +74,7 @@ public class House extends Entity {
         }
     }
 
+    @Override
     public void setPosition(int x, int y) {
         worldX = x;
         worldY = y;

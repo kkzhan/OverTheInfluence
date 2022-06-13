@@ -4,11 +4,21 @@ import main.*;
 
 import java.awt.*;
 
+/**
+ * <p>This class is for drug projectiles that are in the form of bottles of alcohol.</p>
+ *
+ * <p>Work Allocation:<ul>
+ * <li>AlcoholProjectile class - Alexander Peng</li>
+ * <li>AlcoholProjectile artwork - Alexander Peng</li>
+ * </ul></p>
+ *
+ * <h2>ICS4U0 -with Krasteva, V.</h2>
+ *
+ * @author Kevin Zhan, Alexander Peng
+ * @version 1.0
+ */
+
 public class AlcoholProjectile extends Projectile {
-    /**
-     * the level the projectile is used in
-     */
-    Level lvl;
 
     /**
      * constructor for the AlcoholProjectile class
@@ -16,7 +26,6 @@ public class AlcoholProjectile extends Projectile {
      */
     public AlcoholProjectile(Level lvl) {
         super(lvl);
-        this.lvl = lvl;
         int drawWidth = 26;
         int drawHeight = 68;
         name = "Alcohol";
@@ -24,6 +33,6 @@ public class AlcoholProjectile extends Projectile {
         speed = 7;
         left1 = setup("objects/projectiles/alcoholBottle");
         area = new Rectangle(worldX, worldY, drawWidth, drawHeight);
-        left1 = util.scaleImage(left1, drawWidth, drawHeight);
+        left1 = scaleImage(left1, drawWidth, drawHeight);
     }
 }

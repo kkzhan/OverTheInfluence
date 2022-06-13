@@ -7,9 +7,6 @@ import objects.*;
 import java.awt.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class contains information about the NPC that is an unconscious person lying on the ground.</p>
  *
  * <p>Work Allocation:<ul>
@@ -73,6 +70,9 @@ public class UnconsciousStranger extends Entity {
         }
     }
 
+    /**
+     * sets the dialogues for the unconscious stranger
+     */
     public void setDialogues() {
         if (lvl.levelNum == 1) {
             dialogue.add("Unconscious Person#*This person seems to have blacked out after taking too many drugs.*");

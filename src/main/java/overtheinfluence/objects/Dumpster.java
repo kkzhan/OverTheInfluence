@@ -6,15 +6,14 @@ import main.*;
 import javax.imageio.*;
 import java.awt.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class represents Dumpster objects in the world.</p>
  *
  * <p>Work Allocation:<ul>
  * <li>Dumpster class - Kevin Zhan</li>
+ * <li>Dumpster artwork - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -35,9 +34,9 @@ public class Dumpster extends Entity {
         int drawHeight = 96;
         name = "Garbage Bag";
         try {
-            down1 = ImageIO.read(getClass().getResourceAsStream("/resources/objects/dumpster.png"));
-            down1 = util.scaleImage(down1, drawWidth, drawHeight);
-        } catch (IOException e) {
+            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/resources/objects/dumpster.png")));
+            down1 = scaleImage(down1, drawWidth, drawHeight);
+        } catch (IOException ignored) {
         }
         collision = true;
         area = new Rectangle(0, 0, drawWidth, drawHeight);

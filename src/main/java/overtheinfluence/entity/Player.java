@@ -7,19 +7,17 @@ import java.awt.*;
 import java.awt.image.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This is a subclass of Entity that controls the movement and animation of the player.</p>
  *
  * <p>Work Allocation:<ul>
  * <li>Coordinate tracking - Alexander Peng</li>
  * <li>Image implementation - Kevin Zhan</li>
  * <li>Movement animation - Kevin Zhan</li>
- * <li>Directional movement from keyboard input - Kevin Zhan & Alexander Peng</li>
+ * <li>Directional movement from keyboard input - Kevin Zhan and Alexander Peng</li>
  * <li>Character display - Kevin Zhan</li>
  * <li>Collision detection - Kevin Zhan</li>
  * <li>Debuff/invincibility implementation - Alexander Peng</li>
+ * <li>Player artwork - Kevin Zhan</li>
  * </ul></p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -32,7 +30,7 @@ public class Player extends Entity {
     /**
      * the input monitor for the player's keys
      */
-    public KeyInput keyIn;
+    public final KeyInput keyIn;
 
     /**
      * the player's x and y coordinates on the screen
@@ -92,7 +90,7 @@ public class Player extends Entity {
     /**
      * the player's inventory
      */
-    public int[] inventory = new int[2]; //0 = food, 1 = water
+    public final int[] inventory = new int[2]; //0 = food, 1 = water
 
 
     /**
@@ -216,7 +214,7 @@ public class Player extends Entity {
             } else if (keyIn.left) {
                 direction = "left";
                 worldX -= speed;
-            } else if (keyIn.right) {
+            } else {
                 direction = "right";
                 worldX += speed;
             }
@@ -308,7 +306,7 @@ public class Player extends Entity {
                             try {
                                 Thread.sleep(1000);
                                 lvl.objects.add(index, temp);
-                            } catch (InterruptedException e) {
+                            } catch (InterruptedException ignored) {
                             }
                         });
                         tempThread.start();
@@ -331,7 +329,7 @@ public class Player extends Entity {
                         try {
                             Thread.sleep(7500);
                             lvl.objects.add(index, temp);
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ignored) {
                         }
                     });
                     tempThread.start();
@@ -346,7 +344,7 @@ public class Player extends Entity {
                         try {
                             Thread.sleep(15000);
                             lvl.objects.add(index, temp2);
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ignored) {
                         }
                     });
                     tempThread2.start();

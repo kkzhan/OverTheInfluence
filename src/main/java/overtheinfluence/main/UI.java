@@ -4,9 +4,6 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This manipulates the user interface that the player sees while playing the game.</p>
  *
  * <p>Work Allocation:<ul>
@@ -27,11 +24,12 @@ import java.util.*;
  * @version 1.0
  */
 
+@SuppressWarnings("IntegerDivisionInFloatingPointContext")
 public class UI {
     /**
      * the level the UI is for
      */
-    Level lvl;
+    final Level lvl;
     /**
      * the graphics object used to draw on the screen
      */
@@ -41,7 +39,7 @@ public class UI {
      */
     Font font1, font2;
     /**
-     * whether or not a message is currently being displayed
+     * whether a message is currently being displayed
      */
     public boolean msgOn;
     /**
@@ -76,7 +74,7 @@ public class UI {
     /**
      * a list of questions to be answered
      */
-    public ArrayList<Question> questionList = new ArrayList<>();
+    public final ArrayList<Question> questionList = new ArrayList<>();
 
     /**
      * the total number of questions
@@ -132,7 +130,7 @@ public class UI {
         try {
             font1 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf")));
             font2 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf")));
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         for (int i = 0; i < numOfQuestions; i++) {
             questionList.add(new Question(this, i));
@@ -434,7 +432,7 @@ public class UI {
             int borderSize = 5;
             g2D.setStroke(new BasicStroke(borderSize));
             g2D.drawRoundRect(x + borderSize, y + borderSize, width - 2 * borderSize, height - 2 * borderSize, 35, 35);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

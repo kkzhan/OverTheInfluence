@@ -3,9 +3,6 @@ package entity;
 import main.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>The SystemSpeaker class is responsible for "speaking" to the player and transmitting dialogue
  * even when no other characters or objects are being interacted with.</p>
  *

@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * Over the Influence is a game by Digital Athletics Inc. intended to educate individuals about the dangers of
- * drug addiction and alcoholism, as well as reinforce concepts related to overcoming and avoiding addiction.
- *
  * <p>This class will operate one full game of OverTheInfluence.</p>
  *
  * <h2>ICS4U0 -with Krasteva, V.</h2>
@@ -24,12 +21,12 @@ public class Game {
     /**
      * array of levels to be played
      */
-    Level[] levels;
+    final Level[] levels;
 
     /**
      * arroy of windows for the levels to be played on
      */
-    private JFrame[] window;
+    private final JFrame[] window;
 
     /**
      * the level number of the current level
@@ -56,7 +53,7 @@ public class Game {
     /**
      * is the level complete
      *
-     * @return whether or not the level has been completed
+     * @return whether the level has been completed
      */
     public boolean levelComplete(int levelNum) {
         return levels[levelNum - 1].isComplete();
@@ -116,7 +113,7 @@ public class Game {
     /**
      * ends the level
      *
-     * @param retry whether or not to retry the level
+     * @param retry whether to retry the level
      */
     public void endLevel(boolean retry) {
         closeLevel();

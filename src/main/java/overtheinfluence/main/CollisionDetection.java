@@ -138,30 +138,30 @@ public class CollisionDetection {
                 }
             } else {
                 switch (e.direction) {
-                    case "up" -> {
+                    case "up":
                         e.area.y -= e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                    }
-                    case "down" -> {
+                        break;
+                    case "down":
                         e.area.y += e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                    }
-                    case "left" -> {
+                        break;
+                    case "left":
                         e.area.x -= e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                    }
-                    case "right" -> {
+                        break;
+                    case "right":
                         e.area.x += e.speed;
                         if (e.area.intersects(lvl.objects.get(i).area)) {
                             e.collision = true;
                         }
-                    }
+                        break;
                 }
             }
             e.area.x = e.areaDefaultX;
@@ -229,30 +229,30 @@ public class CollisionDetection {
                 }
             } else {
                 switch (e.direction) {
-                    case "up" -> {
+                    case "up":
                         e.area.y -= e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                    }
-                    case "down" -> {
+                        break;
+                    case "down":
                         e.area.y += e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                    }
-                    case "left" -> {
+                        break;
+                    case "left":
                         e.area.x -= e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                    }
-                    case "right" -> {
+                        break;
+                    case "right":
                         e.area.x += e.speed;
                         if (e.area.intersects(entities.get(i).area)) {
                             e.collision = true;
                         }
-                    }
+                        break;
                 }
             }
             e.area.x = e.areaDefaultX;
@@ -277,30 +277,30 @@ public class CollisionDetection {
             return false;
         }
         switch (e.direction) {
-            case "up" -> {
+            case "up":
                 e.worldY -= e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-            }
-            case "down" -> {
+                break;
+            case "down":
                 e.worldY += e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-            }
-            case "left" -> {
+                break;
+            case "left":
                 e.worldX -= e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-            }
-            case "right" -> {
+                break;
+            case "right":
                 e.worldX += e.speed;
                 if (e.area.intersects(hitbox)) {
                     return true;
                 }
-            }
+                break;
         }
         e.area.x = e.areaDefaultX;
         e.area.y = e.areaDefaultY;

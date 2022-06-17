@@ -35,11 +35,11 @@ public class Projectile extends Entity {
     /**
      * sets the initial position of the projectile
      *
-     * @param worldX the x coordinate
-     * @param worldY the y coordinate
+     * @param worldX    the x coordinate
+     * @param worldY    the y coordinate
      * @param direction the direction the projectile is moving in
-     * @param alive whether the projectile is initilly alive
-     * @param user the user of the projectile
+     * @param alive     whether the projectile is initilly alive
+     * @param user      the user of the projectile
      */
     public void set(int worldX, int worldY, String direction, boolean alive, Entity user) {
         this.worldX = worldX;
@@ -58,7 +58,7 @@ public class Projectile extends Entity {
             if (contactPlayer) {
                 lvl.projectiles.clear();
                 lvl.gameState = lvl.BARRIER_QUESTION_STATE;
-                if(lvl.player.barrierDebuffTimer == 0) {
+                if (lvl.player.barrierDebuffTimer == 0) {
                     lvl.assetSetter.barrierDebuff();
                 }
                 lvl.player.invincible = true;
@@ -68,10 +68,18 @@ public class Projectile extends Entity {
         }
 
         switch (direction) {
-            case "up" -> worldY -= speed;
-            case "down" -> worldY += speed;
-            case "left" -> worldX -= speed;
-            case "right" -> worldX += speed;
+            case "up":
+                worldY -= speed;
+                break;
+            case "down":
+                worldY += speed;
+                break;
+            case "left":
+                worldX -= speed;
+                break;
+            case "right":
+                worldX += speed;
+                break;
         }
         life--;
         if (life <= 0) {

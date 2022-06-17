@@ -131,18 +131,35 @@ public class TileManager {
                     try {
                         num = Integer.parseInt(nums[col]);
                     } catch (Exception e) {
-                        num = switch (nums[col]) {
-                            case "a" -> 10;
-                            case "b" -> 11;
-                            case "c" -> 12;
-                            case "d" -> 13;
-                            case "e" -> 14;
-                            case "f" -> 15;
-                            case "g" -> 16;
-                            case "h" -> 17;
-                            case "i" -> 18;
-                            default -> num;
-                        };
+                        switch (nums[col]) {
+                            case "a":
+                                num = 10;
+                                break;
+                            case "b":
+                                num = 11;
+                                break;
+                            case "c":
+                                num = 12;
+                                break;
+                            case "d":
+                                num = 13;
+                                break;
+                            case "e":
+                                num = 14;
+                                break;
+                            case "f":
+                                num = 15;
+                                break;
+                            case "g":
+                                num = 16;
+                                break;
+                            case "h":
+                                num = 17;
+                                break;
+                            case "i":
+                                num = 18;
+                                break;
+                        }
                     }
                     tileMap[col][row] = num;
                     col++;
@@ -208,8 +225,9 @@ public class TileManager {
 
     /**
      * resizes the image to the specified size
-     * @param image the image to be scaled
-     * @param width the width of the scaled image
+     *
+     * @param image  the image to be scaled
+     * @param width  the width of the scaled image
      * @param height the height of the scaled image
      * @return the scaled image
      */

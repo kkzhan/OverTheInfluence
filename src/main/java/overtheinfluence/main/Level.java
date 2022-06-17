@@ -332,10 +332,14 @@ public class Level extends JPanel implements Runnable {
                     //random number between 0 and 3
                     int random = (int) (Math.random() * 4);
                     switch (random) {
-                        case 0 -> matColor = "Blue";
-                        case 1 -> matColor = "Green";
-                        case 2 -> matColor = "Pink";
-                        case 3 -> matColor = "Purple";
+                        case 0: matColor = "Blue";
+                            break;
+                        case 1: matColor = "Green";
+                            break;
+                        case 2: matColor = "Pink";
+                            break;
+                        case 3: matColor = "Purple";
+                            break;
                     }
                     ui.instruction = "Go to the " + matColor + " mat";
                     matReached = false;

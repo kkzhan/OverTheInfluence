@@ -111,17 +111,18 @@ public class Launcher {
             window.setFocusable(true);
         } catch (InterruptedException ignored) {
         }
-        for(int i = 0; i < 32040; i++) {
+        for (int i = 0; i < 22530; i++) {
             if (splashOver) {
-                window.remove(label);
-                mainMenu();
                 break;
-            }
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException ignored) {
+            } else {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ignored) {
+                }
             }
         }
+        window.remove(label);
+        mainMenu();
     }
 
     /**
@@ -252,7 +253,7 @@ public class Launcher {
                 //start new game
                 gameStarted = true;
                 currentGame = new Game(this);
-                currentGame.playLevel(1);
+                currentGame.playLevel(3);
             }
         });
         resume1.addActionListener(e -> {

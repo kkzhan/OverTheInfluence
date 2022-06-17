@@ -111,7 +111,7 @@ public class Desk extends Entity {
             dialogue.add("Searching up#What are the dangers of being a drug addict?");
             dialogue.add("Computer#Dangers of drug addiction include but are not limited to: injury and#potential death, dependency on the drug, involvement in criminal activity,#and damage to relationships with friends and family.");
             dialogue.add("Searching up#How does a drug addiction develop?");
-            dialogue.add("Computer#Initially, the decision to take drugs is usually voluntary.#Since most drugs create a sense of euphoria, many drug abusers continue#taking the drug to try to reach that state again.");
+            dialogue.add("Computer#Initially, the decision to take drugs is usually voluntary.#Since most drugs create a sense of euphoria, many drug abusers#continue taking the drug to try to reach that state again.");
             dialogue.add("Computer#Repeated use of the drug leads to changes in the brain that challenges#one’s self-control and ability to resist the urge to use the drug.");
             dialogue.add("Searching up#How can somebody overcome drug addiction?");
             dialogue.add("Computer#Seek professional help.An addict can also set reasonable and measurable#goals for themselves. Also, They can inform their family and friends#about their decision and ask for their support.");

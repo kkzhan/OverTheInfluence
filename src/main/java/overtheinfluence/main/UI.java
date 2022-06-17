@@ -129,9 +129,19 @@ public class UI {
         }
         try {
             font1 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf")));
-            font2 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf")));
-        } catch (Exception ignored) {
+        } catch (Exception fontFail) {
+            font1 = new Font("Arial", Font.PLAIN, 20);
         }
+        try {
+            font2 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/ARCADECLASSIC.ttf")));
+        } catch (Exception fontFail) {
+            try {
+                font2 = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/resources/fonts/RangerWider Regular.ttf")));
+            } catch (Exception fontFail2) {
+                font2 = new Font("Arial", Font.PLAIN, 20);
+            }
+        }
+
         for (int i = 0; i < numOfQuestions; i++) {
             questionList.add(new Question(this, i));
         }
@@ -338,11 +348,11 @@ public class UI {
         g2D.setColor(Color.WHITE);
         g2D.setFont(font2.deriveFont(Font.PLAIN, lvl.screenHeight / 10));
         String levelDesc = "";
-        if(lvl.levelNum == 1) {
+        if (lvl.levelNum == 1) {
             levelDesc = "Level 1   Exploration";
-        } else if(lvl.levelNum == 2) {
+        } else if (lvl.levelNum == 2) {
             levelDesc = "Level 2   Inner Demons";
-        } else if(lvl.levelNum == 3) {
+        } else if (lvl.levelNum == 3) {
             levelDesc = "Level 3   Recovery";
         }
         g2D.drawString(levelDesc, centerText(levelDesc), lvl.screenHeight / 2);
@@ -401,21 +411,13 @@ public class UI {
                 if (lvl.player.inventory[0] > 0) {
                     lvl.player.inventory[0]--;
                     showMessage("You ate food x1");
-                    if (lvl.player.inRehab) {
-                        lvl.player.withdrawalLevel += 40;
-                    } else {
-                        lvl.player.withdrawalLevel += 400;
-                    }
+                    lvl.player.withdrawalLevel += 4000;
                 }
             } else if (inventorySelect == 2) {
                 if (lvl.player.inventory[1] > 0) {
                     lvl.player.inventory[1]--;
                     showMessage("You drank water x1");
-                    if (lvl.player.inRehab) {
-                        lvl.player.withdrawalLevel += 50;
-                    } else {
-                        lvl.player.withdrawalLevel += 500;
-                    }
+                    lvl.player.withdrawalLevel += 4500;
                 }
             }
         }

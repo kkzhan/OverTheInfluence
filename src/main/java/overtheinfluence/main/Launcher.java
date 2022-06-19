@@ -253,7 +253,7 @@ public class Launcher {
                 //start new game
                 gameStarted = true;
                 currentGame = new Game(this);
-                currentGame.playLevel(3);
+                currentGame.playLevel(1);
             }
         });
         resume1.addActionListener(e -> {
